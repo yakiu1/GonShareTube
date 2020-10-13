@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<div class="bodyLayout">
+    <ul class="nav justify-content-end" style="height: 10vh;">
+        <li class="nav-item dropdown">
+            <a class="nav-link" routerLink="/home">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link active" routerLink="/overview">OverView</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link" routerLink="/playlist">Playlist</a>
+            <app-gon-hoverable-dropdown [playList]="$playlist|async" class="dropdown-content">play list</app-gon-hoverable-dropdown>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link" routerLink="/friend">Friend</a>
+        </li>
+    </ul>
+    <router-outlet></router-outlet>
+</div>

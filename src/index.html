@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Gon's Share Tube</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+</head>
+
+<body>
+    <header id="titlebar">
+        <div id="drag-region">
+
+            <div id="window-title">
+                <span>Gon's Share Tube</span>
+            </div>
+
+            <div id="window-controls">
+
+                <div class="button" id="min-button">
+                    <img class="icon" srcset="assets/icons/min-w-10.png 1x, assets/icons/min-w-12.png 1.25x, assets/icons/min-w-15.png 1.5x, icons/min-w-15.png 1.75x, icons/min-w-20.png 2x, icons/min-w-20.png 2.25x, icons/min-w-24.png 2.5x, icons/min-w-30.png 3x, icons/min-w-30.png 3.5x"
+                        draggable="false" />
+                </div>
+                <div class="button" id="max-button">
+                    <img class="icon" srcset="assets/icons/max-w-10.png 1x, assets/icons/max-w-12.png 1.25x, assets/icons/max-w-15.png 1.5x, icons/max-w-15.png 1.75x, icons/max-w-20.png 2x, icons/max-w-20.png 2.25x, icons/max-w-24.png 2.5x, icons/max-w-30.png 3x, icons/max-w-30.png 3.5x"
+                        draggable="false" />
+                </div>
+                <div class="button" id="restore-button">
+                    <img class="icon" srcset="assets/icons/restore-w-10.png 1x, assets/icons/restore-w-12.png 1.25x, assets/icons/restore-w-15.png 1.5x, icons/restore-w-15.png 1.75x, icons/restore-w-20.png 2x, icons/restore-w-20.png 2.25x, icons/restore-w-24.png 2.5x, icons/restore-w-30.png 3x, icons/restore-w-30.png 3.5x"
+                        draggable="false" />
+                </div>
+                <div class="button" id="close-button">
+                    <img class="icon" srcset="assets/icons/close-w-10.png 1x, assets/icons/close-w-12.png 1.25x, assets/icons/close-w-15.png 1.5x, icons/close-w-15.png 1.75x, icons/close-w-20.png 2x, icons/close-w-20.png 2.25x, icons/close-w-24.png 2.5x, icons/close-w-30.png 3x, icons/close-w-30.png 3.5x"
+                        draggable="false" />
+                </div>
+
+            </div>
+        </div>
+    </header>
+    <div id='electron-ver'></div>
+    <app-root>Loading...</app-root>
+
+</body>
+
+<script defer>
+    const remote = require('electron').remote;
+
+    const win = remote.getCurrentWindow();
+    /* Note this is different to the
+html global `window` variable */
+
+    // When document has loaded, initialise
+    document.onreadystatechange = (event) => {
+        if (document.readyState == "complete") {
+            handleWindowControls();
+
+            // document.getElementById('electron-ver').innerHTML = `${process.versions.electron}`
+        }
+    };
+
+    window.onbeforeunload = (event) => {
+        /* If window is reloaded, remove win event listeners
+        (DOM element listeners get auto garbage collected but not
+        Electron win listeners as the win is not dereferenced unless closed) */
+        win.removeAllListeners();
+    }
+
+    function handleWindowControls() {
+        // Make minimise/maximise/restore/close buttons work when they are clicked
+        document.getElementById('min-button').addEventListener("click", event => {
+            win.minimize();
+        });
+
+        document.getElementById('max-button').addEventListener("click", event => {
+            win.maximize();
+        });
+
+        document.getElementById('restore-button').addEventListener("click", event => {
+            win.unmaximize();
+        });
+
+        document.getElementById('close-button').addEventListener("click", event => {
+            win.close();
+        });
+
+        // Toggle maximise/restore buttons when maximisation/unmaximisation occurs
+        toggleMaxRestoreButtons();
+        win.on('maximize', toggleMaxRestoreButtons);
+        win.on('unmaximize', toggleMaxRestoreButtons);
+
+        function toggleMaxRestoreButtons() {
+            if (win.isMaximized()) {
+                document.body.classList.add('maximized');
+            } else {
+                document.body.classList.remove('maximized');
+            }
+        }
+    }
+</script>
+
+</html>
