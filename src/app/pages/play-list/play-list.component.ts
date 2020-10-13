@@ -3,7 +3,7 @@ import { SongInfo } from './../../difs/song-info';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import * as PlaylistActions from './../../state/actions/playlist.actions'
+import * as AppActions from '../../state/actions/app.actions'
 @Component({
   selector: 'app-play-list',
   templateUrl: './play-list.component.html',
@@ -20,24 +20,26 @@ export class PlayListComponent implements OnInit {
 
 
   constructor(
-    private store: Store<AppState>
+    private store: Store<any>
   ) {
-    this.$playList = store.select('playlist');
+    this.$playList = store.select(state => {
+      console.log(state.appState.playlist,'check');
+      return state.appState.playlist});
   }
 
   ngOnInit(): void {
   }
 
   doAddSong(name: string): void {
-    const SongInfo: SongInfo = {
+    const songInfo: SongInfo = {
       songName: name,
       songTag: name
     }
-    this.store.dispatch(new PlaylistActions.AddSong(SongInfo))
+    this.store.dispatch(AppActions.addSong({ song: songInfo }))
     this._input.nativeElement.value = "";
   }
 
   doDeleteSong(index: number): void {
-    this.store.dispatch(new PlaylistActions.RemoveSong(index))
+    this.store.dispatch(AppActions.removeSong({ removeIndex: index }))
   }
 }

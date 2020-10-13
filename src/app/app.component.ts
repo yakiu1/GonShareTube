@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import * as PlaylistActions from './state/actions/playlist.actions'
+import * as AppActions from './state/actions/app.actions'
 
 @Component({
   selector: 'app-root',
@@ -16,11 +16,12 @@ import * as PlaylistActions from './state/actions/playlist.actions'
 export class AppComponent implements AfterViewInit, AfterContentInit {
 
   $playlist: Observable<SongInfo[]>;
+  $currentPlaying: Observable<string>;
 
   constructor(
     private electronService: ElectronService,
     private translate: TranslateService,
-    private store: Store<AppState>
+    private store: Store<any>
   ) {
     this.translate.setDefaultLang('en');
 
@@ -35,7 +36,14 @@ export class AppComponent implements AfterViewInit, AfterContentInit {
       console.log('Run in browser');
     }
 
-    this.$playlist = store.select('playlist');
+    this.$playlist = store.select(state =>
+      state.appState.playlist
+    );
+
+    this.$currentPlaying = store.select(
+      state => state.appState.currentPlaying
+    )
+
   }
   ngAfterContentInit(): void {
     this.setSongLists();
@@ -56,8 +64,14 @@ export class AppComponent implements AfterViewInit, AfterContentInit {
     ];
 
     playlistMonkData.forEach(s => {
-      this.store.dispatch(new PlaylistActions.AddSong(s));
-
+      this.store.dispatch(AppActions.addSong({ song: s }));
     })
+
   }
+
+  doClick(tag: string): void {
+    console.log('click!',tag);
+    this.store.dispatch(AppActions.setSong({ currentPlaying: tag }))
+  }
+
 }

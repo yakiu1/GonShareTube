@@ -1,8 +1,9 @@
 import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { HubConnection } from '@microsoft/signalr';
+import { Store } from '@ngrx/store';
 import { ConnectorService, YtPlayerService } from 'app/core/services';
-import { BehaviorSubject, fromEvent, Subscription } from 'rxjs';
+import { BehaviorSubject, fromEvent, Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -21,19 +22,28 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   reframed: boolean;
   player: YT.Player;
   connection: HubConnection;
+  $currentPlaying: Observable<string>;
 
   constructor(
     router: Router,
     private ytPlayerService: YtPlayerService,
-    private tubeConnect: ConnectorService
+    private tubeConnect: ConnectorService,
+    private store: Store<any>
   ) {
 
   }
 
   ngAfterContentInit(): void {
-    this.addListeners();
     this.loadYoutubeAPI();
     this.setConnection();
+    this.getStoreDatas();
+    this.addListeners();
+  }
+
+  getStoreDatas() {
+    this.$currentPlaying = this.store.select(
+      state => state.appState.currentPlaying
+    )
   }
 
   ngOnDestroy(): void {
@@ -42,7 +52,6 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   loadYoutubeAPI(): void {
-
     const tag = document.createElement('script');
 
     if (document.getElementsByTagName('script')[1].src !== 'https://www.youtube.com/iframe_api') {
@@ -77,6 +86,10 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
       }
     }));
 
+    this.$currentPlaying.subscribe(playTag => {
+      this.connection.invoke('SendTubeLink', playTag);
+    })
+
   }
 
   setConnection(): void {
@@ -93,6 +106,6 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   shareVideo(): void {
-    this.connection.invoke('SendTubeLink', '00OagC5t_2Q');
+    this.connection.invoke('SendTubeLink', this.videoId);
   }
 }

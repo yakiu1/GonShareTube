@@ -1,3 +1,5 @@
+import { appReducer } from './state/reducers/app.reducer';
+import { AppState } from './state/app.state';
 import { DetailModule } from './pages/detail/detail.module';
 import { FriendModule } from './pages/friend/friend.module';
 import { PlayListModule } from './pages/play-list/play-list.module';
@@ -27,8 +29,6 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
 
 // NG Store
 import { StoreModule } from '@ngrx/store';
-import { playlistReducer } from './state/reducers/playlist.reducer'
-
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -57,7 +57,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
       }
     }),
     YouTubePlayerModule,
-    StoreModule.forRoot({ playlist: playlistReducer })
+    StoreModule.forRoot({ appState: appReducer })
   ],
   providers: [],
   bootstrap: [AppComponent]

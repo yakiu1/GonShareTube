@@ -1,7 +1,7 @@
 <div>
     <ul>
         <li *ngFor="let item of playListWithDisplayName">
-            <div class="row">
+            <div class="row" (click)="doClick(item.songTag)">
                 <div class="col-12">{{item.displayName}}</div>
             </div>
         </li>

@@ -1,5 +1,6 @@
 import { SongInfo } from './../../../difs/song-info';
-import { AfterViewInit, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, Output, EventEmitter } from '@angular/core';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-gon-hoverable-dropdown',
@@ -10,17 +11,23 @@ export class GonHoverableDropdownComponent implements OnInit, OnChanges, AfterVi
 
   @Input() playList: SongInfo[];
 
+  @Output() clickItem = new EventEmitter<string>();
   playListWithDisplayName = [];
 
-  constructor() { }
+  constructor(
+    private store: Store<any>
+  ) { }
 
   ngAfterViewInit(): void {
+    this.store.select(state => state.appState.currentPlaying);
   }
 
   ngOnChanges(): void {
     this.playListWithDisplayName = [];
+    console.log(this.playList, 'abc')
     if (this.playList) {
       this.playList.forEach(song => {
+        console.log(song, 'what?');
         const displayName = song.songName.length > 20 ?
           song.songName.substring(0, 24) + '...' :
           song.songName;
@@ -38,4 +45,7 @@ export class GonHoverableDropdownComponent implements OnInit, OnChanges, AfterVi
   ngOnInit(): void {
   }
 
+  doClick(tag: string): void {
+    this.clickItem.emit(tag);
+  }
 }

@@ -1,1 +1,1 @@
-export * from './actions/playlist.actions';
+export * from './actions/app.actions';
