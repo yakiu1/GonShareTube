@@ -1,5 +1,4 @@
-import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { AfterContentInit, Component, ElementRef, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { HubConnection } from '@microsoft/signalr';
 import { Store } from '@ngrx/store';
 import { ConnectorService, YtPlayerService } from 'app/core/services';
@@ -15,42 +14,29 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   @ViewChild('footMenu', { static: true }) footMenu: ElementRef;
 
 
-  _isReadySubscription = new Subscription();
-  _eventSubscriptions = new Subscription();
+
   $isReadyVideo = new BehaviorSubject<boolean>(false);
-  videoId = 'WBI_cOPTzPU'
+  $currentPlaying: Observable<string>;
+  private _isReadySubscription = new Subscription();
+  private _eventSubscriptions = new Subscription();
+
+  videoId = 'W372EX13-Uc'
   reframed: boolean;
   player: YT.Player;
   connection: HubConnection;
-  $currentPlaying: Observable<string>;
+  playingStatue: string
+  isloop = true;
 
   constructor(
-    router: Router,
     private ytPlayerService: YtPlayerService,
     private tubeConnect: ConnectorService,
     private store: Store<any>
-  ) {
+  ) { }
 
-  }
 
-  ngAfterContentInit(): void {
-    this.loadYoutubeAPI();
-    this.setConnection();
-    this.getStoreDatas();
-    this.addListeners();
-  }
-
-  getStoreDatas() {
-    this.$currentPlaying = this.store.select(
-      state => state.appState.currentPlaying
-    )
-  }
-
-  ngOnDestroy(): void {
-    this._eventSubscriptions.unsubscribe();
-    this._eventSubscriptions.unsubscribe();
-  }
-
+  /** Special Features
+   * special feature for this component
+   */
   loadYoutubeAPI(): void {
     const tag = document.createElement('script');
 
@@ -83,15 +69,48 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     this._isReadySubscription.add(this.$isReadyVideo.subscribe(isReady => {
       if (isReady) {
         this.player = this.ytPlayerService.startVideo(this.videoId);
+        this.player.addEventListener('onStateChange', evt => {
+          const isloop: boolean = this.isloop;
+          console.log(evt, '<==== video state change');
+          if (evt['data'] === YT.PlayerState.ENDED && isloop) {
+            this.player.playVideo();
+          }
+        })
       }
     }));
 
     this.$currentPlaying.subscribe(playTag => {
-      this.connection.invoke('SendTubeLink', playTag);
+      if (playTag.length > 0) {
+        this.videoId = playTag;
+        this.connection.invoke('SendTubeLink', playTag);
+        console.log(this.videoId);
+      }
     })
 
   }
 
+  shareVideo(): void {
+    this.connection.invoke('SendTubeLink', this.videoId);
+  }
+
+  switchLoop(): void {
+    this.isloop = this.isloop ? false : true;
+    if (this.player.getPlayerState() === YT.PlayerState.ENDED) {
+      this.player.playVideo();
+    }
+  }
+  /** DataControls
+   * Store Data get/set
+   */
+  getStoreDatas(): void {
+    this.$currentPlaying = this.store.select(
+      state => state.appState.currentPlaying
+    )
+  }
+
+  /** WebSocket
+   * connection/actions
+   */
   setConnection(): void {
     const connection = this.tubeConnect.connectToServe();
     connection.start();
@@ -101,11 +120,26 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     this.connection = connection;
   }
 
+
+  /** LifeCycles
+   * lifeCycle hooks below
+   */
+
+  ngAfterContentInit(): void {
+    this.loadYoutubeAPI();
+    this.setConnection();
+    this.getStoreDatas();
+    this.addListeners();
+  }
+
+  ngOnDestroy(): void {
+    this._eventSubscriptions.unsubscribe();
+    this._isReadySubscription.unsubscribe();
+  }
+
   ngOnInit(): void {
 
   }
 
-  shareVideo(): void {
-    this.connection.invoke('SendTubeLink', this.videoId);
-  }
+
 }

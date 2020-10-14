@@ -24,10 +24,8 @@ export class GonHoverableDropdownComponent implements OnInit, OnChanges, AfterVi
 
   ngOnChanges(): void {
     this.playListWithDisplayName = [];
-    console.log(this.playList, 'abc')
     if (this.playList) {
       this.playList.forEach(song => {
-        console.log(song, 'what?');
         const displayName = song.songName.length > 20 ?
           song.songName.substring(0, 24) + '...' :
           song.songName;

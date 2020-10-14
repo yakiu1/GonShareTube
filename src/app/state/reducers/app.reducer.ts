@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/indent */
 import { AppState } from './../app.state';
-import { SongInfo } from '../../difs/song-info';
 import { Action } from '@ngrx/store/src/models';
 import * as AppActions from '../actions/app.actions'
 import { createReducer, on } from '@ngrx/store';
@@ -20,7 +20,6 @@ export const appReducer = createReducer(initialState,
     currentPlaying: payload.currentPlaying
   })),
   on(AppActions.addSong, (state, payload) => {
-    console.log('adddd', payload.song);
     return {
       ...state,
       playlist: [...state.playlist, payload.song]
@@ -37,6 +36,6 @@ export const appReducer = createReducer(initialState,
   })
 )
 
-export function reducer(state: AppState | undefined, action: Action) {
+export function reducer(state: AppState | undefined, action: Action): any {
   return appReducer(state, action);
 }

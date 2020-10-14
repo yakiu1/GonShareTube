@@ -70,7 +70,6 @@ export class AppComponent implements AfterViewInit, AfterContentInit {
   }
 
   doClick(tag: string): void {
-    console.log('click!',tag);
     this.store.dispatch(AppActions.setSong({ currentPlaying: tag }))
   }
 

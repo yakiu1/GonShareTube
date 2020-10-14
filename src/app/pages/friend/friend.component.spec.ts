@@ -10,7 +10,7 @@ describe('FriendComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ FriendComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

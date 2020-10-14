@@ -17,20 +17,17 @@ export class YtPlayerService {
       events: {
         'onReady': this.videoReady.bind(this),
         // 'onError'
-        // 'onStateChange'
+        // 'onStateChange': this
       }
     });
-
   }
 
   videoReady(): void {
     this.current_ytPlayer.playVideo();
-    console.log('start playing video');
   }
 
-  playVideo(player: YT.Player,id:string): void {
+  playVideo(player: YT.Player, id: string): void {
     player.loadVideoById(id);
     player.playVideo();
-    console.log('start playing video');
   }
 }

@@ -3,7 +3,7 @@
 // 主要顏色卡
 $main-color :#1A535C;
 $sub-color: #4ECDC4;
-$main-button-color: #FF6B6B;
+$main-button-color:lighten($main-color, 10%);
 $sub-button-color:#FFE66D;
 $main-text-color: #F7FFF7;
 $darken-main-color: darken($main-color, 10%);
@@ -178,10 +178,27 @@ body {
 }
 
 .gbtn-main {
+    border: 0px;
+    border-radius: 5px;
     background-color: $main-button-color;
 }
 
+.gbtn-main:hover {
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+    background-color: lighten($main-button-color, 10%);
+}
+
+.gbtn-main:focus {
+    outline: 0;
+}
+
 .gbtn-sub {
+    border: 0px;
+    border-radius: 5px;
     background-color: $sub-button-color;
 }
 

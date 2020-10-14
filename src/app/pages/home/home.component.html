@@ -2,6 +2,22 @@
     Gon's Share Tube
     <!-- 多國語系等APP完成一次修改 {{ 'PAGES.HOME.TITLE' | translate }} -->
 </h1>
+
+<div style="margin: 5px;">
+    <button class="gbtn-main" type="button" (click)="switchLoop()">
+    <span *ngIf="isloop" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+    <span *ngIf="isloop">
+      Loop
+    </span>
+    <span *ngIf="!isloop" >
+    Ｏ
+    </span>
+    <span *ngIf="!isloop" >
+      Loop
+    </span>
+  </button>
+</div>
+
 <div id='player' style="width: 100%;height: 60vh;">
 
 </div>
