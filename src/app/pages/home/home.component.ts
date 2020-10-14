@@ -1,9 +1,9 @@
-import { AfterContentInit, Component, ElementRef, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { HubConnection } from '@microsoft/signalr';
 import { Store } from '@ngrx/store';
 import { ConnectorService, YtPlayerService } from 'app/core/services';
 import { BehaviorSubject, fromEvent, Observable, Subscription } from 'rxjs';
-
+import { take } from 'rxjs/operators';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -68,6 +68,7 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
 
     this._isReadySubscription.add(this.$isReadyVideo.subscribe(isReady => {
       if (isReady) {
+        this.getCurrentPlayVideo();
         this.player = this.ytPlayerService.startVideo(this.videoId);
         this.player.addEventListener('onStateChange', evt => {
           const isloop: boolean = this.isloop;
@@ -106,6 +107,12 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     this.$currentPlaying = this.store.select(
       state => state.appState.currentPlaying
     )
+  }
+
+  getCurrentPlayVideo(): void {
+    this.$currentPlaying.pipe(take(1)).subscribe(v => { if (v) {
+      console.log(v,'v');
+      this.videoId = v } });
   }
 
   /** WebSocket

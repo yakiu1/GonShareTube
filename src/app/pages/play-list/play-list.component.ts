@@ -1,4 +1,3 @@
-import { AppState } from './../../state/app.state';
 import { SongInfo } from './../../difs/song-info';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -13,17 +12,13 @@ export class PlayListComponent implements OnInit {
 
   @ViewChild('inputName') _input: ElementRef;
 
-  // 1葉幾筆
   $playList: Observable<SongInfo[]>;
   _playList: SongInfo[];
-
-
 
   constructor(
     private store: Store<any>
   ) {
     this.$playList = store.select(state => {
-      console.log(state.appState.playlist,'check');
       return state.appState.playlist});
   }
 
