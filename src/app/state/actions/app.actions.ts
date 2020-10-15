@@ -16,4 +16,9 @@ export const setSong = createAction(
   props<{ currentPlaying: string }>()
 );
 
+export const setGroup = createAction(
+  '[GROUP] setGroup',
+  props<{ currentGroup: string }>()
+)
+
 //export type Actions = AddSong | RemoveSong | SetSong;

@@ -17,7 +17,7 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 
 import { AppRoutingModule } from './app-routing.module';
-
+import { ReactiveFormsModule } from '@angular/forms';
 // NG Translate
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -57,7 +57,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
       }
     }),
     YouTubePlayerModule,
-    StoreModule.forRoot({ appState: appReducer })
+    StoreModule.forRoot({ appState: appReducer }),
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

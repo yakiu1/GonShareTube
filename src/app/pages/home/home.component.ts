@@ -1,4 +1,5 @@
 import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { HubConnection } from '@microsoft/signalr';
 import { Store } from '@ngrx/store';
 import { ConnectorService, YtPlayerService } from 'app/core/services';
@@ -26,7 +27,10 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   connection: HubConnection;
   playingStatue: string
   isloop = true;
+  currentGroup: string;
+  $currentGroup: Observable<string>;
 
+  currentGroupFormControl = new FormControl('');
   constructor(
     private ytPlayerService: YtPlayerService,
     private tubeConnect: ConnectorService,
@@ -83,8 +87,9 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     this.$currentPlaying.subscribe(playTag => {
       if (playTag.length > 0) {
         this.videoId = playTag;
-        this.connection.invoke('SendTubeLink', playTag);
+        console.log(this.getCurrentGroup(), 'current Group')
         console.log(this.videoId);
+        this.connection.invoke('SendGroupTubeLink', this.getCurrentGroup(), playTag);
       }
     })
 
@@ -107,12 +112,30 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     this.$currentPlaying = this.store.select(
       state => state.appState.currentPlaying
     )
+    this.$currentGroup = this.store.select(
+      state => state.appState.currentGroup
+    )
   }
 
   getCurrentPlayVideo(): void {
-    this.$currentPlaying.pipe(take(1)).subscribe(v => { if (v) {
-      console.log(v,'v');
-      this.videoId = v } });
+    this.$currentPlaying.pipe(take(1)).subscribe(v => {
+      if (v) {
+        console.log(v, 'v');
+        this.videoId = v
+      }
+    });
+  }
+
+  getCurrentGroup(): string {
+    let result = '';
+    this.$currentGroup.pipe(take(1)).subscribe(g => {
+      if (g) {
+        this.currentGroupFormControl.setValue(g);
+        result = g;
+
+      }
+    })
+    return result;
   }
 
   /** WebSocket
@@ -121,9 +144,18 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   setConnection(): void {
     const connection = this.tubeConnect.connectToServe();
     connection.start();
+
+    connection.on('Connected', () => {
+      console.log('Add Group');
+      this.connection.invoke('AddGroup', this.getCurrentGroup());
+    });
+
     connection.on('ReceiveTubeLink', (tubeLink) => {
+      console.log(tubeLink, 'receive what?');
       this.player.loadVideoById(tubeLink);
     });
+
+
     this.connection = connection;
   }
 

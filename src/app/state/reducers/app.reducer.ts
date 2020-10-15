@@ -11,7 +11,8 @@ import { createReducer, on } from '@ngrx/store';
 // }
 export const initialState: AppState = {
   playlist: [],
-  currentPlaying: ''
+  currentPlaying: '',
+  currentGroup: ''
 };
 
 export const appReducer = createReducer(initialState,
@@ -32,6 +33,12 @@ export const appReducer = createReducer(initialState,
     return {
       ...state,
       playlist: tempPlaylist
+    }
+  }),
+  on(AppActions.setGroup, (state, payload) => {
+    return {
+      ...state,
+      currentGroup: payload.currentGroup
     }
   })
 )
