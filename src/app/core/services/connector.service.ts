@@ -11,7 +11,7 @@ export class ConnectorService {
   connectToServe(): HubConnection {
 
     const connection = new HubConnectionBuilder()
-      .withUrl('https://localhost:44386/tubehub')
+      .withUrl('http://sharetubeservice-env.eba-em77nq23.us-east-1.elasticbeanstalk.com/tubehub')
       .build();
 
     return connection;
