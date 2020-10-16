@@ -6,14 +6,17 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 })
 export class ConnectorService {
 
+  serveConnection: HubConnection;
+
   constructor() { }
 
-  connectToServe(): HubConnection {
+  connectToServe(): void {
 
     const connection = new HubConnectionBuilder()
       .withUrl('http://sharetubeservice-env.eba-em77nq23.us-east-1.elasticbeanstalk.com/tubehub')
       .build();
-
-    return connection;
+    this.serveConnection = connection;
+    this.serveConnection.start();
   }
+
 }

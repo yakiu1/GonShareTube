@@ -25,7 +25,7 @@ export class VideoFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  doAddVideo() {
+  doAddVideo(): void {
     const url: string = this.videoURLControl.value;
     const newVideo: SongInfo = {
       songName: this.displayNmaeCnontrol.value,
@@ -38,7 +38,6 @@ export class VideoFormComponent implements OnInit {
 
   parseURLToTag(url: string): string {
     const tag = url.split('=')[1].split('&')[0];
-    console.log(tag,'<=================tags')
     return tag;
   }
 

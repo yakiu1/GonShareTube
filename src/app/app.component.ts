@@ -1,3 +1,4 @@
+import { ConnectorService } from 'app/core/services';
 import { SongInfo } from './difs/song-info';
 import { AfterContentInit, AfterViewInit, Component } from '@angular/core';
 import { ElectronService } from './core/services';
@@ -18,11 +19,13 @@ export class AppComponent implements AfterViewInit, AfterContentInit {
   $currentPlaying: Observable<string>;
 
   constructor(
+    public connectorService: ConnectorService,
     private electronService: ElectronService,
     private translate: TranslateService,
     private store: Store<any>
   ) {
     this.translate.setDefaultLang('en');
+    connectorService.connectToServe();
 
     console.log('AppConfig', AppConfig);
 

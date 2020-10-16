@@ -18,8 +18,8 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
 
   $isReadyVideo = new BehaviorSubject<boolean>(false);
   $currentPlaying: Observable<string>;
-  private _isReadySubscription = new Subscription();
   private _eventSubscriptions = new Subscription();
+  private _isReadySubscription = new Subscription();
 
   videoId = 'W372EX13-Uc'
   reframed: boolean;
@@ -32,9 +32,9 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
 
   currentGroupFormControl = new FormControl('');
   constructor(
-    private ytPlayerService: YtPlayerService,
-    private tubeConnect: ConnectorService,
-    private store: Store<any>
+    public ytPlayerService: YtPlayerService,
+    private store: Store<any>,
+    public tubeConnect: ConnectorService,
   ) { }
 
 
@@ -72,8 +72,10 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
 
     this._isReadySubscription.add(this.$isReadyVideo.subscribe(isReady => {
       if (isReady) {
-        this.getCurrentPlayVideo();
-        this.player = this.ytPlayerService.startVideo(this.videoId);
+
+        this.player = this.ytPlayerService.startVideo('');
+        this.playCurrentVideo();
+
         this.player.addEventListener('onStateChange', evt => {
           const isloop: boolean = this.isloop;
           console.log(evt, '<==== video state change');
@@ -105,6 +107,15 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
       this.player.playVideo();
     }
   }
+
+  playCurrentVideo(): void {
+    this.$currentPlaying.pipe(take(1)).subscribe(v => {
+      if (v) {
+        this.ytPlayerService.startVideo(v);
+      }
+    });
+  }
+
   /** DataControls
    * Store Data get/set
    */
@@ -115,15 +126,6 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     this.$currentGroup = this.store.select(
       state => state.appState.currentGroup
     )
-  }
-
-  getCurrentPlayVideo(): void {
-    this.$currentPlaying.pipe(take(1)).subscribe(v => {
-      if (v) {
-        console.log(v, 'v');
-        this.videoId = v
-      }
-    });
   }
 
   getCurrentGroup(): string {
@@ -142,8 +144,8 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
    * connection/actions
    */
   setConnection(): void {
-    const connection = this.tubeConnect.connectToServe();
-    connection.start();
+    //this.tubeConnect.connectToServe();
+    const connection = this.tubeConnect.serveConnection;
 
     connection.on('Connected', () => {
       console.log('Add Group');
