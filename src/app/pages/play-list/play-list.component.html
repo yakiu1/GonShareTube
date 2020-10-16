@@ -1,7 +1,5 @@
 <p>Add Youtube Url</p>
 <app-video-form></app-video-form>
-<input #inputName (keydown.enter)="doAddSong(inputName.value)">
-
 <ul>
     <li *ngFor="let item of $playList|async;let i=index">
         <app-gon-list-item (delete)="doDeleteSong(i)" [songName]="item"></app-gon-list-item>

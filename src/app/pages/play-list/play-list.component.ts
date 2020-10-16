@@ -25,16 +25,8 @@ export class PlayListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  doAddSong(name: string): void {
-    const songInfo: SongInfo = {
-      songName: name,
-      songTag: name
-    }
-    this.store.dispatch(AppActions.addSong({ song: songInfo }))
-    this._input.nativeElement.value = "";
-  }
-
   doDeleteSong(index: number): void {
     this.store.dispatch(AppActions.removeSong({ removeIndex: index }))
   }
+
 }

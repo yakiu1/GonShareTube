@@ -1,4 +1,3 @@
-import { AppState } from './state/app.state';
 import { SongInfo } from './difs/song-info';
 import { AfterContentInit, AfterViewInit, Component } from '@angular/core';
 import { ElectronService } from './core/services';
@@ -46,28 +45,28 @@ export class AppComponent implements AfterViewInit, AfterContentInit {
 
   }
   ngAfterContentInit(): void {
-    this.setSongLists();
+    // this.setSongLists();
   }
 
   ngAfterViewInit(): void {
   }
 
-  setSongLists(): void {
+  // setSongLists(): void {
 
-    const playlistMonkData: SongInfo[] = [
-      { songName: '2020流行歌曲', songTag: 'eM9VJ2R2vUc' },
-      { songName: 'Divinity Original Sin 2 OST 01 Main Theme', songTag: 'HAsIefETSB' },
-      { songName: 'Divinity Original Sin 2 OST 02 Mead Gold and Blood', songTag: '_hrLcxL1Fyg' },
-      { songName: 'Divinity Original Sin 2 OST 03 Symphony of the Void', songTag: 'eLPHYQlKArU' },
-      { songName: 'Divinity Original Sin 2 OST 04 Rivellon', songTag: 'W372EX13-Uc' },
-      { songName: 'Divinity Original Sin 2 OST 05 Welcome to Fort Joy', songTag: 'VIZp68FhbGE' },
-    ];
+  //   const playlistMonkData: SongInfo[] = [
+  //     { songName: '2020流行歌曲', songTag: 'eM9VJ2R2vUc' },
+  //     { songName: 'Divinity Original Sin 2 OST 01 Main Theme', songTag: 'HAsIefETSB' },
+  //     { songName: 'Divinity Original Sin 2 OST 02 Mead Gold and Blood', songTag: '_hrLcxL1Fyg' },
+  //     { songName: 'Divinity Original Sin 2 OST 03 Symphony of the Void', songTag: 'eLPHYQlKArU' },
+  //     { songName: 'Divinity Original Sin 2 OST 04 Rivellon', songTag: 'W372EX13-Uc' },
+  //     { songName: 'Divinity Original Sin 2 OST 05 Welcome to Fort Joy', songTag: 'VIZp68FhbGE' },
+  //   ];
 
-    playlistMonkData.forEach(s => {
-      this.store.dispatch(AppActions.addSong({ song: s }));
-    })
+  //   playlistMonkData.forEach(s => {
+  //     this.store.dispatch(AppActions.addSong({ song: s }));
+  //   })
 
-  }
+  // }
 
   doClick(tag: string): void {
     this.store.dispatch(AppActions.setSong({ currentPlaying: tag }))

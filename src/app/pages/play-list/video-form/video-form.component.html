@@ -1,10 +1,11 @@
 <form>
     <div class="form-row">
-        <div class="col">
-            <input type="text" class="form-control" placeholder="Video URL">
+        <div class="col-5">
+            <input type="text" class="form-control" placeholder="Video URL" [formControl]="videoURLControl">
         </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="Display Name">
+        <div class="col-5">
+            <input type="text" class="form-control" placeholder="Display Name" [formControl]="displayNmaeCnontrol">
         </div>
+        <button class="col-2 gbtn-main" (click)="doAddVideo()">Add video</button>
     </div>
 </form>
