@@ -16,10 +16,13 @@ export const initialState: AppState = {
 };
 
 export const appReducer = createReducer(initialState,
-  on(AppActions.setSong, (state, payload) => ({
-    ...state,
-    currentPlaying: payload.currentPlaying
-  })),
+  on(AppActions.setSong, (state, payload) => {
+    console.log(payload.currentPlaying,'setSong');
+    return {
+      ...state,
+      currentPlaying: payload.currentPlaying
+    }
+  }),
   on(AppActions.addSong, (state, payload) => {
     return {
       ...state,

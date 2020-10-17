@@ -21,10 +21,9 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   private _eventSubscriptions = new Subscription();
   private _isReadySubscription = new Subscription();
 
-  videoId = 'W372EX13-Uc'
+  videoId = '';
   reframed: boolean;
   player: YT.Player;
-  connection: HubConnection;
   playingStatue: string
   isloop = true;
   currentGroup: string;
@@ -45,51 +44,51 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     const _footMenuHTML = (this.footMenu.nativeElement as HTMLElement);
     const _footoptionArea = _footMenuHTML.querySelector('.foot-menu-area');
 
-    this._eventSubscriptions.add(fromEvent(_footMenuHTML, 'mouseenter').subscribe(() => {
+    const mouseEnter = fromEvent(_footMenuHTML, 'mouseenter').subscribe(() => {
       _footoptionArea.classList.remove('fadeout');
       _footoptionArea.classList.add('fadein');
-    }));
+    });
 
-    this._eventSubscriptions.add(fromEvent(_footMenuHTML, 'mouseleave').subscribe(() => {
+    const mouseLeave = fromEvent(_footMenuHTML, 'mouseleave').subscribe(() => {
       _footoptionArea.classList.remove('fadein');
       _footoptionArea.classList.add('fadeout');
-    }));
+    });
 
-    this.$currentPlaying.subscribe(playTag => {
+    const currentPlaying = this.$currentPlaying.subscribe(playTag => {
       if (playTag.length > 0) {
         this.videoId = playTag;
-        console.log(this.getCurrentGroup(), 'current Group')
-        console.log(this.videoId);
-        this.connection.invoke('SendGroupTubeLink', this.getCurrentGroup(), playTag);
+        this.tubeConnect.serveConnection.invoke('SendGroupTubeLink', this.getCurrentGroup(), playTag);
       }
     })
 
-    this.tubeConnect.isConnected$.subscribe((isconnected) => {
+    const isConnected = this.tubeConnect.isConnected$.subscribe((isconnected) => {
       if (isconnected) {
-        this.connection.invoke('AddGroup', this.getCurrentGroup()).catch(function (err) {
-          console.error(err.toString(),'Error??');
+        this.tubeConnect.serveConnection.invoke('AddGroup', this.getCurrentGroup()).catch(function (err) {
+          console.error(err.toString(), 'Error??');
         });
       }
     })
-
+    this._eventSubscriptions.add(mouseLeave);
+    this._eventSubscriptions.add(mouseEnter);
+    this._eventSubscriptions.add(currentPlaying);
+    this._eventSubscriptions.add(isConnected);
   }
 
   startVideo() {
 
-    this.player = this.ytPlayerService.startVideo('');
-    this.playCurrentVideo();
+    this.player = this.ytPlayerService.startVideo(this.videoId);
 
-    this.player.addEventListener('onStateChange', evt => {
+    this._eventSubscriptions.add(this.player.addEventListener('onStateChange', evt => {
       const isloop: boolean = this.isloop;
-      console.log(evt, '<==== video state change');
       if (evt['data'] === YT.PlayerState.ENDED && isloop) {
         this.player.playVideo();
       }
-    })
+
+    }))
   }
 
   shareVideo(): void {
-    this.connection.invoke('SendTubeLink', this.videoId);
+    this.tubeConnect.serveConnection.invoke('SendTubeLink', this.videoId);
   }
 
   switchLoop(): void {
@@ -97,14 +96,6 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     if (this.player.getPlayerState() === YT.PlayerState.ENDED) {
       this.player.playVideo();
     }
-  }
-
-  playCurrentVideo(): void {
-    this.$currentPlaying.pipe(take(1)).subscribe(v => {
-      if (v) {
-        this.ytPlayerService.startVideo(v);
-      }
-    });
   }
 
   /** DataControls
@@ -131,27 +122,11 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     return result;
   }
 
-  /** WebSocket
-   * connection/actions
-   */
-  setConnection(): void {
-    const connection = this.tubeConnect.serveConnection;
-
-    connection.on('ReceiveTubeLink', (tubeLink) => {
-      console.log(tubeLink, 'receive what?');
-      this.player.loadVideoById(tubeLink);
-    });
-
-    this.connection = connection;
-  }
-
-
   /** LifeCycles
    * lifeCycle hooks below
    */
 
   ngAfterContentInit(): void {
-    this.setConnection();
     this.getStoreDatas();
     this.addListeners();
     this.startVideo();

@@ -8,13 +8,14 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as AppActions from './state/actions/app.actions'
 import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewInit, AfterContentInit {
+export class AppComponent implements AfterViewInit {
 
   $playlist: Observable<SongInfo[]>;
   $currentPlaying: Observable<string>;
@@ -43,18 +44,7 @@ export class AppComponent implements AfterViewInit, AfterContentInit {
     }
 
     this.ytPlayerService.downloadYoutubeAPI();
-
-    this.$playlist = store.select(state =>
-      state.appState.playlist
-    );
-
-    this.$currentPlaying = store.select(
-      state => state.appState.currentPlaying
-    )
-
-  }
-  ngAfterContentInit(): void {
-    // this.setSongLists();
+    this.getStoreDatas();
   }
 
   ngAfterViewInit(): void {
@@ -65,27 +55,47 @@ export class AppComponent implements AfterViewInit, AfterContentInit {
       }
 
     })
+
+    this.processConnectService();
   }
 
-  // setSongLists(): void {
+  processConnectService() {
+    const connection = this.connectorService.serveConnection;
 
-  //   const playlistMonkData: SongInfo[] = [
-  //     { songName: '2020流行歌曲', songTag: 'eM9VJ2R2vUc' },
-  //     { songName: 'Divinity Original Sin 2 OST 01 Main Theme', songTag: 'HAsIefETSB' },
-  //     { songName: 'Divinity Original Sin 2 OST 02 Mead Gold and Blood', songTag: '_hrLcxL1Fyg' },
-  //     { songName: 'Divinity Original Sin 2 OST 03 Symphony of the Void', songTag: 'eLPHYQlKArU' },
-  //     { songName: 'Divinity Original Sin 2 OST 04 Rivellon', songTag: 'W372EX13-Uc' },
-  //     { songName: 'Divinity Original Sin 2 OST 05 Welcome to Fort Joy', songTag: 'VIZp68FhbGE' },
-  //   ];
+    connection.on('Connected', () => {
+    })
+    connection.on('ReceiveTubeLink', (tubeLink) => {
+      console.log(tubeLink, 'receive what?');
+      this.ytPlayerService.playVideo(tubeLink);
+    });
+  }
 
-  //   playlistMonkData.forEach(s => {
-  //     this.store.dispatch(AppActions.addSong({ song: s }));
-  //   })
+  getStoreDatas() {
+    this.$playlist = this.store.select(state =>
+      state.appState.playlist
+    );
 
-  // }
+    this.$currentPlaying = this.store.select(
+      state => state.appState.currentPlaying
+    )
+  }
+
+  sendGroupTubeLink(tag: string): string {
+    const currentGroup$ = this.store.select(
+      state => state.appState.currentGroup
+    )
+    let result = '';
+    currentGroup$.pipe(take(1)).subscribe(g => {
+      if (g) {
+        this.connectorService.serveConnection.invoke('SendGroupTubeLink', g, tag);
+
+      }
+    })
+    return result;
+  }
 
   doClick(tag: string): void {
     this.store.dispatch(AppActions.setSong({ currentPlaying: tag }))
+    this.sendGroupTubeLink(tag);
   }
-
 }

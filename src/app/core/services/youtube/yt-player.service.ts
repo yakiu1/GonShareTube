@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { unwatchFile } from 'fs';
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -6,8 +7,8 @@ import { Subject } from 'rxjs';
 })
 export class YtPlayerService {
   reframed: boolean;
-  current_ytPlayer: YT.Player;
-  $isYoutubeAPIReady: Subject<boolean> =  new Subject<boolean>();
+  current_ytPlayer: YT.Player; // cuz some bug only can control first init player
+  $isYoutubeAPIReady: Subject<boolean> = new Subject<boolean>();
 
 
   constructor() {
@@ -44,8 +45,8 @@ export class YtPlayerService {
     this.current_ytPlayer.playVideo();
   }
 
-  playVideo(player: YT.Player, id: string): void {
-    player.loadVideoById(id);
-    player.playVideo();
+  playVideo(id: string): void {
+      this.current_ytPlayer.loadVideoById(id);
+      this.current_ytPlayer.playVideo();
   }
 }
