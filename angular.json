@@ -157,7 +157,7 @@
       }
     }
   },
-  "defaultProject": "angular-electron",
+  "defaultProject": "GonShareTube",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

@@ -1,7 +1,7 @@
 {
-  "name": "GonShareTube",
-  "version": "0.1.2",
-  "description": "Angular 10 with Electron (Typescript + SASS + Hot Reload)",
+  "name": "gon-share-tube",
+  "version": "0.1.4",
+  "description": "",
   "homepage": "",
   "author": {
     "name": "Gon",
