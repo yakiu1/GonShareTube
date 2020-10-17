@@ -12,7 +12,7 @@ import { createReducer, on } from '@ngrx/store';
 export const initialState: AppState = {
   playlist: [],
   currentPlaying: '',
-  currentGroup: ''
+  currentGroup: '123'
 };
 
 export const appReducer = createReducer(initialState,

@@ -1,3 +1,4 @@
+import { LoadingPageRoutingModule } from './pages/loading-page/loading-page-routing.module';
 import { PlayListRoutingModule } from './pages/play-list/play-list-routing.module';
 import { FriendRoutingModule } from './pages/friend/friend-routing.module';
 import { OverviewRoutingModule } from './pages/overview/overview-routing.module';
@@ -10,7 +11,7 @@ import { PageNotFoundComponent } from './shared/components';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'loadingpage',
     pathMatch: 'full'
   },
   {
@@ -26,6 +27,7 @@ const routes: Routes = [
     OverviewRoutingModule,
     FriendRoutingModule,
     PlayListRoutingModule,
+    LoadingPageRoutingModule
   ],
   exports: [RouterModule]
 })

@@ -1,3 +1,4 @@
+import { LoadingPageModule } from './pages/loading-page/loading-page.module';
 import { appReducer } from './state/reducers/app.reducer';
 import { AppState } from './state/app.state';
 import { DetailModule } from './pages/detail/detail.module';
@@ -29,6 +30,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
 
 // NG Store
 import { StoreModule } from '@ngrx/store';
+import { LoadingPageComponent } from './pages/loading-page/loading-page.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -48,6 +50,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     PlayListModule,
     FriendModule,
     DetailModule,
+    LoadingPageModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {

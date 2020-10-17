@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 
@@ -7,6 +8,7 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 export class ConnectorService {
 
   serveConnection: HubConnection;
+  isConnected$ = new Subject<boolean>();
 
   constructor() { }
 
@@ -17,6 +19,10 @@ export class ConnectorService {
       .build();
     this.serveConnection = connection;
     this.serveConnection.start();
+
+    connection.on('Connected', () => {
+      this.isConnected$.next(true);
+    });
   }
 
 }

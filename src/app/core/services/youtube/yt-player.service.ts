@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -6,9 +7,26 @@ import { Injectable } from '@angular/core';
 export class YtPlayerService {
   reframed: boolean;
   current_ytPlayer: YT.Player;
+  $isYoutubeAPIReady: Subject<boolean> =  new Subject<boolean>();
+
 
   constructor() {
   }
+
+
+  downloadYoutubeAPI() {
+    const tag = document.createElement('script');
+
+    if (document.getElementsByTagName('script')[1].src !== 'https://www.youtube.com/iframe_api') {
+      tag.src = "https://www.youtube.com/iframe_api";
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      window['onYouTubeIframeAPIReady'] = () => {
+        this.$isYoutubeAPIReady.next(false);
+      }
+    }
+  }
+
 
   startVideo(videoId: string): any {
     this.reframed = false;

@@ -4,7 +4,7 @@ import { HubConnection } from '@microsoft/signalr';
 import { Store } from '@ngrx/store';
 import { ConnectorService, YtPlayerService } from 'app/core/services';
 import { BehaviorSubject, fromEvent, Observable, Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { delay, take } from 'rxjs/operators';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -33,29 +33,14 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   currentGroupFormControl = new FormControl('');
   constructor(
     public ytPlayerService: YtPlayerService,
-    private store: Store<any>,
     public tubeConnect: ConnectorService,
+    private store: Store<any>,
   ) { }
 
 
   /** Special Features
    * special feature for this component
    */
-  loadYoutubeAPI(): void {
-    const tag = document.createElement('script');
-
-    if (document.getElementsByTagName('script')[1].src !== 'https://www.youtube.com/iframe_api') {
-      tag.src = "https://www.youtube.com/iframe_api";
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-      window['onYouTubeIframeAPIReady'] = () => {
-        this.$isReadyVideo.next(true);
-      }
-    } else {
-      this.$isReadyVideo.next(true);
-    }
-  }
-
   addListeners(): void {
     const _footMenuHTML = (this.footMenu.nativeElement as HTMLElement);
     const _footoptionArea = _footMenuHTML.querySelector('.foot-menu-area');
@@ -70,22 +55,6 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
       _footoptionArea.classList.add('fadeout');
     }));
 
-    this._isReadySubscription.add(this.$isReadyVideo.subscribe(isReady => {
-      if (isReady) {
-
-        this.player = this.ytPlayerService.startVideo('');
-        this.playCurrentVideo();
-
-        this.player.addEventListener('onStateChange', evt => {
-          const isloop: boolean = this.isloop;
-          console.log(evt, '<==== video state change');
-          if (evt['data'] === YT.PlayerState.ENDED && isloop) {
-            this.player.playVideo();
-          }
-        })
-      }
-    }));
-
     this.$currentPlaying.subscribe(playTag => {
       if (playTag.length > 0) {
         this.videoId = playTag;
@@ -95,6 +64,28 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
       }
     })
 
+    this.tubeConnect.isConnected$.subscribe((isconnected) => {
+      if (isconnected) {
+        this.connection.invoke('AddGroup', this.getCurrentGroup()).catch(function (err) {
+          console.error(err.toString(),'Error??');
+        });
+      }
+    })
+
+  }
+
+  startVideo() {
+
+    this.player = this.ytPlayerService.startVideo('');
+    this.playCurrentVideo();
+
+    this.player.addEventListener('onStateChange', evt => {
+      const isloop: boolean = this.isloop;
+      console.log(evt, '<==== video state change');
+      if (evt['data'] === YT.PlayerState.ENDED && isloop) {
+        this.player.playVideo();
+      }
+    })
   }
 
   shareVideo(): void {
@@ -144,19 +135,12 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
    * connection/actions
    */
   setConnection(): void {
-    //this.tubeConnect.connectToServe();
     const connection = this.tubeConnect.serveConnection;
-
-    connection.on('Connected', () => {
-      console.log('Add Group');
-      this.connection.invoke('AddGroup', this.getCurrentGroup());
-    });
 
     connection.on('ReceiveTubeLink', (tubeLink) => {
       console.log(tubeLink, 'receive what?');
       this.player.loadVideoById(tubeLink);
     });
-
 
     this.connection = connection;
   }
@@ -167,10 +151,10 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
    */
 
   ngAfterContentInit(): void {
-    this.loadYoutubeAPI();
     this.setConnection();
     this.getStoreDatas();
     this.addListeners();
+    this.startVideo();
   }
 
   ngOnDestroy(): void {
