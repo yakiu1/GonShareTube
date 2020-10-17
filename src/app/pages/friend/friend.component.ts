@@ -18,7 +18,6 @@ export class FriendComponent implements OnInit {
   }
 
   doEnterRoom(): void {
-
     console.log('set group', this.currentGroup.value);
     if (this.currentGroup.value !== '') {
       this.store.dispatch(AppActions.setGroup({ currentGroup: this.currentGroup.value }))

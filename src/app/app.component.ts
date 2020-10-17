@@ -87,6 +87,7 @@ export class AppComponent implements AfterViewInit {
     let result = '';
     currentGroup$.pipe(take(1)).subscribe(g => {
       if (g) {
+        console.log(tag,'11111111111');
         this.connectorService.serveConnection.invoke('SendGroupTubeLink', g, tag);
 
       }

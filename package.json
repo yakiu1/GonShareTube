@@ -1,11 +1,11 @@
 {
-  "name": "angular-electron",
-  "version": "8.0.4",
+  "name": "GonShareTube",
+  "version": "0.1.2",
   "description": "Angular 10 with Electron (Typescript + SASS + Hot Reload)",
-  "homepage": "https://github.com/maximegris/angular-electron",
+  "homepage": "",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "Gon",
+    "email": "hansonhung50@gmail.com"
   },
   "keywords": [
     "angular",

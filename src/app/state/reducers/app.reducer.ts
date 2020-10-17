@@ -12,7 +12,7 @@ import { createReducer, on } from '@ngrx/store';
 export const initialState: AppState = {
   playlist: [],
   currentPlaying: '',
-  currentGroup: '123'
+  currentGroup:  Math.floor(Math.random() * Math.floor(10000)).toString()
 };
 
 export const appReducer = createReducer(initialState,

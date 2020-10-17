@@ -1,10 +1,10 @@
 import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { HubConnection } from '@microsoft/signalr';
 import { Store } from '@ngrx/store';
 import { ConnectorService, YtPlayerService } from 'app/core/services';
 import { BehaviorSubject, fromEvent, Observable, Subscription } from 'rxjs';
-import { delay, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
+import * as AppActions from '../../state/actions/app.actions'
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   $currentGroup: Observable<string>;
 
   currentGroupFormControl = new FormControl('');
+  private _groupID: string;
   constructor(
     public ytPlayerService: YtPlayerService,
     public tubeConnect: ConnectorService,
@@ -57,15 +58,13 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     const currentPlaying = this.$currentPlaying.subscribe(playTag => {
       if (playTag.length > 0) {
         this.videoId = playTag;
-        this.tubeConnect.serveConnection.invoke('SendGroupTubeLink', this.getCurrentGroup(), playTag);
+        this.tubeConnect.serveConnection.invoke('SendGroupTubeLink', this._groupID, playTag);
       }
     })
 
     const isConnected = this.tubeConnect.isConnected$.subscribe((isconnected) => {
       if (isconnected) {
-        this.tubeConnect.serveConnection.invoke('AddGroup', this.getCurrentGroup()).catch(function (err) {
-          console.error(err.toString(), 'Error??');
-        });
+        this.tubeConnect.serveConnection.invoke('AddGroup', this._groupID);
       }
     })
     this._eventSubscriptions.add(mouseLeave);
@@ -110,16 +109,15 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     )
   }
 
-  getCurrentGroup(): string {
-    let result = '';
+  enterCurrentGroup(): void {
+    this._groupID = '';
     this.$currentGroup.pipe(take(1)).subscribe(g => {
       if (g) {
+        this.tubeConnect.serveConnection.invoke('AddGroup', g);
         this.currentGroupFormControl.setValue(g);
-        result = g;
-
+        this._groupID = g;
       }
     })
-    return result;
   }
 
   /** LifeCycles
@@ -128,8 +126,10 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
 
   ngAfterContentInit(): void {
     this.getStoreDatas();
+    this.enterCurrentGroup();
     this.addListeners();
     this.startVideo();
+
   }
 
   ngOnDestroy(): void {
