@@ -4,4 +4,5 @@ export interface AppState {
   playlist: SongInfo[];
   currentPlaying: string;
   currentGroup:string;
+  priviousGroup:string;
 }

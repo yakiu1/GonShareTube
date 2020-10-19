@@ -12,12 +12,12 @@ import { createReducer, on } from '@ngrx/store';
 export const initialState: AppState = {
   playlist: [],
   currentPlaying: '',
-  currentGroup:  Math.floor(Math.random() * Math.floor(10000)).toString()
+  currentGroup: Math.floor(Math.random() * Math.floor(1000000)).toString(),
+  priviousGroup: '',
 };
 
 export const appReducer = createReducer(initialState,
   on(AppActions.setSong, (state, payload) => {
-    console.log(payload.currentPlaying,'setSong');
     return {
       ...state,
       currentPlaying: payload.currentPlaying
@@ -42,6 +42,12 @@ export const appReducer = createReducer(initialState,
     return {
       ...state,
       currentGroup: payload.currentGroup
+    }
+  }),
+  on(AppActions.setPriviousGroup, (state, payload) => {
+    return {
+      ...state,
+      priviousGroup: payload.priviousGroup
     }
   })
 )

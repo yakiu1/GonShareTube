@@ -1,13 +1,13 @@
 import { ConnectorService, YtPlayerService } from 'app/core/services';
 import { SongInfo } from './difs/song-info';
-import { AfterContentInit, AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { ElectronService } from './core/services';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as AppActions from './state/actions/app.actions'
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -51,26 +51,25 @@ export class AppComponent implements AfterViewInit {
     this.ytPlayerService.$isYoutubeAPIReady.subscribe(isLoading => {
       if (!isLoading) {
         this.isloading = false;
-        this.router.navigate(['/home']);
+        this.processConnectService();
       }
-
     })
-
-    this.processConnectService();
   }
 
-  processConnectService() {
+  processConnectService(): void {
     const connection = this.connectorService.serveConnection;
 
     connection.on('Connected', () => {
+      this.router.navigate(['/home']);
     })
+
     connection.on('ReceiveTubeLink', (tubeLink) => {
       console.log(tubeLink, 'receive what?');
       this.ytPlayerService.playVideo(tubeLink);
     });
   }
 
-  getStoreDatas() {
+  getStoreDatas(): void {
     this.$playlist = this.store.select(state =>
       state.appState.playlist
     );
@@ -80,17 +79,15 @@ export class AppComponent implements AfterViewInit {
     )
   }
 
-  sendGroupTubeLink(tag: string): string {
+  sendGroupTubeLink(tag: string): void {
     const currentGroup$ = this.store.select(
       state => state.appState.currentGroup
     )
-    let result = '';
     currentGroup$.pipe(take(1)).subscribe(g => {
       if (g) {
         this.connectorService.serveConnection.invoke('SendGroupTubeLink', g, tag);
       }
     })
-    return result;
   }
 
   doClick(tag: string): void {

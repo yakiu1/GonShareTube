@@ -2,8 +2,8 @@ import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild }
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { ConnectorService, YtPlayerService } from 'app/core/services';
-import { BehaviorSubject, fromEvent, Observable, Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, fromEvent, Observable, Subscription } from 'rxjs';
+import { last, take } from 'rxjs/operators';
 import * as AppActions from '../../state/actions/app.actions'
 @Component({
   selector: 'app-home',
@@ -16,8 +16,8 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
 
 
 
-  $isReadyVideo = new BehaviorSubject<boolean>(false);
-  $currentPlaying: Observable<string>;
+  isReadyVideo$ = new BehaviorSubject<boolean>(false);
+  currentPlaying$: Observable<string>;
   private _eventSubscriptions = new Subscription();
   private _isReadySubscription = new Subscription();
 
@@ -27,10 +27,11 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   playingStatue: string
   isloop = true;
   currentGroup: string;
-  $currentGroup: Observable<string>;
+  currentGroup$: Observable<string>;
 
   currentGroupFormControl = new FormControl('');
   private _groupID: string;
+  priviouseGroup$: Observable<string>;
   constructor(
     public ytPlayerService: YtPlayerService,
     public tubeConnect: ConnectorService,
@@ -55,7 +56,7 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
       _footoptionArea.classList.add('fadeout');
     });
 
-    const currentPlaying = this.$currentPlaying.subscribe(playTag => {
+    const currentPlaying = this.currentPlaying$.subscribe(playTag => {
       if (playTag.length > 0) {
         this.videoId = playTag;
         this.tubeConnect.serveConnection.invoke('SendGroupTubeLink', this._groupID, playTag);
@@ -63,8 +64,9 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     })
 
     const isConnected = this.tubeConnect.isConnected$.subscribe((isconnected) => {
+      const tempgroup = this._groupID;
       if (isconnected) {
-        this.tubeConnect.serveConnection.invoke('AddGroup', this._groupID);
+        this.tubeConnect.serveConnection.invoke('AddGroup', this._groupID, tempgroup);
       }
     })
     this._eventSubscriptions.add(mouseLeave);
@@ -73,7 +75,7 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     this._eventSubscriptions.add(isConnected);
   }
 
-  startVideo() {
+  startVideo(): void {
 
     this.player = this.ytPlayerService.startVideo(this.videoId);
 
@@ -101,24 +103,38 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
    * Store Data get/set
    */
   getStoreDatas(): void {
-    this.$currentPlaying = this.store.select(
+    this.currentPlaying$ = this.store.select(
       state => state.appState.currentPlaying
     )
-    this.$currentGroup = this.store.select(
+
+    this.currentGroup$ = this.store.select(
       state => state.appState.currentGroup
+    )
+
+    this.priviouseGroup$ = this.store.select(
+      state => state.appState.priviousGroup
     )
   }
 
   enterCurrentGroup(): void {
-    this._groupID = '';
-    this.$currentGroup.pipe(take(1)).subscribe(g => {
-      if (g) {
-        this.tubeConnect.serveConnection.invoke('AddGroup', g);
-        this.currentGroupFormControl.setValue(g);
-        this._groupID = g;
+    const currentGroup = this.currentGroup$.pipe(take(1));
+    const priviousGroup = this.priviouseGroup$.pipe(take(1));
+
+    const combined = combineLatest([currentGroup, priviousGroup]);
+
+    combined.pipe(last()).subscribe(([current, privious]) => {
+      if (current) {
+        this.tubeConnect.serveConnection.invoke('AddGroup', current, privious);
+        this.store.dispatch(AppActions.setPriviousGroup({ priviousGroup: current }))
+        this.currentGroupFormControl.setValue(current);
+        this._groupID = current;
       }
-    })
+    }
+
+    )
   }
+
+
 
   /** LifeCycles
    * lifeCycle hooks below

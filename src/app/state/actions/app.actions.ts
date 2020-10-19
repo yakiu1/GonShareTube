@@ -21,4 +21,9 @@ export const setGroup = createAction(
   props<{ currentGroup: string }>()
 )
 
+export const setPriviousGroup = createAction(
+  '[GROUP] setPriviousGroup',
+  props<{ priviousGroup: string }>()
+)
+
 //export type Actions = AddSong | RemoveSong | SetSong;
