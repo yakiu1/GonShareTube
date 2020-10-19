@@ -1,21 +1,10 @@
-** This application is developing
+Gon Share Tube v0.1.5
+=============
 
-** File struct
--src
-  -app
-  -assets
-  -enviromnets
-  index.html
-  main.ts
-  package.json
-  ...
+介紹
+-------------
+藉由房間號群組，即時分享youtube影片的平台。
 
-*** app
--app
-  -core services
-  -difs difine modles
-  -shared shared components
-  -state app state
-
-
-
+備註
+-------------
+此應用程式尚在開發中。請追蹤更新資訊
