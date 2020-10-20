@@ -1,4 +1,8 @@
-.loadingPage{
-  height: 100vh;
-  width: 100vw;
+.loadingPage {
+    height: 100vh;
+    width: 100vw;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

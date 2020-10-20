@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { unwatchFile } from 'fs';
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -15,7 +14,7 @@ export class YtPlayerService {
   }
 
 
-  downloadYoutubeAPI() {
+  downloadYoutubeAPI(): void {
     const tag = document.createElement('script');
 
     if (document.getElementsByTagName('script')[1].src !== 'https://www.youtube.com/iframe_api') {
@@ -46,7 +45,7 @@ export class YtPlayerService {
   }
 
   playVideo(id: string): void {
-      this.current_ytPlayer.loadVideoById(id);
-      this.current_ytPlayer.playVideo();
+    this.current_ytPlayer.loadVideoById(id);
+    this.current_ytPlayer.playVideo();
   }
 }

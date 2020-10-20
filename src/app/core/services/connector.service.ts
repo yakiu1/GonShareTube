@@ -16,6 +16,7 @@ export class ConnectorService {
 
     const connection = new HubConnectionBuilder()
       .withUrl('http://sharetubeservice-env.eba-em77nq23.us-east-1.elasticbeanstalk.com/tubehub')
+      .withAutomaticReconnect()
       .build();
     this.serveConnection = connection;
     this.serveConnection.start();

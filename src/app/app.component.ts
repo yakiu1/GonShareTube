@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import * as AppActions from './state/actions/app.actions'
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'app-root',
@@ -64,9 +65,16 @@ export class AppComponent implements AfterViewInit {
     })
 
     connection.on('ReceiveTubeLink', (tubeLink) => {
-      console.log(tubeLink, 'receive what?');
       this.ytPlayerService.playVideo(tubeLink);
     });
+
+    connection.onreconnecting(() => {
+      this.router.navigate(['/loadingpage']);
+    })
+
+    connection.onreconnected(() => {
+      this.router.navigate(['/home']);
+    })
   }
 
   getStoreDatas(): void {
