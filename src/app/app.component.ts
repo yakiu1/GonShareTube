@@ -34,7 +34,9 @@ export class AppComponent implements AfterViewInit {
     private dataSelectorService: DataSelectorService,
   ) {
     this.translate.setDefaultLang('en');
-    connectorService.connectToServe();
+
+    this.ListiningConnectService();
+    this.connectorService.connectToServe();
 
     console.log('AppConfig', AppConfig);
 
@@ -55,14 +57,12 @@ export class AppComponent implements AfterViewInit {
     this.ytPlayerService.$isYoutubeAPIReady.subscribe(isLoading => {
       if (!isLoading) {
         this.isloading = false;
-        this.processConnectService();
       }
     })
   }
 
-  processConnectService(): void {
+  ListiningConnectService(): void {
     const onConnectedHandler = this.connectorService.listeningServerEvent(ServerEventName.OnConnected)();
-    const onReceiveTubeLinkHandler = this.connectorService.listeningServerEvent(ServerEventName.OnReceiveTubeLink)();
     const onReconnectingHandler = this.connectorService.listeningServerEvent(ServerEventName.OnReconnecting)();
     const onReconnectedHandler = this.connectorService.listeningServerEvent(ServerEventName.OnReconnected)();
 
@@ -70,15 +70,11 @@ export class AppComponent implements AfterViewInit {
       this.router.navigate(['/home']);
     })
 
-    onReceiveTubeLinkHandler.subscribe((tubeLink) => {
-      this.ytPlayerService.playVideo(tubeLink);
-    })
-
     onReconnectingHandler.subscribe(() => {
       this.router.navigate(['/loadingpage']);
     })
 
-    onReconnectedHandler.subscribe(() => {
+    onReconnectedHandler.subscribe(data => {
       this.router.navigate(['/home']);
     })
   }

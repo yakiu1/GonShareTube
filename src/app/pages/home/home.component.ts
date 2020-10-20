@@ -49,10 +49,16 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     const _footMenuHTML = (this.footMenu.nativeElement as HTMLElement);
     const _footoptionArea = _footMenuHTML.querySelector('.foot-menu-area');
     const onConnectedHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnConnected)();
+    const onReceiveTubeLinkHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveTubeLink)();
 
-    // TODO wait for server compliete those methods
+    // TODO wait for server compliete those methon
     // const onReceiveTubeTimeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveTubeTime)();
     // const onStopTubeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveStopTube)();
+
+
+    const receiveTubeLink = onReceiveTubeLinkHandler.subscribe((tubeLink) => {
+      this.ytPlayerService.playVideo(tubeLink);
+    })
 
     const mouseEnter = fromEvent(_footMenuHTML, 'mouseenter').subscribe(() => {
       _footoptionArea.classList.remove('fadeout');
@@ -81,6 +87,7 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     this._eventSubscriptions.add(mouseEnter);
     this._eventSubscriptions.add(currentPlaying);
     this._eventSubscriptions.add(isConnected);
+    this._eventSubscriptions.add(receiveTubeLink);
   }
 
   startVideo(): void {

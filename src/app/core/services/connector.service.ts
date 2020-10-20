@@ -26,19 +26,20 @@ export class ConnectorService {
     this.serveConnection = connection;
     this.serveConnection.start();
 
-    connection.on('Connected', () => {
+
+    this.serveConnection.on('Connected', () => {
       this.onConnected$.next(true);
     });
 
-    connection.on('ReceiveTubeLink', (tubeLink) => {
+    this.serveConnection.on('ReceiveTubeLink', (tubeLink) => {
       this.onReceiveTubeLink$.next(tubeLink);
     });
 
-    connection.onreconnecting(() => {
+    this.serveConnection.onreconnecting(() => {
       this.onReconnecting$.next(true);
     })
 
-    connection.onreconnected(() => {
+    this.serveConnection.onreconnected(() => {
       this.onReconnected$.next(true);
     })
   }
@@ -49,7 +50,7 @@ export class ConnectorService {
       // const listeningInfo: ConnectionListeningInfo = {
       //   listenHandler: this[eventName + '$']
       // }
-      return of(this[eventName + '$'])
+      return this[eventName + '$']
     }
   }
 
