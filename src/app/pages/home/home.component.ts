@@ -1,10 +1,13 @@
 import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { ConnectorService, YtPlayerService } from '../../../app/core/services';
 import { BehaviorSubject, combineLatest, fromEvent, Observable, Subscription } from 'rxjs';
 import { last, take } from 'rxjs/operators';
+import { AppStateName } from 'app/state/app.state';
+import { DataSelectorService } from './../../core/services/data-selector.service';
+import { ConnectorService, YtPlayerService } from '../../../app/core/services';
 import * as AppActions from '../../state/actions/app.actions'
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -13,8 +16,6 @@ import * as AppActions from '../../state/actions/app.actions'
 export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
 
   @ViewChild('footMenu', { static: true }) footMenu: ElementRef;
-
-
 
   isReadyVideo$ = new BehaviorSubject<boolean>(false);
   currentPlaying$: Observable<string>;
@@ -36,6 +37,7 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     public ytPlayerService: YtPlayerService,
     public tubeConnect: ConnectorService,
     private store: Store<any>,
+    private dataSelectorService: DataSelectorService,
   ) { }
 
 
@@ -103,23 +105,14 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
    * Store Data get/set
    */
   getStoreDatas(): void {
-    this.currentPlaying$ = this.store.select(
-      state => state.appState.currentPlaying
-    )
-
-    this.currentGroup$ = this.store.select(
-      state => state.appState.currentGroup
-    )
-
-    this.priviouseGroup$ = this.store.select(
-      state => state.appState.priviousGroup
-    )
+    this.currentPlaying$ = this.dataSelectorService.getStoreData(AppStateName.currentPlaying)();
+    this.currentGroup$ = this.dataSelectorService.getStoreData(AppStateName.currentGroup)();
+    this.priviouseGroup$ = this.dataSelectorService.getStoreData(AppStateName.priviousGroup)();
   }
 
   enterCurrentGroup(): void {
     const currentGroup = this.currentGroup$.pipe(take(1));
     const priviousGroup = this.priviouseGroup$.pipe(take(1));
-
     const combined = combineLatest([currentGroup, priviousGroup]);
 
     combined.pipe(last()).subscribe(([current, privious]) => {
@@ -129,9 +122,7 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
         this.currentGroupFormControl.setValue(current);
         this._groupID = current;
       }
-    }
-
-    )
+    })
   }
 
 

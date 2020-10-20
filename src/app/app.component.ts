@@ -1,3 +1,4 @@
+import { DataSelectorService } from './core/services/data-selector.service';
 import { ConnectorService, YtPlayerService } from './core/services';
 import { SongInfo } from './difs/song-info';
 import { AfterViewInit, Component } from '@angular/core';
@@ -9,6 +10,7 @@ import { Store } from '@ngrx/store';
 import * as AppActions from './state/actions/app.actions'
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+import { AppStateName } from './state/app.state';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +29,8 @@ export class AppComponent implements AfterViewInit {
     private router: Router,
     private electronService: ElectronService,
     private translate: TranslateService,
-    private store: Store<any>
+    private store: Store<any>,
+    private dataSelectorService: DataSelectorService,
   ) {
     this.translate.setDefaultLang('en');
     connectorService.connectToServe();
@@ -77,19 +80,12 @@ export class AppComponent implements AfterViewInit {
   }
 
   getStoreDatas(): void {
-    this.$playlist = this.store.select(state =>
-      state.appState.playlist
-    );
-
-    this.$currentPlaying = this.store.select(
-      state => state.appState.currentPlaying
-    )
+    this.$playlist = this.dataSelectorService.getStoreData(AppStateName.playlist)();
+    this.$currentPlaying = this.dataSelectorService.getStoreData(AppStateName.currentPlaying)();
   }
 
   sendGroupTubeLink(tag: string): void {
-    const currentGroup$ = this.store.select(
-      state => state.appState.currentGroup
-    )
+    const currentGroup$ = this.dataSelectorService.getStoreData(AppStateName.currentGroup)();
     currentGroup$.pipe(take(1)).subscribe(g => {
       if (g) {
         this.connectorService.serveConnection.invoke('SendGroupTubeLink', g, tag);

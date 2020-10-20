@@ -1,9 +1,11 @@
+import { DataSelectorService } from './../../../core/services/data-selector.service';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { SongInfo } from './../../../difs/song-info';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import * as AppActions from '../../../state/actions/app.actions'
+import { AppStateName } from 'app/state/app.state';
 
 @Component({
   selector: 'app-video-form',
@@ -14,15 +16,12 @@ export class VideoFormComponent implements OnInit {
 
   videoURLControl = new FormControl('');
   displayNmaeCnontrol = new FormControl('');
-  $playlist: Observable<SongInfo[]>;
+  playlist$: Observable<SongInfo[]>;
 
   constructor(private store: Store<any>) {
   }
 
   ngOnInit(): void {
-    this.$playlist = this.store.select(state =>
-      state.appState.playlist
-    );
   }
 
   doAddVideo(): void {
@@ -31,8 +30,6 @@ export class VideoFormComponent implements OnInit {
       songName: this.displayNmaeCnontrol.value,
       songTag: this.parseURLToTag(url),
     }
-    this.$playlist
-
     this.store.dispatch(AppActions.addSong({ song: newVideo }));
   }
 

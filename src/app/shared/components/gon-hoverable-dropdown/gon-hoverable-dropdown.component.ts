@@ -1,3 +1,4 @@
+import { DataSelectorService } from './../../../core/services/data-selector.service';
 import { SongInfo } from './../../../difs/song-info';
 import { AfterViewInit, Component, Input, OnChanges, OnInit, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -15,11 +16,10 @@ export class GonHoverableDropdownComponent implements OnInit, OnChanges, AfterVi
   playListWithDisplayName = [];
 
   constructor(
-    private store: Store<any>
+    private store: Store<any>,
   ) { }
 
   ngAfterViewInit(): void {
-    this.store.select(state => state.appState.currentPlaying);
   }
 
   ngOnChanges(): void {
