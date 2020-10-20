@@ -1,4 +1,4 @@
-import { ConnectorService, YtPlayerService } from 'app/core/services';
+import { ConnectorService, YtPlayerService } from './core/services';
 import { SongInfo } from './difs/song-info';
 import { AfterViewInit, Component } from '@angular/core';
 import { ElectronService } from './core/services';
@@ -9,7 +9,6 @@ import { Store } from '@ngrx/store';
 import * as AppActions from './state/actions/app.actions'
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
-import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'app-root',

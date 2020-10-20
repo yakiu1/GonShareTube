@@ -1,4 +1,6 @@
+import { initialState } from './../../state/reducers/app.reducer';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 
 import { FriendComponent } from './friend.component';
 
@@ -8,7 +10,8 @@ describe('FriendComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FriendComponent ]
+      declarations: [FriendComponent],
+      providers: [provideMockStore({ initialState })],
     })
       .compileComponents();
   }));

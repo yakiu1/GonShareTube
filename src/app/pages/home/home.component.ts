@@ -1,7 +1,7 @@
 import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { ConnectorService, YtPlayerService } from 'app/core/services';
+import { ConnectorService, YtPlayerService } from '../../../app/core/services';
 import { BehaviorSubject, combineLatest, fromEvent, Observable, Subscription } from 'rxjs';
 import { last, take } from 'rxjs/operators';
 import * as AppActions from '../../state/actions/app.actions'

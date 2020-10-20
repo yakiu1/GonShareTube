@@ -10,7 +10,7 @@ export class GonListItemComponent implements OnInit {
 
   @Output() delete = new EventEmitter<SongInfo>();
 
-  @Input() songName: SongInfo;
+  @Input() songName: SongInfo = { songName: '', songTag: '' };
 
   constructor() { }
 

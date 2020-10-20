@@ -17,12 +17,12 @@ export class VideoFormComponent implements OnInit {
   $playlist: Observable<SongInfo[]>;
 
   constructor(private store: Store<any>) {
-    this.$playlist = store.select(state =>
-      state.appState.playlist
-    );
   }
 
   ngOnInit(): void {
+    this.$playlist = this.store.select(state =>
+      state.appState.playlist
+    );
   }
 
   doAddVideo(): void {

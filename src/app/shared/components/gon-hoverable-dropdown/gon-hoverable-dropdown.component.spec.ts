@@ -1,4 +1,6 @@
+import { initialState } from './../../../state/reducers/app.reducer';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 
 import { GonHoverableDropdownComponent } from './gon-hoverable-dropdown.component';
 
@@ -8,7 +10,8 @@ describe('GonHoverableDropdownComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [GonHoverableDropdownComponent]
+      declarations: [GonHoverableDropdownComponent],
+      providers: [provideMockStore({ initialState })],
     })
       .compileComponents();
   }));

@@ -1,4 +1,6 @@
+import { initialState } from './../../state/reducers/app.reducer';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 
 import { PlayListComponent } from './play-list.component';
 
@@ -8,9 +10,10 @@ describe('PlayListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlayListComponent ]
+      declarations: [PlayListComponent],
+      providers: [provideMockStore({ initialState })],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
