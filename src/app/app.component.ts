@@ -11,6 +11,7 @@ import * as AppActions from './state/actions/app.actions'
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { AppStateName } from './state/app.state';
+import { ServerEventName } from './difs/server-event-name.enum';
 
 @Component({
   selector: 'app-root',
@@ -60,21 +61,24 @@ export class AppComponent implements AfterViewInit {
   }
 
   processConnectService(): void {
-    const connection = this.connectorService.serveConnection;
+    const onConnectedHandler = this.connectorService.listeningServerEvent(ServerEventName.OnConnected)();
+    const onReceiveTubeLinkHandler = this.connectorService.listeningServerEvent(ServerEventName.OnReceiveTubeLink)();
+    const onReconnectingHandler = this.connectorService.listeningServerEvent(ServerEventName.OnReconnecting)();
+    const onReconnectedHandler = this.connectorService.listeningServerEvent(ServerEventName.OnReconnected)();
 
-    connection.on('Connected', () => {
+    onConnectedHandler.subscribe(() => {
       this.router.navigate(['/home']);
     })
 
-    connection.on('ReceiveTubeLink', (tubeLink) => {
+    onReceiveTubeLinkHandler.subscribe((tubeLink) => {
       this.ytPlayerService.playVideo(tubeLink);
-    });
+    })
 
-    connection.onreconnecting(() => {
+    onReconnectingHandler.subscribe(() => {
       this.router.navigate(['/loadingpage']);
     })
 
-    connection.onreconnected(() => {
+    onReconnectedHandler.subscribe(() => {
       this.router.navigate(['/home']);
     })
   }

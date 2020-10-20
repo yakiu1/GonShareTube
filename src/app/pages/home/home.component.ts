@@ -7,6 +7,7 @@ import { AppStateName } from 'app/state/app.state';
 import { DataSelectorService } from './../../core/services/data-selector.service';
 import { ConnectorService, YtPlayerService } from '../../../app/core/services';
 import * as AppActions from '../../state/actions/app.actions'
+import { ServerEventName } from 'app/difs/server-event-name.enum';
 
 @Component({
   selector: 'app-home',
@@ -47,6 +48,11 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   addListeners(): void {
     const _footMenuHTML = (this.footMenu.nativeElement as HTMLElement);
     const _footoptionArea = _footMenuHTML.querySelector('.foot-menu-area');
+    const onConnectedHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnConnected)();
+
+    // TODO wait for server compliete those methods
+    // const onReceiveTubeTimeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveTubeTime)();
+    // const onStopTubeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveStopTube)();
 
     const mouseEnter = fromEvent(_footMenuHTML, 'mouseenter').subscribe(() => {
       _footoptionArea.classList.remove('fadeout');
@@ -65,7 +71,7 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
       }
     })
 
-    const isConnected = this.tubeConnect.isConnected$.subscribe((isconnected) => {
+    const isConnected = onConnectedHandler.subscribe((isconnected) => {
       const tempgroup = this._groupID;
       if (isconnected) {
         this.tubeConnect.serveConnection.invoke('AddGroup', this._groupID, tempgroup);
@@ -78,7 +84,6 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   startVideo(): void {
-
     this.player = this.ytPlayerService.startVideo(this.videoId);
 
     this._eventSubscriptions.add(this.player.addEventListener('onStateChange', evt => {
@@ -94,12 +99,26 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     this.tubeConnect.serveConnection.invoke('SendTubeLink', this.videoId);
   }
 
+  doShareAt(): void {
+    const time = this.player.getCurrentTime();
+    // TODO wait for server function 'SendTubeTime'
+    // this.tubeConnect.serveConnection.invoke('SendTubeTime', this.videoId, time);
+    this.player.seekTo(time, true);
+  }
+
+  doStop(): void {
+    // TODO wait for server function 'StopTube'
+    // this.tubeConnect.serveConnection.invoke('StopTube');
+    this.player.stopVideo();
+  }
+
   switchLoop(): void {
     this.isloop = this.isloop ? false : true;
     if (this.player.getPlayerState() === YT.PlayerState.ENDED) {
       this.player.playVideo();
     }
   }
+
 
   /** DataControls
    * Store Data get/set

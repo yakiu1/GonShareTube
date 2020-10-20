@@ -1,6 +1,9 @@
-import { Subject } from 'rxjs';
+import { ServerEventName } from './../../difs/server-event-name.enum';
+import { ConnectionListeningInfo } from './../../difs/connection-listening-info';
+import { Subject, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { createConnection } from 'net';
 
 @Injectable({
   providedIn: 'root'
@@ -8,12 +11,14 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 export class ConnectorService {
 
   serveConnection: HubConnection;
-  isConnected$ = new Subject<boolean>();
+  onConnected$ = new Subject<boolean>();
+  onReceiveTubeLink$ = new Subject<string>();
+  onReconnecting$ = new Subject<boolean>();
+  onReconnected$ = new Subject<boolean>();
 
   constructor() { }
 
   connectToServe(): void {
-
     const connection = new HubConnectionBuilder()
       .withUrl('http://sharetubeservice-env.eba-em77nq23.us-east-1.elasticbeanstalk.com/tubehub')
       .withAutomaticReconnect()
@@ -22,8 +27,30 @@ export class ConnectorService {
     this.serveConnection.start();
 
     connection.on('Connected', () => {
-      this.isConnected$.next(true);
+      this.onConnected$.next(true);
     });
+
+    connection.on('ReceiveTubeLink', (tubeLink) => {
+      this.onReceiveTubeLink$.next(tubeLink);
+    });
+
+    connection.onreconnecting(() => {
+      this.onReconnecting$.next(true);
+    })
+
+    connection.onreconnected(() => {
+      this.onReconnected$.next(true);
+    })
+  }
+
+
+  listeningServerEvent(eventName: ServerEventName) {
+    return () => {
+      // const listeningInfo: ConnectionListeningInfo = {
+      //   listenHandler: this[eventName + '$']
+      // }
+      return of(this[eventName + '$'])
+    }
   }
 
 }
