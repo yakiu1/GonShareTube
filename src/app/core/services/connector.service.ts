@@ -26,7 +26,6 @@ export class ConnectorService {
     this.serveConnection = connection;
     this.serveConnection.start();
 
-
     this.serveConnection.on('Connected', () => {
       this.onConnected$.next(true);
     });

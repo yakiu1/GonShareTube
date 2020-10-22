@@ -21,7 +21,6 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   isReadyVideo$ = new BehaviorSubject<boolean>(false);
   currentPlaying$: Observable<string>;
   private _eventSubscriptions = new Subscription();
-  private _isReadySubscription = new Subscription();
 
   videoId = '';
   reframed: boolean;
@@ -46,18 +45,19 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
    * special feature for this component
    */
   addListeners(): void {
+
     const _footMenuHTML = (this.footMenu.nativeElement as HTMLElement);
     const _footoptionArea = _footMenuHTML.querySelector('.foot-menu-area');
     const onConnectedHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnConnected)();
     const onReceiveTubeLinkHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveTubeLink)();
-
     // TODO wait for server compliete those methon
     // const onReceiveTubeTimeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveTubeTime)();
     // const onStopTubeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveStopTube)();
 
 
     const receiveTubeLink = onReceiveTubeLinkHandler.subscribe((tubeLink) => {
-      this.ytPlayerService.playVideo(tubeLink);
+      this.player.loadVideoById(tubeLink);
+      //this.ytPlayerService.playVideo(tubeLink);
     })
 
     const mouseEnter = fromEvent(_footMenuHTML, 'mouseenter').subscribe(() => {
@@ -70,13 +70,6 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
       _footoptionArea.classList.add('fadeout');
     });
 
-    const currentPlaying = this.currentPlaying$.subscribe(playTag => {
-      if (playTag.length > 0) {
-        this.videoId = playTag;
-        this.tubeConnect.serveConnection.invoke('SendGroupTubeLink', this._groupID, playTag);
-      }
-    })
-
     const isConnected = onConnectedHandler.subscribe((isconnected) => {
       const tempgroup = this._groupID;
       if (isconnected) {
@@ -85,25 +78,25 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     })
     this._eventSubscriptions.add(mouseLeave);
     this._eventSubscriptions.add(mouseEnter);
-    this._eventSubscriptions.add(currentPlaying);
     this._eventSubscriptions.add(isConnected);
     this._eventSubscriptions.add(receiveTubeLink);
   }
 
   startVideo(): void {
-    this.player = this.ytPlayerService.startVideo(this.videoId);
-
-    this._eventSubscriptions.add(this.player.addEventListener('onStateChange', evt => {
-      const isloop: boolean = this.isloop;
-      if (evt['data'] === YT.PlayerState.ENDED && isloop) {
-        this.player.playVideo();
-      }
-
-    }))
+    const currentPlaying = this.dataSelectorService.getStoreData(AppStateName.currentPlaying)();
+    currentPlaying.pipe(take(1)).subscribe(tag => {
+      this.player = this.ytPlayerService.startVideo(tag);
+      this._eventSubscriptions.add(this.player.addEventListener('onStateChange', evt => {
+        const isloop: boolean = this.isloop;
+        if (evt['data'] === YT.PlayerState.ENDED && isloop) {
+          this.player.playVideo();
+        }
+      }))
+    });
   }
 
   shareVideo(): void {
-    this.tubeConnect.serveConnection.invoke('SendTubeLink', this.videoId);
+    // this.tubeConnect.serveConnection.invoke('SendTubeLink', this.videoId);
   }
 
   doShareAt(): void {
@@ -167,7 +160,6 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._eventSubscriptions.unsubscribe();
-    this._isReadySubscription.unsubscribe();
   }
 
   ngOnInit(): void {

@@ -88,12 +88,15 @@ export class AppComponent implements AfterViewInit {
     const currentGroup$ = this.dataSelectorService.getStoreData(AppStateName.currentGroup)();
     currentGroup$.pipe(take(1)).subscribe(g => {
       if (g) {
+
+        console.log('sent tube link sent');
         this.connectorService.serveConnection.invoke('SendGroupTubeLink', g, tag);
       }
     })
   }
 
   doClick(tag: string): void {
+    console.log('sent tube link click');
     this.store.dispatch(AppActions.setSong({ currentPlaying: tag }))
     this.sendGroupTubeLink(tag);
   }
