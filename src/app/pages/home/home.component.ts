@@ -51,13 +51,21 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     const onConnectedHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnConnected)();
     const onReceiveTubeLinkHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveTubeLink)();
     // TODO wait for server compliete those methon
-    // const onReceiveTubeTimeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveTubeTime)();
-    // const onStopTubeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveStopTube)();
+    const onReceiveTubeTimeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveTubeTime)();
+    const onStopTubeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveStopTube)();
 
+
+
+    const stopTube = onStopTubeHandler.subscribe((tubelink) => {
+      this.player.stopVideo();
+    })
+
+    const receiveTubeTime = onReceiveTubeTimeHandler.subscribe((loaddata) => {
+      this.player.loadVideoById(loaddata.videoId, loaddata.time);
+    })
 
     const receiveTubeLink = onReceiveTubeLinkHandler.subscribe((tubeLink) => {
       this.player.loadVideoById(tubeLink);
-      //this.ytPlayerService.playVideo(tubeLink);
     })
 
     const mouseEnter = fromEvent(_footMenuHTML, 'mouseenter').subscribe(() => {
@@ -80,11 +88,14 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     this._eventSubscriptions.add(mouseEnter);
     this._eventSubscriptions.add(isConnected);
     this._eventSubscriptions.add(receiveTubeLink);
+    this._eventSubscriptions.add(receiveTubeTime);
+    this._eventSubscriptions.add(stopTube);
   }
 
   startVideo(): void {
     const currentPlaying = this.dataSelectorService.getStoreData(AppStateName.currentPlaying)();
     currentPlaying.pipe(take(1)).subscribe(tag => {
+      this.videoId = tag;
       this.player = this.ytPlayerService.startVideo(tag);
       this._eventSubscriptions.add(this.player.addEventListener('onStateChange', evt => {
         const isloop: boolean = this.isloop;
@@ -101,14 +112,17 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
 
   doShareAt(): void {
     const time = this.player.getCurrentTime();
-    // TODO wait for server function 'SendTubeTime'
-    // this.tubeConnect.serveConnection.invoke('SendTubeTime', this.videoId, time);
-    this.player.seekTo(time, true);
+    this.dataSelectorService.getStoreData(AppStateName.currentPlaying)()
+      .subscribe(tag => {
+        this.tubeConnect.serveConnection.invoke('SendTubeTime', tag, time, this._groupID);
+      });
   }
 
   doStop(): void {
-    // TODO wait for server function 'StopTube'
-    // this.tubeConnect.serveConnection.invoke('StopTube');
+    this.dataSelectorService.getStoreData(AppStateName.currentPlaying)()
+      .subscribe(tag => {
+        this.tubeConnect.serveConnection.invoke('SendStopTube', tag, this._groupID);
+      });
     this.player.stopVideo();
   }
 
