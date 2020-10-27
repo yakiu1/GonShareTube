@@ -35,9 +35,6 @@ export class AppComponent implements AfterViewInit {
   ) {
     this.translate.setDefaultLang('en');
 
-    this.ListiningConnectService();
-    this.connectorService.connectToServe();
-
     console.log('AppConfig', AppConfig);
 
     if (electronService.isElectron) {
@@ -49,11 +46,15 @@ export class AppComponent implements AfterViewInit {
       console.log('Run in browser');
     }
 
-    this.ytPlayerService.downloadYoutubeAPI();
-    this.getStoreDatas();
   }
 
   ngAfterViewInit(): void {
+    this.ListiningConnectService();
+
+    this.ytPlayerService.downloadYoutubeAPI();
+    this.getStoreDatas();
+
+    this.connectorService.connectToServe();
     this.ytPlayerService.$isYoutubeAPIReady.subscribe(isLoading => {
       if (!isLoading) {
         this.isloading = false;
@@ -71,10 +72,12 @@ export class AppComponent implements AfterViewInit {
     })
 
     onReconnectingHandler.subscribe(() => {
+      this.isloading = true;
       this.router.navigate(['/loadingpage']);
     })
 
-    onReconnectedHandler.subscribe(data => {
+    onReconnectedHandler.subscribe(() => {
+      this.isloading = false;
       this.router.navigate(['/home']);
     })
   }
