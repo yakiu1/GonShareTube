@@ -23,3 +23,5 @@
 * pages - 主要功能頁面的開發
 * shared - 共用元件、函式、指令
 * state - store狀態的管理、action、reducers
+
+## Store狀態存取
