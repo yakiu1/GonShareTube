@@ -11,6 +11,7 @@
 以下常用指令使用npm run 直接執行
 
 * start - serve專案進行debug
+* start:e - serve專案進行debug (不開啟網頁模式)
 * build - 建置專案
 * electron:build - 建置為執行檔(.exe)應用程式
 * test - 進行測試
