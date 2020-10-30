@@ -1,4 +1,11 @@
+@import "../../../styles.scss";
+
 :host {}
+
+.flex-container {
+  display: flex;
+   flex-direction: row;
+}
 
 .foot-menu-area.fadeout {
     -webkit-transition: all 1s;
@@ -19,4 +26,17 @@
     transition: all 1s;
     top: 0vh;
     opacity: 0.5;
+}
+
+.left-playlist-area{
+  height: 100vh;
+  background-color: lighten($darken-main-color,5%);
+  color:$main-text-color;
+  border-radius: 5px;
+}
+
+.left-menu-area{
+  width: 5vw;
+  height: 100vh;
+  background-color: darken($main-color,8%);
 }

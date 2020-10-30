@@ -35,7 +35,7 @@ export class ConnectorService {
     });
 
     this.serveConnection.on('ReceiveStopTube', (tubeLink) => {
-      this.onReceiveTubeLink$.next(tubeLink);
+      this.onReceiveStopTube$.next(tubeLink);
     });
 
     this.serveConnection.on('ReceiveTubeTime', (videoId: string, time: number) => {
