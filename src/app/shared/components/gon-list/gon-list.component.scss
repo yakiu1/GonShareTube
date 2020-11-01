@@ -1,0 +1,41 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+.listStyle {
+  height: 100%;
+  width: 100%;
+  // overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+li {
+  margin-top: 0.5em; //每個list 間隔 暫定
+  list-style: none;
+
+  :hover {
+    animation-name: "fade";
+    animation-fill-mode: forwards;
+    animation-duration: 0.5s;
+  }
+  .row div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    list-style: none;
+  }
+}
+
+.liClick {
+  backdrop-filter: brightness(200%);
+}
+
+@keyframes fade {
+  from {
+    opacity: 100%;
+  }
+  to {
+    opacity: 80%;
+  }
+}
