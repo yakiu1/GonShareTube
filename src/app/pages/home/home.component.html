@@ -6,14 +6,12 @@
 <div class="row">
   <div class="col-3 left-playlist-area flex-container">
     <div class="left-menu-area col-3">
-      <app-gon-button [btnText]="'殘'"></app-gon-button>
-      <app-gon-button [btnText]="'寫'"></app-gon-button>
-      <app-gon-button [btnText]="'其'"></app-gon-button>
-      <app-gon-button [btnText]="'+'"></app-gon-button>
+      <app-gon-button-list [listItem]="gonButtonListDatas" (addEvent)="doCreatePlayList()">
+      </app-gon-button-list>
     </div>
     <div class="right-list-area col-9">
       <app-gon-list> </app-gon-list>
-  </div>
+    </div>
   </div>
   <div class="col-9">
     <div style="margin: 5px; ">
