@@ -1,8 +1,8 @@
-import { GonButtonComponent } from './components/gon-button/gon-button.component';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { GonButtonComponent } from "./components/gon-button/gon-button.component";
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule } from "@ngx-translate/core";
 
 import { PageNotFoundComponent } from './components/';
 import { WebviewDirective } from './directives/';
@@ -15,4 +15,4 @@ import { GonListComponent } from './components/gon-list/gon-list.component';
   imports: [CommonModule, TranslateModule, FormsModule],
   exports: [TranslateModule, WebviewDirective, FormsModule, GonListItemComponent, GonButtonComponent,GonListComponent]
 })
-export class SharedModule { }
+export class SharedModule {}

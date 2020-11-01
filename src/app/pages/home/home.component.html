@@ -13,41 +13,50 @@
     </div>
     <div class="right-list-area col-9">
       <app-gon-list> </app-gon-list>
-  </div>
+    </div>
   </div>
   <div class="col-9">
-    <div style="margin: 5px; ">
+    <div style="margin: 5px">
       <button class="gbtn-main" type="button" (click)="switchLoop()">
-        <span *ngIf="isloop" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-        <span *ngIf="isloop">
-          Loop
-        </span>
-        <span *ngIf="!isloop">
-          Ｏ
-        </span>
-        <span *ngIf="!isloop">
-          Loop
-        </span>
+        <span
+          *ngIf="isloop"
+          class="spinner-grow spinner-grow-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        <span *ngIf="isloop"> Loop </span>
+        <span *ngIf="!isloop"> Ｏ </span>
+        <span *ngIf="!isloop"> Loop </span>
       </button>
 
       <button class="gbtn-main" type="button" disabled>
         <span>
           Room :
-          <input [formControl]="currentGroupFormControl">
+          <input [formControl]="currentGroupFormControl" />
         </span>
       </button>
-      <div style="background-color: #333333;border-radius: 5px;">
-        <div id='player' style="width: 100%;height: 70vh; ">
-        </div>
+      <div style="background-color: #333333; border-radius: 5px">
+        <div id="player" style="width: 100%; height: 70vh"></div>
 
-        <div #footMenu style="height: 100vh;width: 100%;">
-          <div class="row justify-content-center foot-menu-area " style="height: 60vh;border-radius: 90% / 30%;">
-            <app-gon-button [btnText]='"shared"' (clickEvent)="shareVideo()"></app-gon-button>
-            <app-gon-button [btnText]='"sharedAt"' (clickEvent)="doShareAt()"></app-gon-button>
-            <app-gon-button [btnText]='"stop"' (clickEvent)="doStop()"></app-gon-button>
+        <div #footMenu style="height: 100vh; width: 100%">
+          <div
+            class="row justify-content-center foot-menu-area"
+            style="height: 60vh; border-radius: 90% / 30%"
+          >
+            <app-gon-button
+              [btnText]="'shared'"
+              (clickEvent)="shareVideo()"
+            ></app-gon-button>
+            <app-gon-button
+              [btnText]="'sharedAt'"
+              (clickEvent)="doShareAt()"
+            ></app-gon-button>
+            <app-gon-button
+              [btnText]="'stop'"
+              (clickEvent)="doStop()"
+            ></app-gon-button>
           </div>
         </div>
-
       </div>
     </div>
   </div>
