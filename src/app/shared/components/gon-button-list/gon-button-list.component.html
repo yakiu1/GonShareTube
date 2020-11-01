@@ -1,0 +1,9 @@
+<ul #list>
+  <li *ngFor="let item of listItem">
+    <app-gon-button [btnText]="item.name">
+    </app-gon-button>
+  </li>
+  <li>
+    <app-gon-button [btnText]="'+'" (click)="doClickAdd()"></app-gon-button>
+  </li>
+</ul>

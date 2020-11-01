@@ -1,3 +1,4 @@
+import { GonListData } from './../../difs/gon-list-data';
 import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -33,6 +34,20 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   currentGroupFormControl = new FormControl('');
   private _groupID: string;
   priviouseGroup$: Observable<string>;
+
+  gonButtonListDatas: GonListData[] = [{
+    index: 0, name: '一', value: 'test1', description: 'test1'
+  }, {
+    index: 1, name: '二', value: 'test1', description: 'test1'
+  }, {
+    index: 2, name: '三', value: 'test1', description: 'test1'
+  }, {
+    index: 3, name: '四', value: 'test1', description: 'test1'
+  }, {
+    index: 4, name: '五', value: 'test1', description: 'test1'
+  },
+  ]
+
   constructor(
     public ytPlayerService: YtPlayerService,
     public tubeConnect: ConnectorService,
@@ -131,6 +146,13 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     if (this.player.getPlayerState() === YT.PlayerState.ENDED) {
       this.player.playVideo();
     }
+  }
+
+  doCreatePlayList(): void {
+
+    // TODO : Add new playlist
+    console.log('Add new playlist!');
+
   }
 
 
