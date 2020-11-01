@@ -1,0 +1,13 @@
+<div class="listStyle">
+  <ul>
+    <li
+      *ngFor="let item of gonListData; let i = index"
+      [ngClass]="{ liClick: clickedObj['item_' + i] }"
+      (click)="listClick(i)"
+    >
+      <div class="row">
+        <div class="col-12">{{ item.name }}</div>
+      </div>
+    </li>
+  </ul>
+</div>
