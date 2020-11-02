@@ -169,9 +169,9 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   //點擊list事件
-  clickListData(obj){
+  clickListData(event:{index:number,data:GonListData}){
 
-    console.log('obj',obj)
+    console.log('event',event)
   }
 
 
