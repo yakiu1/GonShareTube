@@ -36,15 +36,15 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   priviouseGroup$: Observable<string>;
 
   gonButtonListDatas: GonListData[] = [{
-    index: 0, name: '一', value: 'test1', description: 'test1'
+    index: 0, name: '1', value: 'test1', description: 'test1'
   }, {
-    index: 1, name: '二', value: 'test1', description: 'test1'
+    index: 1, name: '2', value: 'test1', description: 'test1'
   }, {
-    index: 2, name: '三', value: 'test1', description: 'test1'
+    index: 2, name: '3', value: 'test1', description: 'test1'
   }, {
-    index: 3, name: '四', value: 'test1', description: 'test1'
+    index: 3, name: '4', value: 'test1', description: 'test1'
   }, {
-    index: 4, name: '五', value: 'test1', description: 'test1'
+    index: 4, name: '5', value: 'test1', description: 'test1'
   },
   ];
   gonListData = [
