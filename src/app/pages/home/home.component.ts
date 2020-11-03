@@ -46,7 +46,20 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   }, {
     index: 4, name: '五', value: 'test1', description: 'test1'
   },
-  ]
+  ];
+  gonListData = [
+    {
+      index: 0, name: '第一首音樂', value: 'test1', description: 'test1'
+    }, {
+      index: 1, name: '第二首音樂', value: 'test1', description: 'test1'
+    }, {
+      index: 2, name: '第三首音樂', value: 'test1', description: 'test1'
+    }, {
+      index: 3, name: '第四首音樂', value: 'test1', description: 'test1'
+    }, {
+      index: 4, name: '第五五五五五五五五五五五五五五五五五首音樂', value: 'test1', description: 'test1'
+    }
+  ];
 
   constructor(
     public ytPlayerService: YtPlayerService,
@@ -153,6 +166,12 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     // TODO : Add new playlist
     console.log('Add new playlist!');
 
+  }
+
+  //點擊list事件
+  clickListData(event:{index:number,data:GonListData}){
+
+    console.log('event',event)
   }
 
 
