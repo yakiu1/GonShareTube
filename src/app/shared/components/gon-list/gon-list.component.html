@@ -2,8 +2,8 @@
   <ul>
     <li
       *ngFor="let item of gonListData; let i = index"
-      [ngClass]="{ liClick: clickedObj['item_' + i] }"
-      (click)="listClick(i)"
+      [ngClass]="{ liClick: i===currentClickIndex }"
+      (click)="listClick(i,item)"
     >
       <div class="row">
         <div class="col-12">{{ item.name }}</div>
