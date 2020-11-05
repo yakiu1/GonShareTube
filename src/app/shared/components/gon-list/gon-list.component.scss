@@ -10,25 +10,78 @@
   overflow-x: hidden;
 }
 
+.btn {
+  font-size: 1em;
+  font-weight: bold;
+}
+
 li {
   margin-top: 0.5em; //每個list 間隔 暫定
   list-style: none;
 
-  :hover {
-    animation-name: "fade";
-    animation-fill-mode: forwards;
-    animation-duration: 0.5s;
+  .plusBtn {
+    font-size: 1em;
+    font-weight: bold;
+    border: 0px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 1.2em;
   }
-  .row div {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    list-style: none;
+
+  .anime{
+    &:hover {
+      animation-name: "fade";
+      animation-fill-mode: forwards;
+      animation-duration: 0s;
+    }
+  }
+
+  .row {
+    &:hover {
+      animation-name: "fade";
+      animation-fill-mode: forwards;
+      animation-duration: 0.5s;
+    }
+
+    div {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      list-style: none;
+    }
   }
 }
 
 .liClick {
   backdrop-filter: brightness(200%);
+}
+
+.rowBtn{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.confirmBtn {
+  width:6em;
+  background-color: violet;
+  &:hover{
+    animation-name: "bright";
+    animation-fill-mode: forwards;
+    animation-duration: 0s;
+  }
+}
+
+.cancelBtn {
+  min-width:6em;
+  background-color: steelblue;
+  &:hover{
+    animation-name: "bright";
+    animation-fill-mode: forwards;
+    animation-duration: 0s;
+  }
 }
 
 @keyframes fade {
@@ -37,5 +90,13 @@ li {
   }
   to {
     opacity: 80%;
+  }
+}
+
+@keyframes bright{
+  from{
+    opacity: 100%;
+  }to{
+    opacity: 70%;
   }
 }

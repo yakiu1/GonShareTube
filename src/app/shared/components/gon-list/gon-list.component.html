@@ -3,11 +3,24 @@
     <li
       *ngFor="let item of gonListData; let i = index"
       [ngClass]="{ liClick: i===currentClickIndex }"
-      (click)="listClick(i,item)"
+      (click)="clickListData(i,item)"
     >
       <div class="row">
         <div class="col-12">{{ item.name }}</div>
       </div>
+    </li>
+    <li *ngIf="showAddBtn" [hidden]="!addBtnClicked">
+        <input type="text" class="rowBtn" [formControl]="name" placeholder="{{placeHolder[0]}}" >
+        <input type="text" class="rowBtn" [formControl]="value"  placeholder="{{placeHolder[1]}}">
+    </li>
+    <li *ngIf="showAddBtn" [hidden]="!addBtnClicked">
+      <div class="rowBtn">
+        <button class="btn confirmBtn" (click)="clickConfirmBtn()"> 確認 </button>
+        <button class="btn cancelBtn" (click)="clickCancelBtn()"> 取消 </button>
+      </div>
+    </li>
+    <li *ngIf="showAddBtn"> 
+        <button class="btn plusBtn" (click)="clickAddBtn()"  [disabled]="addBtnClicked" [ngClass]="{anime:!addBtnClicked}"> ＋ </button>
     </li>
   </ul>
 </div>
