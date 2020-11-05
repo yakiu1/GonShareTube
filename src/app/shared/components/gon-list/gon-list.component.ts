@@ -20,7 +20,9 @@ export class GonListComponent implements  OnChanges {
   @Output() doClickData = new EventEmitter<{index:number,data:GonListData}>();//將資料傳出去
   @Output() doAddData = new EventEmitter<{index:number,data:GonListData}>();//新增資料
   @Output() doDeleteData = new EventEmitter<Number>();//刪除資料
-  
+  @Output() clickData = new EventEmitter<{index:number,data:GonListData}>();//將資料傳出去
+  @Output() addDataBtn = new EventEmitter<{index:number,data:GonListData}>();//將資料傳出去
+
   currentClickIndex:number = -1;
   gonListData = [];
   addBtnClicked = false;//是否點擊新增("+")符號
@@ -29,8 +31,9 @@ export class GonListComponent implements  OnChanges {
   name = new FormControl('',Validators.required);
   placeHolder:string[] = [];
   formKeys = ['name','value'];
-  
-  ngOnChanges(): void {    
+
+
+  ngOnChanges(): void {
     this.gonListData = this.listData;
     switch(this.listDataType){
       case ListDataType.YTPlaylist:
@@ -39,7 +42,7 @@ export class GonListComponent implements  OnChanges {
       break;
     }
   }
-  
+
   clickListData(index,data:GonListData) {
     this.currentClickIndex = index;
     this.doClickData.emit({index:index,data:data});
@@ -49,10 +52,18 @@ export class GonListComponent implements  OnChanges {
 
     this.addBtnClicked = true;
   }
-  
+
   clickCancelBtn(){
     this.setText('','');
     this.addBtnClicked = false;
+  }
+
+  clickEditBtn(){
+    this.editBtnClicked = !this.editBtnClicked;
+  }
+
+  clickDeleteBtn(i){
+    this.doDeleteData.emit(i)
   }
 
   clickConfirmBtn(){
@@ -71,19 +82,11 @@ export class GonListComponent implements  OnChanges {
         value: this.value.value,
         description: "",
       }
-      this.doAddData.emit({index:this.gonListData.length+1,data:data})
+      this.addDataBtn.emit({index:this.gonListData.length+1,data:data})
      this.setText('','');
       this.addBtnClicked = false;
     // }
 
-  }
-
-  clickEditBtn(){
-    this.editBtnClicked = !this.editBtnClicked;
-  }
-
-  clickDeleteBtn(i){
-    this.doDeleteData.emit(i)
   }
 
   setText(name,value){
