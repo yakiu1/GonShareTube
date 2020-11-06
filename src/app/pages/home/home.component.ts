@@ -183,6 +183,17 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     console.log(this.gonListData);
   }
 
+  //刪除特定資料
+  deleteListData(event){
+    this.gonListData.splice(event,1);
+    let count = 0;
+    this.gonListData.forEach((data)=>{
+      data.index = count;
+      count++
+    })
+    console.log(this.gonListData);
+  }
+
 
   /** DataControls
    * Store Data get/set

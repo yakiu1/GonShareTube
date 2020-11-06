@@ -37,19 +37,39 @@ li {
     }
   }
 
-  .row {
+  .rowText {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    img{
+      width: 1.2em;
+    }
+
     &:hover {
       animation-name: "fade";
       animation-fill-mode: forwards;
       animation-duration: 0.5s;
     }
 
-    div {
+    .text {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       list-style: none;
     }
+
+  }
+}
+
+.delBtn{
+  animation-name: "showBtn";
+  animation-fill-mode: forwards;
+  animation-duration: 0.5s;
+  &:hover{
+    animation-name: "shake";
+    animation-fill-mode: initial;
+    animation-duration:1s;
   }
 }
 
@@ -98,5 +118,35 @@ li {
     opacity: 100%;
   }to{
     opacity: 70%;
+  }
+}
+
+@keyframes showBtn{
+  from{
+    opacity:0% ;
+  }to{
+    opacity: 100%;;
+  }
+}
+
+@keyframes shake {
+  from {
+      margin-left:0px;
+      animation-timing-function: cubic-bezier(0.25, 0.01, 0.55, 0.16);
+  }
+  25% {
+      margin-left:10px;
+      animation-timing-function: cubic-bezier(0.52, 0.44, 0.47, 0.44);
+  }
+  50% {
+      margin-left:25px;
+      animation-timing-function: cubic-bezier(0.53, 0.56, 0.48, 0.56);
+  }
+  75% {
+      margin-left:10px;
+      animation-timing-function: cubic-bezier(0.45, 0.84, 0.75, 0.99);
+  }
+  to {
+      margin-left:0px;
   }
 }

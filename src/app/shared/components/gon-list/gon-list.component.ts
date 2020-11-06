@@ -15,18 +15,21 @@ export class GonListComponent implements  OnChanges {
 
   @Input() listDataType:String;//判斷list內Data的型別
   @Input() listData: GonListData[];
-  @Input() showAddBtn:boolean;//判斷是否要顯示 新增("+")符號
+  @Input() showAddBtn:boolean;//判斷是否要顯示 新增("+")按鈕
+  @Input() showEditBtn:boolean;//判斷是否要顯示 編輯按鈕
   @Output() clickData = new EventEmitter<{index:number,data:GonListData}>();//將資料傳出去
   @Output() addDataBtn = new EventEmitter<{index:number,data:GonListData}>();//將資料傳出去
+  @Output() deleteDataBtn = new EventEmitter<Number>();//將資料傳出去
   
   currentClickIndex:number = -1;
   gonListData = [];
   addBtnClicked = false;//是否點擊新增("+")符號
+  editBtnClicked = false;//是否點擊編輯按鈕
   value = new FormControl('',Validators.required);
   name = new FormControl('',Validators.required);
   placeHolder:string[] = [];
   formKeys = ['name','value'];
-
+  
   ngOnChanges(): void {    
     this.gonListData = this.listData;
     switch(this.listDataType){
@@ -73,6 +76,14 @@ export class GonListComponent implements  OnChanges {
       this.addBtnClicked = false;
     // }
 
+  }
+
+  clickEditBtn(){
+    this.editBtnClicked = !this.editBtnClicked;
+  }
+
+  clickDeleteBtn(i){
+    this.deleteDataBtn.emit(i)
   }
 
   setText(name,value){
