@@ -10,7 +10,7 @@
       </app-gon-button-list>
     </div>
     <div class="right-list-area col-9">
-      <app-gon-list [listDataType]="listDataType" [listData]="gonListData" [showAddBtn]="true" (clickData)="clickListData($event)" (addDataBtn)="addListData($event)"> </app-gon-list>
+      <app-gon-list [listDataType]="listDataType" [listData]="gonListData" [showEditBtn]="true" [showAddBtn]="true" (clickData)="clickListData($event)" (addDataBtn)="addListData($event)" (deleteDataBtn)="deleteListData($event)"> </app-gon-list>
     </div>
   </div>
   <div class="col-9">
