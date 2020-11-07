@@ -17,13 +17,15 @@ export class GonListComponent implements  OnChanges {
   @Input() listData: GonListData[];
   @Input() showAddBtn:boolean;
   @Input() showEditBtn:boolean;
+
   @Output() doClickData = new EventEmitter<{index:number,data:GonListData}>();
   @Output() doAddData = new EventEmitter<{index:number,data:GonListData}>();
   @Output() doDeleteData = new EventEmitter<Number>();
   @Output() clickData = new EventEmitter<{index:number,data:GonListData}>();
   @Output() addDataBtn = new EventEmitter<{index:number,data:GonListData}>();
-
   @Output() deleteDataBtn = new EventEmitter<Number>();
+
+
 
   currentClickIndex:number = -1;
   gonListData = [];
@@ -84,7 +86,7 @@ export class GonListComponent implements  OnChanges {
         value: this.value.value,
         description: "",
       }
-      this.addDataBtn.emit({index:this.gonListData.length+1,data:data})
+      this.doAddData.emit({index:this.gonListData.length+1,data:data})
      this.setText('','');
       this.addBtnClicked = false;
     // }
