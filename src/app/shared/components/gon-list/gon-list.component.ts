@@ -17,9 +17,9 @@ export class GonListComponent implements  OnChanges {
   @Input() listData: GonListData[];
   @Input() showAddBtn:boolean;//判斷是否要顯示 新增("+")按鈕
   @Input() showEditBtn:boolean;//判斷是否要顯示 編輯按鈕
-  @Output() clickData = new EventEmitter<{index:number,data:GonListData}>();//將資料傳出去
-  @Output() addDataBtn = new EventEmitter<{index:number,data:GonListData}>();//將資料傳出去
-  @Output() deleteDataBtn = new EventEmitter<Number>();//將資料傳出去
+  @Output() doClickData = new EventEmitter<{index:number,data:GonListData}>();//將資料傳出去
+  @Output() doAddData = new EventEmitter<{index:number,data:GonListData}>();//新增資料
+  @Output() doDeleteData = new EventEmitter<Number>();//刪除資料
   
   currentClickIndex:number = -1;
   gonListData = [];
@@ -42,7 +42,7 @@ export class GonListComponent implements  OnChanges {
   
   clickListData(index,data:GonListData) {
     this.currentClickIndex = index;
-    this.clickData.emit({index:index,data:data});
+    this.doClickData.emit({index:index,data:data});
   }
 
   clickAddBtn(){
@@ -71,7 +71,7 @@ export class GonListComponent implements  OnChanges {
         value: this.value.value,
         description: "",
       }
-      this.addDataBtn.emit({index:this.gonListData.length+1,data:data})
+      this.doAddData.emit({index:this.gonListData.length+1,data:data})
      this.setText('','');
       this.addBtnClicked = false;
     // }
@@ -83,7 +83,7 @@ export class GonListComponent implements  OnChanges {
   }
 
   clickDeleteBtn(i){
-    this.deleteDataBtn.emit(i)
+    this.doDeleteData.emit(i)
   }
 
   setText(name,value){

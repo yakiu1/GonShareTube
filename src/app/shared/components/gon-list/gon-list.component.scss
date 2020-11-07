@@ -29,7 +29,7 @@ li {
     font-size: 1.2em;
   }
 
-  .anime{
+  .anime {
     &:hover {
       animation-name: "fade";
       animation-fill-mode: forwards;
@@ -42,34 +42,33 @@ li {
     flex-direction: row;
     flex-wrap: wrap;
 
-    img{
-      width: 1.2em;
+    :nth-child(2){
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
-
-    &:hover {
-      animation-name: "fade";
+    img {
+      line-height: 100%;
+      width: 1.2em;
+      animation-name: "showBtn";
       animation-fill-mode: forwards;
       animation-duration: 0.5s;
-    }
+      &:hover {
+        transition: all 1s;
+        border-radius: 100%;
+      }
+    }   
 
     .text {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       list-style: none;
+      &:hover {
+        transition: all 0.5s;
+        opacity:40%;
+      }
     }
-
-  }
-}
-
-.delBtn{
-  animation-name: "showBtn";
-  animation-fill-mode: forwards;
-  animation-duration: 0.5s;
-  &:hover{
-    animation-name: "shake";
-    animation-fill-mode: initial;
-    animation-duration:1s;
   }
 }
 
@@ -77,7 +76,7 @@ li {
   backdrop-filter: brightness(200%);
 }
 
-.rowBtn{
+.rowBtn {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -85,9 +84,9 @@ li {
 }
 
 .confirmBtn {
-  width:6em;
+  width: 6em;
   background-color: violet;
-  &:hover{
+  &:hover {
     animation-name: "bright";
     animation-fill-mode: forwards;
     animation-duration: 0s;
@@ -95,9 +94,9 @@ li {
 }
 
 .cancelBtn {
-  min-width:6em;
+  min-width: 6em;
   background-color: steelblue;
-  &:hover{
+  &:hover {
     animation-name: "bright";
     animation-fill-mode: forwards;
     animation-duration: 0s;
@@ -113,40 +112,20 @@ li {
   }
 }
 
-@keyframes bright{
-  from{
+@keyframes bright {
+  from {
     opacity: 100%;
-  }to{
+  }
+  to {
     opacity: 70%;
   }
 }
 
-@keyframes showBtn{
-  from{
-    opacity:0% ;
-  }to{
-    opacity: 100%;;
-  }
-}
-
-@keyframes shake {
+@keyframes showBtn {
   from {
-      margin-left:0px;
-      animation-timing-function: cubic-bezier(0.25, 0.01, 0.55, 0.16);
-  }
-  25% {
-      margin-left:10px;
-      animation-timing-function: cubic-bezier(0.52, 0.44, 0.47, 0.44);
-  }
-  50% {
-      margin-left:25px;
-      animation-timing-function: cubic-bezier(0.53, 0.56, 0.48, 0.56);
-  }
-  75% {
-      margin-left:10px;
-      animation-timing-function: cubic-bezier(0.45, 0.84, 0.75, 0.99);
+    opacity: 0%;
   }
   to {
-      margin-left:0px;
+    opacity: 100%;
   }
 }
