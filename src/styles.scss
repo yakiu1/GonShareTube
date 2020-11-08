@@ -8,12 +8,19 @@ $sub-button-color: #ffe66d;
 $main-text-color: #f7fff7;
 $darken-main-color: darken($main-color, 10%);
 
-// 配色卡
+// 配色卡(深色)
 $patten-one: #1a325c;
 $patten-two: #231a5c;
 $patten-three: #441a5c;
 $patten-four: #5c1a53;
 $patten-five: #5c1a32;
+
+// 配色卡(淺色)
+$patten-one-light: lighten(#1a325c, 35%);
+$patten-two-light: lighten(#231a5c, 35%);
+$patten-three-light: lighten(#441a5c, 35%);
+$patten-four-light: lighten(#5c1a53, 35%);
+$patten-five-light: lighten(#5c1a32, 35%);
 
 html,
 body {
