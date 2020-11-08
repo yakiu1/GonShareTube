@@ -9,6 +9,7 @@ import { DataSelectorService } from './../../core/services/data-selector.service
 import { ConnectorService, YtPlayerService } from '../../../app/core/services';
 import * as AppActions from '../../state/actions/app.actions'
 import { ServerEventName } from 'app/difs/server-event-name.enum';
+import { ListDataType } from '../../difs/list-data-type.enum';
 
 @Component({
   selector: 'app-home',
@@ -47,7 +48,7 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     index: 4, name: '5', value: 'test1', description: 'test1'
   },
   ];
-  gonListData = [
+  gonListData: GonListData[] = [
     {
       index: 0, name: '第一首音樂', value: 'test1', description: 'test1'
     }, {
@@ -60,6 +61,8 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
       index: 4, name: '第五五五五五五五五五五五五五五五五五首音樂', value: 'test1', description: 'test1'
     }
   ];
+
+  listDataType = ListDataType.YTPlaylist;
 
   constructor(
     public ytPlayerService: YtPlayerService,
@@ -172,6 +175,23 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   clickListData(event:{index:number,data:GonListData}){
 
     console.log('event',event)
+  }
+
+  //點擊加號新增資料
+  addListData(event:{index:number,data:GonListData}){
+    this.gonListData.push(event.data);
+    console.log(this.gonListData);
+  }
+
+  //刪除特定資料
+  deleteListData(event){
+    this.gonListData.splice(event,1);
+    let count = 0;
+    this.gonListData.forEach((data)=>{
+      data.index = count;
+      count++
+    })
+    console.log(this.gonListData);
   }
 
 

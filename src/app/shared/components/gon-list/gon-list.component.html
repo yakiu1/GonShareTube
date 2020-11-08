@@ -1,13 +1,30 @@
 <div class="listStyle">
   <ul>
+    <li *ngIf="showEditBtn"> 
+      <button class="btn plusBtn" (click)="clickEditBtn()" [disabled]="addBtnClicked" [ngClass]="{anime:!addBtnClicked}"> <span *ngIf="editBtnClicked">取消</span>編輯 </button>
+  </li>
     <li
       *ngFor="let item of gonListData; let i = index"
       [ngClass]="{ liClick: i===currentClickIndex }"
-      (click)="listClick(i,item)"
+      (click)="clickListData(i,item)"
     >
-      <div class="row">
-        <div class="col-12">{{ item.name }}</div>
+      <div class="rowText">
+        <div class="col-9 text" >{{ item.name }}</div>
+        <div (click)="clickDeleteBtn(i)" *ngIf="editBtnClicked"><img src="../../../../assets/icons/remove.png" [ngClass]="{delBtn:editBtnClicked}"></div>
       </div>
+    </li>
+    <li *ngIf="showAddBtn" [hidden]="!addBtnClicked">
+        <input type="text" class="rowBtn" [formControl]="name" placeholder="{{placeHolder[0]}}" >
+        <input type="text" class="rowBtn" [formControl]="value"  placeholder="{{placeHolder[1]}}">
+    </li>
+    <li *ngIf="showAddBtn" [hidden]="!addBtnClicked">
+      <div class="rowBtn">
+        <button class="btn confirmBtn" (click)="clickConfirmBtn()"> 確認 </button>
+        <button class="btn cancelBtn" (click)="clickCancelBtn()"> 取消 </button>
+      </div>
+    </li>
+    <li *ngIf="showAddBtn"> 
+        <button class="btn plusBtn" (click)="clickAddBtn()"  [disabled]="addBtnClicked ||editBtnClicked" [ngClass]="{anime:!addBtnClicked}"> ＋ </button>
     </li>
   </ul>
 </div>
