@@ -195,6 +195,7 @@ body {
 }
 
 .gbtn-main {
+  margin-left: 10px;
   border: 0px;
   border-radius: 5px;
   background-color: $main-button-color;
@@ -214,9 +215,19 @@ body {
 }
 
 .gbtn-sub {
-  border: 0px;
-  border-radius: 5px;
-  background-color: $sub-button-color;
+  margin-left: 10px;
+  color: $main-text-color;
+  background-color: darken($sub-button-color,50);
+}
+
+.gbtn-sub:hover {
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+
+  background-color: darken($sub-button-color,30);
 }
 
 // 字體顏色

@@ -1,41 +1,62 @@
 @import "../../../styles.scss";
 
-:host {}
+:host {
+}
 
 .flex-container {
   display: flex;
-   flex-direction: row;
+  flex-direction: row;
 }
 
 .foot-menu-area.fadeout {
-    -webkit-transition: all 1s;
-    -moz-transition: all 1s;
-    -ms-transition: all 1s;
-    -o-transition: all 1s;
-    transition: all 1s;
-    position: relative;
-    top: 15vh;
-    opacity: 0;
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  -ms-transition: all 1s;
+  -o-transition: all 1s;
+  transition: all 1s;
+  position: relative;
+  top: 15vh;
+  opacity: 0;
 }
 
 .foot-menu-area.fadein {
-    -webkit-transition: all 1s;
-    -moz-transition: all 1s;
-    -ms-transition: all 1s;
-    -o-transition: all 1s;
-    transition: all 1s;
-    top: 0vh;
-    opacity: 0.5;
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  -ms-transition: all 1s;
+  -o-transition: all 1s;
+  transition: all 1s;
+  top: 0vh;
+  opacity: 0.5;
 }
 
-.left-playlist-area{
+.left-playlist-area {
   height: 100vh;
-  background-color: lighten($darken-main-color,5%);
-  color:$main-text-color;
+  background-color: lighten($darken-main-color, 5%);
+  color: $main-text-color;
   border-radius: 5px;
 }
 
 .left-menu-area {
   height: 100vh;
-  background-color: darken($main-color,8%);
+  background-color: darken($main-color, 8%);
+}
+
+.toast-sm {
+  position: absolute;
+  margin-left: 1vw;
+  top: -1vh;
+  opacity: 0;
+  z-index: 100;
+}
+
+.toast-sm-show {
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  -ms-transition: all 1s;
+  -o-transition: all 1s;
+  transition: all 1s;
+  position: absolute;
+  opacity: 1;
+  top: -3vh;
+  color: $main-text-color;
 }

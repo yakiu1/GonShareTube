@@ -10,30 +10,46 @@
       </app-gon-button-list>
     </div>
     <div class="right-list-area col-9">
-      <app-gon-list [listDataType]="listDataType" [listData]="gonListData" [showEditBtn]="true" [showAddBtn]="true" (doClickData)="clickListData($event)" (doAddData)="addListData($event)" (doDeleteData)="deleteListData($event)"> </app-gon-list>
+      <app-gon-list [listDataType]="listDataType" [listData]="gonListData" [showEditBtn]="true" [showAddBtn]="true"
+        (doClickData)="clickListData($event)" (doAddData)="addListData($event)" (doDeleteData)="deleteListData($event)">
+      </app-gon-list>
     </div>
   </div>
   <div class="col-9">
     <div style="margin: 5px; ">
-      <button class="gbtn-main" type="button" (click)="switchLoop()">
-        <span *ngIf="isloop" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-        <span *ngIf="isloop">
-          Loop
-        </span>
-        <span *ngIf="!isloop">
-          Ｏ
-        </span>
-        <span *ngIf="!isloop">
-          Loop
-        </span>
-      </button>
+      <div class="row">
+        <button class="col-1 gbtn-sub gbtn-main" type="button" (click)="switchLoop()">
+          <span *ngIf="isloop" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+          <span *ngIf="isloop">
+            Loop
+          </span>
+          <span *ngIf="!isloop">
+            Ｏ
+          </span>
+          <span *ngIf="!isloop">
+            Loop
+          </span>
+        </button>
 
-      <button class="gbtn-main" type="button" disabled>
-        <span>
-          Room :
-          <input [formControl]="currentGroupFormControl">
-        </span>
-      </button>
+        <button class="col-2 gbtn-sub gbtn-main" type="button" (click)="switchReceiveBroadcast()">
+          <span *ngIf="isReceiving">
+            <span role="status" class="spinner-grow spinner-grow-sm" style="color: gray;" aria-hidden="true"></span>
+            接收廣播
+          </span>
+          <span *ngIf="!isReceiving">停止接收廣播</span>
+        </button>
+
+        <div class="col-3">
+          <div #roomToast class="toast-sm">房間已切換</div>
+          <button class="gbtn-main" type="button" disabled>
+            <span>
+              Room :
+              <input [formControl]="currentGroupFormControl" (keydown.enter)="changeRoom($event)">
+            </span>
+          </button>
+        </div>
+      </div>
+
       <div style="background-color: #333333;border-radius: 5px;">
         <div id='player' style="width: 100%;height: 70vh; ">
         </div>
