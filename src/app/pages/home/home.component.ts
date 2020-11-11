@@ -64,11 +64,14 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
 
   listDataType = ListDataType.YTPlaylist;
 
+  secretNo;//房間密碼
+  myControl;//判斷是否為自己控制自己音樂
   constructor(
     public ytPlayerService: YtPlayerService,
     public tubeConnect: ConnectorService,
     private store: Store<any>,
     private dataSelectorService: DataSelectorService,
+    private el:ElementRef
   ) { }
 
 
@@ -88,15 +91,21 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
 
 
     const stopTube = onStopTubeHandler.subscribe((tubelink) => {
-      this.player.stopVideo();
+      if(!this.myControl){
+        this.player.stopVideo();
+      }
     })
 
     const receiveTubeTime = onReceiveTubeTimeHandler.subscribe((loaddata) => {
-      this.player.loadVideoById(loaddata.videoId, loaddata.time);
+      if(!this.myControl){
+        this.player.loadVideoById(loaddata.videoId, loaddata.time);
+      }
     })
 
     const receiveTubeLink = onReceiveTubeLinkHandler.subscribe((tubeLink) => {
-      this.player.loadVideoById(tubeLink);
+      if(!this.myControl){
+        this.player.loadVideoById(tubeLink);
+      }
     })
 
     const mouseEnter = fromEvent(_footMenuHTML, 'mouseenter').subscribe(() => {
@@ -194,6 +203,35 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     console.log(this.gonListData);
   }
 
+  //點擊Enter進入房間
+  enterRoom(){
+    if (this.currentGroupFormControl.value !== '') {
+      this.store.dispatch(AppActions.setGroup({ currentGroup: this.currentGroupFormControl.value }));
+      this.myControl = false;
+      console.log(this.store);
+    }
+  }
+
+  //  focus監聽Enter事件
+  changeRoom(event:KeyboardEvent){
+    if(event.key==='Enter'){
+      this.store.dispatch(AppActions.setGroup({ currentGroup: this.currentGroupFormControl.value }));
+      this.myControl = false;
+    }
+  }
+
+  //複製SecretCode
+  copySecretCode(){
+    const secretNoSelector = this.el.nativeElement.querySelector('#secretNo');
+    secretNoSelector.select();
+    document.execCommand('copy');
+    console.log('Copy')
+  }
+
+  //控制播放器
+  keepMyControl(){
+    this.myControl = !this.myControl;
+  }
 
   /** DataControls
    * Store Data get/set
@@ -230,6 +268,9 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     this.enterCurrentGroup();
     this.addListeners();
     this.startVideo();
+    //隨機數字2次方之後 以36位數(0~9 + a~z)進位轉字串
+    this.secretNo =Math.pow(Math.floor(Math.random()*100000)+1,2).toString(36);
+    this.myControl = true;//一開始為自己控制音樂
 
   }
 
