@@ -99,8 +99,10 @@ export class AppComponent implements AfterViewInit {
   }
 
   doClick(tag: string): void {
+    console.log(this.store);
     console.log('sent tube link click');
     this.store.dispatch(AppActions.setSong({ currentPlaying: tag }))
     this.sendGroupTubeLink(tag);
+    this.ytPlayerService.current_ytPlayer.loadVideoById(tag);
   }
 }
