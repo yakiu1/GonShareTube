@@ -56,26 +56,15 @@ export class GonListComponent implements  OnChanges {
   }
 
   clickConfirmBtn(){
-    //資料驗證之後再討論
-    // if(this.name.invalid || this.value.invalid){
-    //   if(this.name.invalid){
-    //     this.placeHolder[0] = '請輸入資料'
-    //   }
-    //   if(this.value.invalid){
-    //     this.placeHolder[1] = '請輸入資料'
-    //   }
-    // }else{
-      const data:GonListData= {
-        index: this.gonListData.length+1,
-        name: this.name.value,
-        value: this.value.value,
-        description: "",
-      }
-      this.doAddData.emit({index:this.gonListData.length+1,data:data})
-     this.setText('','');
-      this.addBtnClicked = false;
-    // }
-
+    const data:GonListData= {
+      index: this.gonListData.length+1,
+      name: this.name.value,
+      value: this.value.value,
+      description: "",
+    }
+    this.doAddData.emit({index:this.gonListData.length+1,data:data})
+    this.setText('','');
+    this.addBtnClicked = false;
   }
 
   clickEditBtn(){

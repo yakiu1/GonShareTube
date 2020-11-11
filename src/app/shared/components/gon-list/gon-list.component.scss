@@ -1,12 +1,14 @@
+@import "../../../../styles.scss";
+
 * {
   margin: 0px;
   padding: 0px;
+  // border:1px red solid;
 }
 
 .listStyle {
   height: 100%;
   width: 100%;
-  // overflow-y: scroll;
   overflow-x: hidden;
 }
 
@@ -16,59 +18,57 @@
 }
 
 li {
-  margin-top: 0.5em; //每個list 間隔 暫定
+  padding: 0.1em 0px; //每個list 間隔 暫定
+  list-style: none;    
+}
+
+.rowText {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  :nth-child(2){
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }  
+}
+
+img {
+  line-height: 100%;
+  width: 1.2em;
+  &:hover {
+    transition: all 1s;
+    border-radius: 100%;
+  }
+}   
+
+.text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   list-style: none;
-
-  .plusBtn {
-    font-size: 1em;
-    font-weight: bold;
-    border: 0px;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.2);
-    color: #fff;
-    font-size: 1.2em;
+  &:hover {
+    transition: all 0.5s;
+    color:rgba($color: $main-text-color, $alpha: 0.5)
   }
+}
 
-  .anime {
-    &:hover {
-      animation-name: "fade";
-      animation-fill-mode: forwards;
-      animation-duration: 0s;
-    }
-  }
+.plusBtn {
+  font-size: 1em;
+  font-weight: bold;
+  border: 0px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: $main-text-color;
+  font-size: 1.2em;
+  margin:0.5em 0px;
+}
 
-  .rowText {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    :nth-child(2){
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    img {
-      line-height: 100%;
-      width: 1.2em;
-      animation-name: "showBtn";
-      animation-fill-mode: forwards;
-      animation-duration: 0.5s;
-      &:hover {
-        transition: all 1s;
-        border-radius: 100%;
-      }
-    }   
-
-    .text {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      list-style: none;
-      &:hover {
-        transition: all 0.5s;
-        opacity:40%;
-      }
-    }
+.anime {
+  &:hover {
+    transition: all 0.5s;
+    color:rgba($color: $main-text-color, $alpha: 0.8);
+    background-color: rgba($color: $main-color, $alpha: 0.8);
   }
 }
 
@@ -86,46 +86,17 @@ li {
 .confirmBtn {
   width: 6em;
   background-color: violet;
-  &:hover {
-    animation-name: "bright";
-    animation-fill-mode: forwards;
-    animation-duration: 0s;
+  &:hover{
+    transition: all 0s;
+    background-color:rgba($color:  violet, $alpha: 0.8);
   }
 }
 
 .cancelBtn {
   min-width: 6em;
-  background-color: steelblue;
-  &:hover {
-    animation-name: "bright";
-    animation-fill-mode: forwards;
-    animation-duration: 0s;
-  }
-}
-
-@keyframes fade {
-  from {
-    opacity: 100%;
-  }
-  to {
-    opacity: 80%;
-  }
-}
-
-@keyframes bright {
-  from {
-    opacity: 100%;
-  }
-  to {
-    opacity: 70%;
-  }
-}
-
-@keyframes showBtn {
-  from {
-    opacity: 0%;
-  }
-  to {
-    opacity: 100%;
+  background-color:$sub-color;  
+  &:hover{
+    transition: all 0s;
+    background-color:rgba($color: $sub-color, $alpha: 0.8);
   }
 }

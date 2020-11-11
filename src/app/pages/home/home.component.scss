@@ -39,3 +39,16 @@
   height: 100vh;
   background-color: darken($main-color,8%);
 }
+
+.myRoomInfo{
+  margin-left: 10px;
+  background-color: lighten($sub-button-color,10%);
+  &:hover{
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+    background-color: lighten($sub-color, 10%);
+  }
+}

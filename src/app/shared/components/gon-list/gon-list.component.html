@@ -10,7 +10,7 @@
     >
       <div class="rowText">
         <div class="col-9 text" >{{ item.name }}</div>
-        <div (click)="clickDeleteBtn(i)" *ngIf="editBtnClicked"><img src="../../../../assets/icons/remove.png" [ngClass]="{delBtn:editBtnClicked}"></div>
+        <div (click)="clickDeleteBtn(i)" *ngIf="editBtnClicked"><img src="assets/icons/remove.png" [ngClass]="{delBtn:editBtnClicked}"></div>
       </div>
     </li>
     <li *ngIf="showAddBtn" [hidden]="!addBtnClicked">
@@ -19,7 +19,7 @@
     </li>
     <li *ngIf="showAddBtn" [hidden]="!addBtnClicked">
       <div class="rowBtn">
-        <button class="btn confirmBtn" (click)="clickConfirmBtn()"> 確認 </button>
+        <button class="btn confirmBtn" (click)="clickConfirmBtn()" [disabled]="!(name.value.trim().length>0 && value.value.trim().length>0)"> 確認 </button>
         <button class="btn cancelBtn" (click)="clickCancelBtn()"> 取消 </button>
       </div>
     </li>

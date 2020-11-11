@@ -31,8 +31,16 @@
       <button class="gbtn-main" type="button" disabled>
         <span>
           Room :
-          <input [formControl]="currentGroupFormControl">
-        </span>
+          <input [formControl]="currentGroupFormControl" (keydown)="changeRoom($event)">
+          <span (click)="enterRoom()">&nbsp;Enter</span> 
+        </span>        
+      </button>
+      <button class="myRoomInfo gbtn-main" type="button"  (click)="copySecretCode()"  title="點擊複製">
+        Secret Code:&nbsp;<input type="text" value="{{secretNo}}" id="secretNo" readonly title="點擊複製">
+      </button>
+      <button class="myRoomInfo gbtn-main" type="button"  (click)="keepMyControl()">
+        <span *ngIf="myControl">我在控制</span>
+        <span *ngIf="!myControl">別人控制</span>
       </button>
       <div style="background-color: #333333;border-radius: 5px;">
         <div id='player' style="width: 100%;height: 70vh; ">
