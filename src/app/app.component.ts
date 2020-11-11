@@ -23,7 +23,6 @@ export class AppComponent implements AfterViewInit {
   $playlist: Observable<SongInfo[]>;
   $currentPlaying: Observable<string>;
   isloading = true;
-  aaa:YT.Player;
 
   constructor(
     public ytPlayerService: YtPlayerService,

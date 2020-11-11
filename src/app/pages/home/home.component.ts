@@ -19,6 +19,7 @@ import { ListDataType } from '../../difs/list-data-type.enum';
 export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
 
   @ViewChild('footMenu', { static: true }) footMenu: ElementRef;
+  @ViewChild('roomToast', { static: true }) roomToast: ElementRef;
 
   isReadyVideo$ = new BehaviorSubject<boolean>(false);
   currentPlaying$: Observable<string>;
@@ -64,14 +65,14 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
 
   listDataType = ListDataType.YTPlaylist;
 
-  secretNo;//房間密碼
-  myControl;//判斷是否為自己控制自己音樂
+  isReceiving = true;//判斷是否為自己控制自己音樂
+
   constructor(
     public ytPlayerService: YtPlayerService,
     public tubeConnect: ConnectorService,
     private store: Store<any>,
     private dataSelectorService: DataSelectorService,
-    private el:ElementRef
+    private el: ElementRef
   ) { }
 
 
@@ -84,26 +85,23 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     const _footoptionArea = _footMenuHTML.querySelector('.foot-menu-area');
     const onConnectedHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnConnected)();
     const onReceiveTubeLinkHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveTubeLink)();
-    // TODO wait for server compliete those methon
     const onReceiveTubeTimeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveTubeTime)();
     const onStopTubeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveStopTube)();
 
-
-
     const stopTube = onStopTubeHandler.subscribe((tubelink) => {
-      if(!this.myControl){
+      if (this.isReceiving) {
         this.player.stopVideo();
       }
     })
 
     const receiveTubeTime = onReceiveTubeTimeHandler.subscribe((loaddata) => {
-      if(!this.myControl){
+      if (this.isReceiving) {
         this.player.loadVideoById(loaddata.videoId, loaddata.time);
       }
     })
 
     const receiveTubeLink = onReceiveTubeLinkHandler.subscribe((tubeLink) => {
-      if(!this.myControl){
+      if (this.isReceiving) {
         this.player.loadVideoById(tubeLink);
       }
     })
@@ -124,6 +122,7 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
         this.tubeConnect.serveConnection.invoke('AddGroup', this._groupID, tempgroup);
       }
     })
+
     this._eventSubscriptions.add(mouseLeave);
     this._eventSubscriptions.add(mouseEnter);
     this._eventSubscriptions.add(isConnected);
@@ -174,63 +173,43 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   doCreatePlayList(): void {
-
     // TODO : Add new playlist
     console.log('Add new playlist!');
-
   }
 
-  //點擊list事件
-  clickListData(event:{index:number,data:GonListData}){
+  clickListData(event: { index: number, data: GonListData }) {
 
-    console.log('event',event)
+    console.log('event', event)
   }
 
-  //點擊加號新增資料
-  addListData(event:{index:number,data:GonListData}){
+  addListData(event: { index: number, data: GonListData }) {
     this.gonListData.push(event.data);
     console.log(this.gonListData);
   }
 
-  //刪除特定資料
-  deleteListData(event){
-    this.gonListData.splice(event,1);
+  deleteListData(event) {
+    this.gonListData.splice(event, 1);
     let count = 0;
-    this.gonListData.forEach((data)=>{
+    this.gonListData.forEach((data) => {
       data.index = count;
       count++
     })
     console.log(this.gonListData);
   }
 
-  //點擊Enter進入房間
-  enterRoom(){
-    if (this.currentGroupFormControl.value !== '') {
-      this.store.dispatch(AppActions.setGroup({ currentGroup: this.currentGroupFormControl.value }));
-      this.myControl = false;
-      console.log(this.store);
-    }
+  changeRoom(event: KeyboardEvent) {
+    this.store.dispatch(AppActions.setGroup({ currentGroup: this.currentGroupFormControl.value }));
+    this.enterCurrentGroup();
+
+    const toastElement = this.roomToast.nativeElement as HTMLElement;
+    toastElement.classList.add('toast-sm-show');
+    setTimeout(() => {
+      toastElement.classList.remove('toast-sm-show');
+    }, 1000);
   }
 
-  //  focus監聽Enter事件
-  changeRoom(event:KeyboardEvent){
-    if(event.key==='Enter'){
-      this.store.dispatch(AppActions.setGroup({ currentGroup: this.currentGroupFormControl.value }));
-      this.myControl = false;
-    }
-  }
-
-  //複製SecretCode
-  copySecretCode(){
-    const secretNoSelector = this.el.nativeElement.querySelector('#secretNo');
-    secretNoSelector.select();
-    document.execCommand('copy');
-    console.log('Copy')
-  }
-
-  //控制播放器
-  keepMyControl(){
-    this.myControl = !this.myControl;
+  switchReceiveBroadcast() {
+    this.isReceiving = !this.isReceiving;
   }
 
   /** DataControls
@@ -268,10 +247,8 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     this.enterCurrentGroup();
     this.addListeners();
     this.startVideo();
-    //隨機數字2次方之後 以36位數(0~9 + a~z)進位轉字串
-    this.secretNo =Math.pow(Math.floor(Math.random()*100000)+1,2).toString(36);
-    this.myControl = true;//一開始為自己控制音樂
-
+    // 隨機數字2次方之後 以36位數(0~9 + a~z)進位轉字串
+    // this.secretNo = Math.pow(Math.floor(Math.random() * 100000) + 1, 2).toString(36);
   }
 
   ngOnDestroy(): void {
