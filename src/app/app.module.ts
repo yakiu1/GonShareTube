@@ -1,7 +1,6 @@
 import { LoadingPageModule } from './pages/loading-page/loading-page.module';
 import { appReducer } from './state/reducers/app.reducer';
 import { DetailModule } from './pages/detail/detail.module';
-import { FriendModule } from './pages/friend/friend.module';
 import { PlayListModule } from './pages/play-list/play-list.module';
 import { HomeModule } from './pages/home/home.module';
 import { OverviewModule } from './pages/overview/overview.module';
@@ -46,7 +45,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     OverviewModule,
     HomeModule,
     PlayListModule,
-    FriendModule,
     DetailModule,
     LoadingPageModule,
     AppRoutingModule,
