@@ -11,9 +11,6 @@
             <a class="nav-link" routerLink="/playlist">Playlist</a>
             <app-gon-hoverable-dropdown (clickItem)="doClick($event)" [playList]="$playlist|async" class="dropdown-content">play list</app-gon-hoverable-dropdown>
         </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link" routerLink="/friend">Friend</a>
-        </li>
     </ul>
     <router-outlet></router-outlet>
 </div>
