@@ -1,5 +1,5 @@
 import { GonListData } from './../../difs/gon-list-data';
-import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, combineLatest, fromEvent, Observable, Subscription } from 'rxjs';
@@ -18,7 +18,7 @@ import { Subject } from 'rxjs/internal/Subject';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
+export class HomeComponent implements OnInit, AfterContentInit,AfterViewInit, OnDestroy {
 
   @ViewChild('footMenu', { static: true }) footMenu: ElementRef;
   @ViewChild('roomToast', { static: true }) roomToast: ElementRef;
@@ -51,22 +51,8 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     index: 4, name: '5', value: 'test1', description: 'test1'
   },
   ];
-  gonListData: GonListData[] = [
-    {
-      index: 0, name: '第一首音樂', value: 'test1', description: 'test1'
-    }, {
-      index: 1, name: '第二首音樂', value: 'test1', description: 'test1'
-    }, {
-      index: 2, name: '第三首音樂', value: 'test1', description: 'test1'
-    }, {
-      index: 3, name: '第四首音樂', value: 'test1', description: 'test1'
-    }, {
-      index: 4, name: '第五五五五五五五五五五五五五五五五五首音樂', value: 'test1', description: 'test1'
-    }
-  ];
 
   listDataType = ListDataType.YTPlaylist;
-
   isReceiving = true;//判斷是否為自己控制自己音樂
   gonVideoList$ = new Subject<GonListData[]>();
   currentPlaylist$: Observable<any>;
@@ -96,7 +82,6 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     const syncPlayListData = onCurrnetPlaylistChange.subscribe(playlist => {
       const gonListData = [];
       playlist.forEach(v => {
-        console.log(v, '<===video')
         const video: GonListData = {
           index: 0,
           value: v.songTag,
@@ -232,15 +217,8 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     })
   }
 
-
-  deleteListData(event) {
-    this.gonListData.splice(event, 1);
-    let count = 0;
-    this.gonListData.forEach((data) => {
-      data.index = count;
-      count++
-    })
-    console.log(this.gonListData);
+  deleteListData(event: number) {
+    this.store.dispatch(AppActions.removeSong({ removeIndex: event }))
   }
 
   changeRoom(event: KeyboardEvent) {
@@ -283,7 +261,21 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     })
   }
 
-
+  setInitData() {
+    this.currentPlaylist$.pipe(take(1)).subscribe(playlist => {
+      const gonListData = [];
+      playlist.forEach(v => {
+        const video: GonListData = {
+          index: 0,
+          value: v.songTag,
+          name: v.songName,
+          description: '',
+        }
+        gonListData.push(video)
+      })
+      this.gonVideoList$.next(gonListData);
+    })
+  }
 
   /** LifeCycles
    * lifeCycle hooks below
@@ -298,6 +290,9 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     // this.secretNo = Math.pow(Math.floor(Math.random() * 100000) + 1, 2).toString(36);
   }
 
+  ngAfterViewInit(): void {
+    this.setInitData();
+  }
   ngOnDestroy(): void {
     this._eventSubscriptions.unsubscribe();
   }
