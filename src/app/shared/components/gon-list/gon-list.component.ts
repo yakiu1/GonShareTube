@@ -1,88 +1,78 @@
-
-
-
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { GonListData } from "./../../../difs/gon-list-data";
-import { ListDataType } from "app/difs/list-data-type.enum";
-import {FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 @Component({
   selector: "app-gon-list",
   templateUrl: "./gon-list.component.html",
   styleUrls: ["./gon-list.component.scss"],
 })
-export class GonListComponent implements  OnChanges {
-  constructor() {}
+export class GonListComponent {
+  constructor() { }
 
-  @Input() listDataType:String;
-  @Input() listData: GonListData[];
-  @Input() showAddBtn:boolean;
-  @Input() showEditBtn:boolean;
+  @Input() listDataType: String;
+  @Input() set listData(value) {
+    this._listData = value;
+  }
+  @Input() showAddBtn: boolean;
+  @Input() showEditBtn: boolean;
 
-  @Output() doClickData = new EventEmitter<{index:number,data:GonListData}>();
-  @Output() doAddData = new EventEmitter<{index:number,data:GonListData}>();
+  @Output() doClickData = new EventEmitter<{ index: number, data: GonListData }>();
+  @Output() doAddData = new EventEmitter<GonListData>();
   @Output() doDeleteData = new EventEmitter<Number>();
-  @Output() clickData = new EventEmitter<{index:number,data:GonListData}>();
-  @Output() addDataBtn = new EventEmitter<{index:number,data:GonListData}>();
+  @Output() clickData = new EventEmitter<{ index: number, data: GonListData }>();
+  @Output() addDataBtn = new EventEmitter<{ index: number, data: GonListData }>();
   @Output() deleteDataBtn = new EventEmitter<Number>();
 
+  _listData: GonListData[] = [];
 
-
-  currentClickIndex:number = -1;
-  gonListData = [];
+  currentClickIndex: number = -1;
   addBtnClicked = false;
   editBtnClicked = false;
-  value = new FormControl('',Validators.required);
-  name = new FormControl('',Validators.required);
-  placeHolder:string[] = [];
-  formKeys = ['name','value'];
+  value = new FormControl('', Validators.required);
+  name = new FormControl('', Validators.required);
+  placeHolder: string[] = [];
+  formKeys = ['name', 'value'];
 
 
-  ngOnChanges(): void {
-    this.gonListData = this.listData;
-    switch(this.listDataType){
-      case ListDataType.YTPlaylist:
-        this.placeHolder.push('Text');
-        this.placeHolder.push('Url');
-      break;
-    }
-  }
+  nameInputText = 'Video Name';
+  valueInputText = 'Video Url';
 
-  clickListData(index,data:GonListData) {
+  clickListData(index, data: GonListData) {
     this.currentClickIndex = index;
-    this.doClickData.emit({index:index,data:data});
+    this.doClickData.emit({ index: index, data: data });
   }
 
-  clickAddBtn(){
+  clickAddBtn() {
 
     this.addBtnClicked = true;
   }
 
-  clickCancelBtn(){
-    this.setText('','');
+  clickCancelBtn() {
+    this.setText('', '');
     this.addBtnClicked = false;
   }
 
-  clickEditBtn(){
+  clickEditBtn() {
     this.editBtnClicked = !this.editBtnClicked;
   }
 
-  clickDeleteBtn(i){
+  clickDeleteBtn(i) {
     this.doDeleteData.emit(i)
   }
 
-  clickConfirmBtn(){
-    const data:GonListData= {
-      index: this.gonListData.length+1,
-      name: this.name.value,
-      value: this.value.value,
+  clickConfirmBtn(event) {
+    const data: GonListData = {
+      index: 0,
+      name: event.name,
+      value: event.value,
       description: "",
     }
-    this.doAddData.emit({index:this.gonListData.length+1,data:data})
-    this.setText('','');
+    this.doAddData.emit(data)
+    this.setText('', '');
     this.addBtnClicked = false;
   }
 
-  setText(name,value){
+  setText(name, value) {
     this.name.setValue(name);
     this.value.setValue(value);
   }

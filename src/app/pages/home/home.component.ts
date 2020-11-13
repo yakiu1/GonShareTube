@@ -10,6 +10,8 @@ import { ConnectorService, YtPlayerService } from '../../../app/core/services';
 import * as AppActions from '../../state/actions/app.actions'
 import { ServerEventName } from 'app/difs/server-event-name.enum';
 import { ListDataType } from '../../difs/list-data-type.enum';
+import { SongInfo } from 'app/difs/song-info';
+import { Subject } from 'rxjs/internal/Subject';
 
 @Component({
   selector: 'app-home',
@@ -66,6 +68,8 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   listDataType = ListDataType.YTPlaylist;
 
   isReceiving = true;//判斷是否為自己控制自己音樂
+  gonVideoList$ = new Subject<GonListData[]>();
+  currentPlaylist$: Observable<any>;
 
   constructor(
     public ytPlayerService: YtPlayerService,
@@ -87,6 +91,25 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     const onReceiveTubeLinkHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveTubeLink)();
     const onReceiveTubeTimeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveTubeTime)();
     const onStopTubeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveStopTube)();
+    const onCurrnetPlaylistChange = this.currentPlaylist$;
+
+    const syncPlayListData = onCurrnetPlaylistChange.subscribe(playlist => {
+      const gonListData = [];
+      playlist.forEach(v => {
+        console.log(v, '<===video')
+        const video: GonListData = {
+          index: 0,
+          value: v.songTag,
+          name: v.songName,
+          description: '',
+        }
+
+        gonListData.push(video)
+      })
+      this.gonVideoList$.next(gonListData);
+      console.log(gonListData);
+      console.log(playlist, 'syncData!!');
+    })
 
     const stopTube = onStopTubeHandler.subscribe((tubelink) => {
       if (this.isReceiving) {
@@ -129,6 +152,7 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     this._eventSubscriptions.add(receiveTubeLink);
     this._eventSubscriptions.add(receiveTubeTime);
     this._eventSubscriptions.add(stopTube);
+    this._eventSubscriptions.add(syncPlayListData);
   }
 
   startVideo(): void {
@@ -178,14 +202,36 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   clickListData(event: { index: number, data: GonListData }) {
-
-    console.log('event', event)
+    this.store.dispatch(AppActions.setSong({ currentPlaying: event.data.value }))
+    this.sendGroupTubeLink(event.data.value);
+    this.player.loadVideoById(event.data.value);
   }
 
-  addListData(event: { index: number, data: GonListData }) {
-    this.gonListData.push(event.data);
-    console.log(this.gonListData);
+  doAddVideo(event: GonListData): void {
+    const url: string = event.value;
+    const newVideo: SongInfo = {
+      songName: event.name,
+      songTag: this.parseURLToTag(url),
+    }
+    console.log('add!!', newVideo);
+    this.store.dispatch(AppActions.addSong({ song: newVideo }));
   }
+
+  parseURLToTag(url: string): string {
+    const tag = url.split('=')[1].split('&')[0];
+    return tag;
+  }
+
+  sendGroupTubeLink(tag: string): void {
+    const currentGroup$ = this.dataSelectorService.getStoreData(AppStateName.currentGroup)();
+    currentGroup$.pipe(take(1)).subscribe(g => {
+      if (g) {
+        console.log('sent tube link sent');
+        this.tubeConnect.serveConnection.invoke('SendGroupTubeLink', g, tag);
+      }
+    })
+  }
+
 
   deleteListData(event) {
     this.gonListData.splice(event, 1);
@@ -219,6 +265,7 @@ export class HomeComponent implements OnInit, AfterContentInit, OnDestroy {
     this.currentPlaying$ = this.dataSelectorService.getStoreData(AppStateName.currentPlaying)();
     this.currentGroup$ = this.dataSelectorService.getStoreData(AppStateName.currentGroup)();
     this.priviouseGroup$ = this.dataSelectorService.getStoreData(AppStateName.priviousGroup)();
+    this.currentPlaylist$ = this.dataSelectorService.getStoreData(AppStateName.playlist)();
   }
 
   enterCurrentGroup(): void {

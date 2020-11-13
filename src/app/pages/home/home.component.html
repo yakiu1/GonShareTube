@@ -10,8 +10,10 @@
       </app-gon-button-list>
     </div>
     <div class="right-list-area col-9">
-      <app-gon-list [listDataType]="listDataType" [listData]="gonListData" [showEditBtn]="true" [showAddBtn]="true"
-        (doClickData)="clickListData($event)" (doAddData)="addListData($event)" (doDeleteData)="deleteListData($event)">
+      <app-gon-list [listDataType]="listDataType" [listData]="gonVideoList$|async" [showEditBtn]="true"
+        [showAddBtn]="true" (doClickData)="clickListData($event)" (doAddData)="doAddVideo($event)"
+        (doDeleteData)="deleteListData($event)">
+
       </app-gon-list>
     </div>
   </div>
