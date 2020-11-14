@@ -58,9 +58,9 @@
 
         <div #footMenu style="height: 100vh;width: 100%;">
           <div class="row justify-content-center foot-menu-area " style="height: 60vh;border-radius: 90% / 30%;">
-            <app-gon-button [btnText]='"shared"' (clickEvent)="shareVideo()"></app-gon-button>
-            <app-gon-button [btnText]='"sharedAt"' (clickEvent)="doShareAt()"></app-gon-button>
-            <app-gon-button [btnText]='"stop"' (clickEvent)="doStop()"></app-gon-button>
+            <app-gon-button [btnText]='"shared"' [btnIcon]='"shared"' (clickEvent)="shareVideo()"></app-gon-button>
+            <app-gon-button [btnText]='"sharedAt"' [btnIcon]='"sharedAt"' (clickEvent)="doShareAt()"></app-gon-button>
+            <app-gon-button [btnText]='"stop"' [btnIcon]='"stop"' (clickEvent)="doStop()"></app-gon-button>
           </div>
         </div>
 
