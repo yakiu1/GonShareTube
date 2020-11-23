@@ -12,6 +12,7 @@ export class GonButtonListComponent implements OnInit {
   @ViewChild('list', { static: true }) listRef: ElementRef;
 
   @Output() addEvent = new EventEmitter();
+  @Output() doBtnClickEvent = new EventEmitter();
 
   constructor() { }
 
@@ -24,15 +25,18 @@ export class GonButtonListComponent implements OnInit {
     const newPlaylist: GonListData = {
       ...this.listItem[listLenth],
       index: listLenth,
-      name: (listLenth+1).toString()
+      name: (listLenth + 1).toString()
     }
 
-    if(listLenth>9){
+    if (listLenth > 9) {
       return;
     }
 
     this.listItem = [... this.listItem, newPlaylist];
-    this.addEvent.emit();
+    this.addEvent.emit(newPlaylist);
   }
 
+  doClickBtn(index: number) {
+    this.doBtnClickEvent.emit(index);
+  }
 }

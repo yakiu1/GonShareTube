@@ -1,16 +1,18 @@
+import { VideoModle } from './../../difs/modles/video.modle';
+import { PlaylistModle } from './../../difs/modles/playlist.modle';
+import { PlaylistInfoService } from './../../core/services/db/playlist-info.service';
 import { GonListData } from './../../difs/gon-list-data';
 import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, combineLatest, fromEvent, Observable, Subscription } from 'rxjs';
-import { last, take } from 'rxjs/operators';
+import { last, switchMap, take } from 'rxjs/operators';
 import { AppStateName } from 'app/state/app.state';
 import { DataSelectorService } from './../../core/services/data-selector.service';
 import { ConnectorService, YtPlayerService } from '../../../app/core/services';
 import * as AppActions from '../../state/actions/app.actions'
 import { ServerEventName } from 'app/difs/server-event-name.enum';
 import { ListDataType } from '../../difs/list-data-type.enum';
-import { SongInfo } from 'app/difs/song-info';
 import { Subject } from 'rxjs/internal/Subject';
 
 @Component({
@@ -18,7 +20,7 @@ import { Subject } from 'rxjs/internal/Subject';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, AfterContentInit,AfterViewInit, OnDestroy {
+export class HomeComponent implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
 
   @ViewChild('footMenu', { static: true }) footMenu: ElementRef;
   @ViewChild('roomToast', { static: true }) roomToast: ElementRef;
@@ -39,30 +41,20 @@ export class HomeComponent implements OnInit, AfterContentInit,AfterViewInit, On
   private _groupID: string;
   priviouseGroup$: Observable<string>;
 
-  gonButtonListDatas: GonListData[] = [{
-    index: 0, name: '1', value: 'test1', description: 'test1'
-  }, {
-    index: 1, name: '2', value: 'test1', description: 'test1'
-  }, {
-    index: 2, name: '3', value: 'test1', description: 'test1'
-  }, {
-    index: 3, name: '4', value: 'test1', description: 'test1'
-  }, {
-    index: 4, name: '5', value: 'test1', description: 'test1'
-  },
-  ];
+  gonButtonListDatas: GonListData[] = [];
 
   listDataType = ListDataType.YTPlaylist;
   isReceiving = true;//判斷是否為自己控制自己音樂
   gonVideoList$ = new Subject<GonListData[]>();
-  currentPlaylist$: Observable<any>;
+  currentPlaylistId$: Observable<number>;
+  currentPlaylist$: Observable<VideoModle[]>;
 
   constructor(
     public ytPlayerService: YtPlayerService,
     public tubeConnect: ConnectorService,
     private store: Store<any>,
     private dataSelectorService: DataSelectorService,
-    private el: ElementRef
+    private playlistInfoService: PlaylistInfoService,
   ) { }
 
 
@@ -77,23 +69,23 @@ export class HomeComponent implements OnInit, AfterContentInit,AfterViewInit, On
     const onReceiveTubeLinkHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveTubeLink)();
     const onReceiveTubeTimeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveTubeTime)();
     const onStopTubeHandler = this.tubeConnect.listeningServerEvent(ServerEventName.OnReceiveStopTube)();
-    const onCurrnetPlaylistChange = this.currentPlaylist$;
+    const onCurrnetPlaylistChange = this.currentPlaylistId$;
 
-    const syncPlayListData = onCurrnetPlaylistChange.subscribe(playlist => {
-      const gonListData = [];
-      playlist.forEach(v => {
-        const video: GonListData = {
-          index: 0,
-          value: v.songTag,
-          name: v.songName,
-          description: '',
-        }
+    const syncPlayListData = onCurrnetPlaylistChange.subscribe(id => {
+      this.playlistInfoService.getAllVideoByPlaylistId(id).then(pl => {
+        const gonListData = [];
+        pl.videos.forEach(v => {
+          const video: GonListData = {
+            index: 0,
+            value: v.tag,
+            name: v.displayName,
+            description: v.displayName,
+          }
 
-        gonListData.push(video)
+          gonListData.push(video)
+        })
+        this.gonVideoList$.next(gonListData);
       })
-      this.gonVideoList$.next(gonListData);
-      console.log(gonListData);
-      console.log(playlist, 'syncData!!');
     })
 
     const stopTube = onStopTubeHandler.subscribe((tubelink) => {
@@ -181,9 +173,18 @@ export class HomeComponent implements OnInit, AfterContentInit,AfterViewInit, On
     }
   }
 
-  doCreatePlayList(): void {
-    // TODO : Add new playlist
-    console.log('Add new playlist!');
+  createPlayList(evt: GonListData): void {
+    const newPlayList: PlaylistModle = {
+      id: +evt.index,
+      displayName: evt.name,
+      videos: [],
+    }
+
+    this.playlistInfoService.add(newPlayList);
+  }
+
+  async selectPlaylist(index: number): Promise<void> {
+    this.store.dispatch(AppActions.setSelectPlaylist({ selectList: index }))
   }
 
   clickListData(event: { index: number, data: GonListData }) {
@@ -194,12 +195,19 @@ export class HomeComponent implements OnInit, AfterContentInit,AfterViewInit, On
 
   doAddVideo(event: GonListData): void {
     const url: string = event.value;
-    const newVideo: SongInfo = {
-      songName: event.name,
-      songTag: this.parseURLToTag(url),
+    const newVideo: VideoModle = {
+      displayName: event.name,
+      tag: this.parseURLToTag(url),
     }
-    console.log('add!!', newVideo);
-    this.store.dispatch(AppActions.addSong({ song: newVideo }));
+
+    this.currentPlaylistId$.pipe(take(1)).subscribe(id => {
+      this.playlistInfoService.addVideoByPlaylistId(id, newVideo).then(_ => {
+        this.store.dispatch(AppActions.addSong({ song: newVideo }));
+        this.syncPlaylist(id);
+      });
+
+    })
+
   }
 
   parseURLToTag(url: string): string {
@@ -211,14 +219,38 @@ export class HomeComponent implements OnInit, AfterContentInit,AfterViewInit, On
     const currentGroup$ = this.dataSelectorService.getStoreData(AppStateName.currentGroup)();
     currentGroup$.pipe(take(1)).subscribe(g => {
       if (g) {
-        console.log('sent tube link sent');
         this.tubeConnect.serveConnection.invoke('SendGroupTubeLink', g, tag);
       }
     })
   }
 
-  deleteListData(event: number) {
-    this.store.dispatch(AppActions.removeSong({ removeIndex: event }))
+  deleteListData(index: number) {
+    this.currentPlaylistId$.pipe(take(1),
+      switchMap(id => {
+        const s = new Subject<number>()
+        this.playlistInfoService.removeVideoByIndex(id, index).then(_ => s.next(id));
+        return s.pipe(take(1))
+      })).subscribe(id => {
+        this.syncPlaylist(id);
+      })
+  }
+
+
+  syncPlaylist(id: number): void {
+    this.playlistInfoService.getAllVideoByPlaylistId(id).then(a => {
+      const currentPlaylist = []
+      a.videos.forEach(v => {
+        const video: GonListData = {
+          index: v.id,
+          name: v.displayName,
+          value: v.tag,
+          description: v.displayName,
+        }
+        currentPlaylist.push(video);
+
+      })
+      this.gonVideoList$.next(currentPlaylist);
+    })
   }
 
   changeRoom(event: KeyboardEvent) {
@@ -243,7 +275,8 @@ export class HomeComponent implements OnInit, AfterContentInit,AfterViewInit, On
     this.currentPlaying$ = this.dataSelectorService.getStoreData(AppStateName.currentPlaying)();
     this.currentGroup$ = this.dataSelectorService.getStoreData(AppStateName.currentGroup)();
     this.priviouseGroup$ = this.dataSelectorService.getStoreData(AppStateName.priviousGroup)();
-    this.currentPlaylist$ = this.dataSelectorService.getStoreData(AppStateName.playlist)();
+    //this.currentPlaylist$ = this.dataSelectorService.getStoreData(AppStateName.playlist)();
+    this.currentPlaylistId$ = this.dataSelectorService.getStoreData(AppStateName.currentPlaylist)();
   }
 
   enterCurrentGroup(): void {
@@ -262,20 +295,57 @@ export class HomeComponent implements OnInit, AfterContentInit,AfterViewInit, On
   }
 
   setInitData() {
-    this.currentPlaylist$.pipe(take(1)).subscribe(playlist => {
+    this.currentPlaylistId$.pipe(take(1),
+      switchMap(id => {
+        return this.playlistInfoService.getAllVideoByPlaylistId(id)
+      })
+    ).subscribe(pl => {
       const gonListData = [];
-      playlist.forEach(v => {
+      pl.videos.forEach(v => {
         const video: GonListData = {
-          index: 0,
-          value: v.songTag,
-          name: v.songName,
-          description: '',
+          index: v.id,
+          value: v.tag,
+          name: v.displayName,
+          description: v.displayName,
         }
         gonListData.push(video)
       })
       this.gonVideoList$.next(gonListData);
     })
   }
+
+  /**
+   * DbData
+   */
+  async getAllDbData(): Promise<void> {
+    this.playlistInfoService.getAll().then(a => {
+      const playlistBtnData = [];
+      a.forEach(p => {
+        const temp: GonListData = {
+          index: p.id,
+          value: p.id.toString(),
+          name: p.displayName,
+          description: p.displayName,
+        }
+        playlistBtnData.push(temp);
+      })
+      this.gonButtonListDatas = playlistBtnData;
+    })
+
+    this.playlistInfoService.getAllVideoByPlaylistId(0).then(a => {
+      const currentPlaylist = []
+      a.videos.forEach(v => {
+        const video: VideoModle = {
+          id: v.id,
+          displayName: v.displayName,
+          tag: v.tag,
+        }
+        currentPlaylist.push(video);
+      })
+      this.store.dispatch(AppActions.setPlaylist({ playlist: currentPlaylist }));
+    })
+  }
+
 
   /** LifeCycles
    * lifeCycle hooks below
@@ -285,6 +355,7 @@ export class HomeComponent implements OnInit, AfterContentInit,AfterViewInit, On
     this.getStoreDatas();
     this.enterCurrentGroup();
     this.addListeners();
+    this.getAllDbData();
     this.startVideo();
     // 隨機數字2次方之後 以36位數(0~9 + a~z)進位轉字串
     // this.secretNo = Math.pow(Math.floor(Math.random() * 100000) + 1, 2).toString(36);
@@ -292,6 +363,7 @@ export class HomeComponent implements OnInit, AfterContentInit,AfterViewInit, On
 
   ngAfterViewInit(): void {
     this.setInitData();
+
   }
   ngOnDestroy(): void {
     this._eventSubscriptions.unsubscribe();

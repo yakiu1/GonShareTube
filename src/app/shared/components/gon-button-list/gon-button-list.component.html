@@ -1,6 +1,6 @@
 <ul #list>
   <li *ngFor="let item of listItem">
-    <app-gon-button [btnText]="item.name">
+    <app-gon-button [btnText]="item.name" (click)="doClickBtn(item.index)">
     </app-gon-button>
   </li>
   <li>

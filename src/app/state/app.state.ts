@@ -1,10 +1,11 @@
-import { SongInfo } from './../difs/song-info';
+import { VideoModle } from './../difs/modles/video.modle';
 
 export interface AppState {
-  playlist: SongInfo[];
+  playlist: VideoModle[];
   currentPlaying: string;
   currentGroup: string;
   priviousGroup: string;
+  currentPlaylist: number;
 }
 
 export enum AppStateName {
@@ -12,4 +13,5 @@ export enum AppStateName {
   currentPlaying = 'currentPlaying',
   currentGroup = 'currentGroup',
   priviousGroup = 'priviousGroup',
+  currentPlaylist = 'currentPlaylist',
 }

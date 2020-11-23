@@ -1,5 +1,5 @@
 export interface VideoModle {
-  id: number,
+  id?: number,
   tag: string,
   displayName: string,
 }
