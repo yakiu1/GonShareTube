@@ -4,16 +4,12 @@ import { Action } from '@ngrx/store/src/models';
 import * as AppActions from '../actions/app.actions'
 import { createReducer, on } from '@ngrx/store';
 
-// const initialState: SongInfo = {
-//   songName: 'noSongNow',
-//   songTag: 'nono',
-//   displayName: '',
-// }
 export const initialState: AppState = {
   playlist: [],
   currentPlaying: '',
   currentGroup: Math.floor(Math.random() * Math.floor(1000000)).toString(),
   priviousGroup: '',
+  currentPlaylist: 0,
 };
 
 export const appReducer = createReducer(initialState,
@@ -49,7 +45,19 @@ export const appReducer = createReducer(initialState,
       ...state,
       priviousGroup: payload.priviousGroup
     }
-  })
+  }),
+  on(AppActions.setPlaylist, (state, payload) => {
+    return {
+      ...state,
+      playlist: [...payload.playlist]
+    }
+  }),
+  on(AppActions.setSelectPlaylist, (state, payload) => {
+    return {
+      ...state,
+      currentPlaylist: payload.selectList
+    }
+  }),
 )
 
 export function reducer(state: AppState | undefined, action: Action): any {

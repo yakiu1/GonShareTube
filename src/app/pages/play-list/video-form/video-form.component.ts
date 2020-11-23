@@ -1,3 +1,6 @@
+import { PlaylistInfoService } from './../../../core/services/db/playlist-info.service';
+import { DbService } from './../../../core/services/db/db.service';
+import { VideoModle } from './../../../difs/modles/video.modle';
 import { DataSelectorService } from './../../../core/services/data-selector.service';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -18,19 +21,26 @@ export class VideoFormComponent implements OnInit {
   displayNmaeCnontrol = new FormControl('');
   playlist$: Observable<SongInfo[]>;
 
-  constructor(private store: Store<any>) {
+  constructor(private store: Store<any>,
+    private playlistInfoService: PlaylistInfoService) {
   }
 
   ngOnInit(): void {
   }
 
   doAddVideo(): void {
-    const url: string = this.videoURLControl.value;
-    const newVideo: SongInfo = {
-      songName: this.displayNmaeCnontrol.value,
-      songTag: this.parseURLToTag(url),
-    }
-    this.store.dispatch(AppActions.addSong({ song: newVideo }));
+    // const video: VideoModle = {
+    //   tag:this.parseURLToTag(url)
+    // }
+    // this.playlistInfoService.add();
+
+    // const url: string = this.videoURLControl.value;
+    // const newVideo: VideoModle = {
+    //   id
+    //   songName: this.displayNmaeCnontrol.value,
+    //   songTag: this.parseURLToTag(url),
+    // }
+    // this.store.dispatch(AppActions.addSong({ song: newVideo }));
   }
 
   parseURLToTag(url: string): string {
