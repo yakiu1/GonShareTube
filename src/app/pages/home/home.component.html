@@ -6,7 +6,8 @@
 <div class="row">
   <div class="col-3 left-playlist-area flex-container">
     <div class="left-menu-area col-3">
-      <app-gon-button-list [listItem]="gonButtonListDatas" (addEvent)="doCreatePlayList()">
+      <app-gon-button-list [listItem]="gonButtonListDatas" (addEvent)="createPlayList($event)"
+        (doBtnClickEvent)="selectPlaylist($event)">
       </app-gon-button-list>
     </div>
     <div class="right-list-area col-9">

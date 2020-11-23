@@ -1,6 +1,6 @@
 import { VideoModle } from './video.modle';
 export interface PlaylistModle {
   id: number,
-  displayNmae: string,
+  displayName: string,
   videos: VideoModle[],
 }

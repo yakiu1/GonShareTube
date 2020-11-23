@@ -9,7 +9,8 @@ export class DbService extends Dexie {
     super('GonShareTubeDb')
     this.version(1).stores({
       playlist: '++id, displayName, videos',
-      user: '++id, displayName, playlists'
+      user: '++id, displayName, playlists',
+      room: '++id, displayName, roomTag',
     });
   }
 }
