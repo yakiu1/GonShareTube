@@ -4,11 +4,6 @@ import { Action } from '@ngrx/store/src/models';
 import * as AppActions from '../actions/app.actions'
 import { createReducer, on } from '@ngrx/store';
 
-// const initialState: SongInfo = {
-//   songName: 'noSongNow',
-//   songTag: 'nono',
-//   displayName: '',
-// }
 export const initialState: AppState = {
   playlist: [],
   currentPlaying: '',
