@@ -1,7 +1,7 @@
 import { ServerEventName } from './../../difs/server-event-name.enum';
 import { Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { HubConnection, HubConnectionBuilder, IRetryPolicy, RetryContext } from '@microsoft/signalr';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class ConnectorService {
   connectToServe(): void {
     const connection = new HubConnectionBuilder()
       .withUrl('http://sharetubeservice-env.eba-em77nq23.us-east-1.elasticbeanstalk.com/tubehub')
-      .withAutomaticReconnect()
+      .withAutomaticReconnect(new GonRerty(10000))
       .build();
     this.serveConnection = connection;
     this.serveConnection.start();
@@ -59,6 +59,25 @@ export class ConnectorService {
       // }
       return this[eventName + '$']
     }
+  }
+
+}
+
+
+export class GonRerty implements IRetryPolicy {
+
+  _retryMilliseconds: number;
+
+  constructor(milliseconds: number) {
+    this._retryMilliseconds = milliseconds;
+  }
+
+  nextRetryDelayInMilliseconds(retryContext: RetryContext): number | null {
+    if (retryContext.previousRetryCount >= 1000) {
+      console.log('離線太久了，已經放棄與伺服器連線');
+      return null;
+    }
+    return this._retryMilliseconds;
   }
 
 }
