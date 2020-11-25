@@ -1,0 +1,108 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  // border:1px red solid;
+}
+
+.list-style {
+  text-overflow: ellipsis;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.btn {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.row-btn-full {
+  font-size: 1em;
+  font-weight: bold;
+  border: 0px;
+  width: 100%;
+  background-color: $darken-main-color !important;
+  color: $main-text-color !important;
+  font-size: 1.2em;
+}
+
+.row-btn-full:hover {
+  color: darken($main-text-color, 10);
+}
+
+.row-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  :nth-child(2) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.btn-confirm {
+  width: 6em;
+  background-color: violet !important;
+}
+
+.btn-cancel {
+  min-width: 6em;
+  background-color: steelblue !important;
+}
+
+.btn-delete {
+  fill: #ec5d5d;
+  width: 10px;
+}
+
+.btn-delete:hover {
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  fill: darken($color: #ec5d5d, $amount: 5);
+}
+
+.list-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.list-text {
+  color: $main-text-color;
+}
+
+.list-text:hover {
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+
+  background-color: $patten-one-light;
+}
+
+.list-text-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.row-btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.row-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}

@@ -1,205 +1,219 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'theme/variables';
+@import 'theme/pages/home.page.scss';
+@import 'theme/pages/loading-page.component.scss';
+@import 'theme/pages/overview.component.scss';
 
-// 主要顏色卡
-$main-color :#1A535C;
-$sub-color: #4ECDC4;
-$main-button-color:lighten($main-color, 10%);
-$sub-button-color:#FFE66D;
-$main-text-color: #F7FFF7;
-$darken-main-color: darken($main-color, 10%);
+@import 'theme/shared/gon-button.component.scss';
+@import 'theme/shared/gon-button-list.component.scss';
+@import 'theme/shared/gon-list.component.scss';
+
 html,
 body {
-    margin: 0;
-    height: 100%;
-    font-family: Arial, Helvetica, sans-serif;
-    overflow: hidden;
+  margin: 0;
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+  background-color: $main-color;
 }
 
 #titlebar {
-    position: relative;
-    background-color: $darken-main-color;
-    top: 0px;
-    display: block;
-    height: 32px;
-    width: 100%;
-    padding-left: 10px;
+  position: relative;
+  background-color: $darken-main-color;
+  top: 0px;
+  display: block;
+  height: 32px;
+  width: 100%;
+  padding-left: 10px;
 }
 
 .maximized #titlebar {
-    width: 100%;
-    padding: 0;
+  width: 100%;
+  padding: 0;
 }
 
 #main {
-    height: calc(100% - 32px);
-    margin-top: 32px;
-    padding: 20px;
-    overflow-y: auto;
+  height: calc(100% - 32px);
+  margin-top: 32px;
+  padding: 20px;
+  overflow-y: auto;
 }
 
-#titlebar {}
-
-#titlebar #drag-region {
-    width: 100%;
-    height: 100%;
-    -webkit-app-region: drag;
+#titlebar {
 }
 
 #titlebar #drag-region {
-    display: grid;
-    grid-template-columns: auto 138px;
+  width: 100%;
+  height: 100%;
+  -webkit-app-region: drag;
+}
+
+#titlebar #drag-region {
+  display: grid;
+  grid-template-columns: auto 138px;
 }
 
 #window-title {
-    color: $main-text-color;
-    grid-column: 1;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    font-family: "Segoe UI", sans-serif;
-    font-size: 12px;
+  color: $main-text-color;
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 12px;
 }
 
 .maximized #window-title {
-    margin-left: 12px;
+  margin-left: 12px;
 }
 
 #window-title span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.5;
 }
 
 #window-controls {
-    display: grid;
-    grid-template-columns: repeat(3, 46px);
-    position: relative;
-    top: 0;
-    right: 0;
-    height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 46px);
+  position: relative;
+  top: 0;
+  right: 0;
+  height: 100%;
 }
 
 #window-controls {
-    -webkit-app-region: no-drag;
+  -webkit-app-region: no-drag;
 }
 
 #window-controls .button {
-    grid-row: 1 / span 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
+  grid-row: 1 / span 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 @media (-webkit-device-pixel-ratio: 1.5),
-(device-pixel-ratio: 1.5),
-(-webkit-device-pixel-ratio: 2),
-(device-pixel-ratio: 2),
-(-webkit-device-pixel-ratio: 3),
-(device-pixel-ratio: 3) {
-    #window-controls .icon {
-        width: 10px;
-        height: 10px;
-    }
+  (device-pixel-ratio: 1.5),
+  (-webkit-device-pixel-ratio: 2),
+  (device-pixel-ratio: 2),
+  (-webkit-device-pixel-ratio: 3),
+  (device-pixel-ratio: 3) {
+  #window-controls .icon {
+    width: 10px;
+    height: 10px;
+  }
 }
 
 #window-controls .button {
-    user-select: none;
+  user-select: none;
 }
 
 #window-controls .button:hover {
-    background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 #window-controls .button:active {
-    background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 #close-button:hover {
-    background: #E81123 !important;
+  background: #e81123 !important;
 }
 
 #close-button:active {
-    background: #F1707A !important;
+  background: #f1707a !important;
 }
 
 #close-button:active .icon {
-    filter: invert(1);
+  filter: invert(1);
 }
 
 #min-button {
-    grid-column: 1;
+  grid-column: 1;
 }
 
 #max-button,
 #restore-button {
-    grid-column: 2;
+  grid-column: 2;
 }
 
 #close-button {
-    grid-column: 3;
+  grid-column: 3;
 }
 
 #restore-button {
-    display: none !important;
+  display: none !important;
 }
 
 .maximized #restore-button {
-    display: flex !important;
+  display: flex !important;
 }
 
 .maximized #max-button {
-    display: none;
+  display: none;
 }
 
 //
 // 區塊樣式
 .bodyLayout {
-    background-color: $main-color;
-    height: 100%;
+  background-color: $darken-main-color;
+  height: 100%;
 }
 
 .banner {
-    height: 10vh;
-    display: flex;
-    justify-content: center;
-    flex-direction: columnf;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: columnf;
 }
 
 .foot-menu-area {
-    padding: 8px;
-    position: relative;
-    top: 15vh;
-    height: 18vh;
-    background-color: $darken-main-color;
-    opacity: 0;
+  padding: 8px;
+  position: relative;
+  top: 15vh;
+  height: 18vh;
+  background-color: #888888;
+  opacity: 0;
 }
 
 .gbtn-main {
-    border: 0px;
-    border-radius: 5px;
-    background-color: $main-button-color;
+  margin-left: 10px;
+  border: 0px;
+  border-radius: 5px;
+  background-color: $main-button-color;
 }
 
 .gbtn-main:hover {
-    -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
-    -ms-transition: all 0.3s;
-    -o-transition: all 0.3s;
-    transition: all 0.3s;
-    background-color: lighten($main-button-color, 10%);
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  background-color: lighten($main-button-color, 10%);
 }
 
 .gbtn-main:focus {
-    outline: 0;
+  outline: 0;
 }
 
 .gbtn-sub {
-    border: 0px;
-    border-radius: 5px;
-    background-color: $sub-button-color;
+  margin-left: 10px;
+  color: $main-text-color;
+  background-color: darken($sub-button-color,50);
+}
+
+.gbtn-sub:hover {
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+
+  background-color: darken($sub-button-color,30);
 }
 
 // 字體顏色
@@ -211,33 +225,33 @@ h3,
 h4,
 h5,
 h6 {
-    color: $main-text-color !important;
+  color: $main-text-color !important;
 }
 
 // 組合面板
 .dropdown {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
 .dropdown-content {
-    position: absolute;
-    background-color: $darken-main-color;
-    color: $main-text-color;
-    width: 0px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    padding: 12px 0px;
-    border-radius: 10px;
-    z-index: 1;
-    opacity: 0;
+  position: absolute;
+  background-color: $darken-main-color;
+  color: $main-text-color;
+  width: 0px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 0px;
+  border-radius: 10px;
+  z-index: 1;
+  opacity: 0;
 }
 
 .dropdown:hover .dropdown-content {
-    -webkit-transition: all 1s;
-    -moz-transition: all 1s;
-    -ms-transition: all 1s;
-    -o-transition: all 1s;
-    transition: all 1s;
-    width: 150px;
-    opacity: 0.9;
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  -ms-transition: all 1s;
+  -o-transition: all 1s;
+  transition: all 1s;
+  width: 150px;
+  opacity: 0.9;
 }

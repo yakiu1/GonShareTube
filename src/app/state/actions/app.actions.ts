@@ -1,10 +1,15 @@
+import { VideoModle } from './../../difs/modles/video.modle';
 import { createAction, props } from '@ngrx/store';
-import { SongInfo } from '../../difs/song-info';
 
 export const addSong = createAction(
   '[PLAYLIST] addSong',
-  props<{ song: SongInfo }>()
+  props<{ song: VideoModle }>()
 );
+
+export const setPlaylist = createAction(
+  '[PLAYLIST] setPlaylist',
+  props<{ playlist: VideoModle[] }>()
+)
 
 export const removeSong = createAction(
   '[PLAYLIST] removeSong',
@@ -24,6 +29,11 @@ export const setGroup = createAction(
 export const setPriviousGroup = createAction(
   '[GROUP] setPriviousGroup',
   props<{ priviousGroup: string }>()
+)
+
+export const setSelectPlaylist = createAction(
+  '[PLAYLIST] setSelectPlaylist',
+  props<{ selectList: number }>()
 )
 
 //export type Actions = AddSong | RemoveSong | SetSong;

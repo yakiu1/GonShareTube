@@ -20,7 +20,12 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              {
+                "input": "src/theme/_variables.scss"
+              },
+              {
+                "input":"src/styles.scss"
+              }
             ],
             "scripts": [],
             "customWebpackConfig": {
@@ -166,5 +171,8 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "analytics": "f4794be0-2eea-4e15-bd89-76aaf536b9c1"
   }
 }

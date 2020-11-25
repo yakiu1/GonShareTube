@@ -1,6 +1,4 @@
 import { LoadingPageRoutingModule } from './pages/loading-page/loading-page-routing.module';
-import { PlayListRoutingModule } from './pages/play-list/play-list-routing.module';
-import { FriendRoutingModule } from './pages/friend/friend-routing.module';
 import { OverviewRoutingModule } from './pages/overview/overview-routing.module';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -25,8 +23,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     HomeRoutingModule,
     OverviewRoutingModule,
-    FriendRoutingModule,
-    PlayListRoutingModule,
     LoadingPageRoutingModule
   ],
   exports: [RouterModule]
