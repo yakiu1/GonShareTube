@@ -1,3 +1,15 @@
+## <small>0.7.1 (2020-11-25)</small>
+
+* update packge version ([b7efa66](https://github.com/yakiu1/GonShareTube/commit/b7efa66))
+
+
+
+## 0.7.0 (2020-11-25)
+
+* 0.7.0 Release (#29) ([6453675](https://github.com/yakiu1/GonShareTube/commit/6453675)), closes [#29](https://github.com/yakiu1/GonShareTube/issues/29) [#4](https://github.com/yakiu1/GonShareTube/issues/4) [#5](https://github.com/yakiu1/GonShareTube/issues/5) [#6](https://github.com/yakiu1/GonShareTube/issues/6) [#7](https://github.com/yakiu1/GonShareTube/issues/7) [#9](https://github.com/yakiu1/GonShareTube/issues/9) [#10](https://github.com/yakiu1/GonShareTube/issues/10) [#12](https://github.com/yakiu1/GonShareTube/issues/12) [#13](https://github.com/yakiu1/GonShareTube/issues/13) [#14](https://github.com/yakiu1/GonShareTube/issues/14) [#16](https://github.com/yakiu1/GonShareTube/issues/16) [#17](https://github.com/yakiu1/GonShareTube/issues/17) [#19](https://github.com/yakiu1/GonShareTube/issues/19) [#20](https://github.com/yakiu1/GonShareTube/issues/20) [#21](https://github.com/yakiu1/GonShareTube/issues/21) [#22](https://github.com/yakiu1/GonShareTube/issues/22) [#23](https://github.com/yakiu1/GonShareTube/issues/23) [#24](https://github.com/yakiu1/GonShareTube/issues/24) [#26](https://github.com/yakiu1/GonShareTube/issues/26) [#27](https://github.com/yakiu1/GonShareTube/issues/27) [#28](https://github.com/yakiu1/GonShareTube/issues/28)
+
+
+
 ## 0.6.0 (2020-10-28)
 
 * :+1:  Add loading page feature ([82cb699](https://github.com/yakiu1/GonShareTube/commit/82cb699))
@@ -6,6 +18,7 @@
 * :poop:  fix group add bug ([f55eb87](https://github.com/yakiu1/GonShareTube/commit/f55eb87))
 * :poop:  fix group issue ([1934b35](https://github.com/yakiu1/GonShareTube/commit/1934b35))
 * :poop: fix some asynchronous problem ([759b68e](https://github.com/yakiu1/GonShareTube/commit/759b68e))
+* [Release] 0.6.0 說明文件/建置文檔更新 ([e9146e6](https://github.com/yakiu1/GonShareTube/commit/e9146e6))
 * Add autoreconnect feature ([b037474](https://github.com/yakiu1/GonShareTube/commit/b037474))
 * add custom youtube playlist feature ([4d7cb9e](https://github.com/yakiu1/GonShareTube/commit/4d7cb9e))
 * Add DataSelectorSerivce ([38ce5d8](https://github.com/yakiu1/GonShareTube/commit/38ce5d8))
