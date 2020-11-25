@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import { VideoModle } from './../../difs/modles/video.modle';
 import { PlaylistModle } from './../../difs/modles/playlist.modle';
 import { PlaylistInfoService } from './../../core/services/db/playlist-info.service';
@@ -18,7 +19,6 @@ import { Subject } from 'rxjs/internal/Subject';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
 
@@ -88,7 +88,7 @@ export class HomeComponent implements OnInit, AfterContentInit, AfterViewInit, O
       })
     })
 
-    const stopTube = onStopTubeHandler.subscribe((tubelink) => {
+    const stopTube = onStopTubeHandler.subscribe(_ => {
       if (this.isReceiving) {
         this.player.stopVideo();
       }
@@ -183,11 +183,11 @@ export class HomeComponent implements OnInit, AfterContentInit, AfterViewInit, O
     this.playlistInfoService.add(newPlayList);
   }
 
-  async selectPlaylist(index: number): Promise<void> {
+  selectPlaylist(index: number): void {
     this.store.dispatch(AppActions.setSelectPlaylist({ selectList: index }))
   }
 
-  clickListData(event: { index: number, data: GonListData }) {
+  clickListData(event: { index: number, data: GonListData }): void {
     this.store.dispatch(AppActions.setSong({ currentPlaying: event.data.value }))
     this.sendGroupTubeLink(event.data.value);
     this.player.loadVideoById(event.data.value);
@@ -224,13 +224,17 @@ export class HomeComponent implements OnInit, AfterContentInit, AfterViewInit, O
     })
   }
 
-  deleteListData(index: number) {
-    this.currentPlaylistId$.pipe(take(1),
-      switchMap(id => {
-        const s = new Subject<number>()
-        this.playlistInfoService.removeVideoByIndex(id, index).then(_ => s.next(id));
-        return s.pipe(take(1))
-      })).subscribe(id => {
+  deleteListData(index: number): void {
+    this.currentPlaylistId$
+      .pipe(
+        take(1),
+        switchMap(id => {
+          const s = new Subject<number>()
+          this.playlistInfoService.removeVideoByIndex(id, index).then(_ => s.next(id));
+          return s.pipe(take(1))
+        })
+      )
+      .subscribe(id => {
         this.syncPlaylist(id);
       })
   }
@@ -253,7 +257,7 @@ export class HomeComponent implements OnInit, AfterContentInit, AfterViewInit, O
     })
   }
 
-  changeRoom(event: KeyboardEvent) {
+  changeRoom(): void {
     this.store.dispatch(AppActions.setGroup({ currentGroup: this.currentGroupFormControl.value }));
     this.enterCurrentGroup();
 
@@ -264,7 +268,7 @@ export class HomeComponent implements OnInit, AfterContentInit, AfterViewInit, O
     }, 1000);
   }
 
-  switchReceiveBroadcast() {
+  switchReceiveBroadcast(): void {
     this.isReceiving = !this.isReceiving;
   }
 
@@ -275,7 +279,6 @@ export class HomeComponent implements OnInit, AfterContentInit, AfterViewInit, O
     this.currentPlaying$ = this.dataSelectorService.getStoreData(AppStateName.currentPlaying)();
     this.currentGroup$ = this.dataSelectorService.getStoreData(AppStateName.currentGroup)();
     this.priviouseGroup$ = this.dataSelectorService.getStoreData(AppStateName.priviousGroup)();
-    //this.currentPlaylist$ = this.dataSelectorService.getStoreData(AppStateName.playlist)();
     this.currentPlaylistId$ = this.dataSelectorService.getStoreData(AppStateName.currentPlaylist)();
   }
 
@@ -294,7 +297,7 @@ export class HomeComponent implements OnInit, AfterContentInit, AfterViewInit, O
     })
   }
 
-  setInitData() {
+  setInitData(): void {
     this.currentPlaylistId$.pipe(take(1),
       switchMap(id => {
         return this.playlistInfoService.getAllVideoByPlaylistId(id)
@@ -317,7 +320,7 @@ export class HomeComponent implements OnInit, AfterContentInit, AfterViewInit, O
   /**
    * DbData
    */
-  async getAllDbData(): Promise<void> {
+  getAllDbData(): void {
     this.playlistInfoService.getAll().then(a => {
       const playlistBtnData = [];
       a.forEach(p => {
@@ -372,6 +375,5 @@ export class HomeComponent implements OnInit, AfterContentInit, AfterViewInit, O
   ngOnInit(): void {
 
   }
-
 
 }

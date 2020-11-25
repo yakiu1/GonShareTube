@@ -4,7 +4,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'app-gon-list-item',
   templateUrl: './gon-list-item.component.html',
-  styleUrls: ['./gon-list-item.component.scss']
 })
 export class GonListItemComponent implements OnInit {
 

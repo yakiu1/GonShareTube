@@ -1,10 +1,9 @@
 import { GonListData } from './../../../difs/gon-list-data';
-import { Component, Input, OnInit, Output, EventEmitter, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-gon-button-list',
   templateUrl: './gon-button-list.component.html',
-  styleUrls: ['./gon-button-list.component.scss']
 })
 export class GonButtonListComponent implements OnInit {
 
@@ -19,7 +18,7 @@ export class GonButtonListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  doClickAdd() {
+  doClickAdd(): void {
 
     const listLenth = this.listItem.length;
     const newPlaylist: GonListData = {
@@ -36,7 +35,7 @@ export class GonButtonListComponent implements OnInit {
     this.addEvent.emit(newPlaylist);
   }
 
-  doClickBtn(index: number) {
+  doClickBtn(index: number): void {
     this.doBtnClickEvent.emit(index);
   }
 }
