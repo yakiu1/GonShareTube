@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { AppStateName } from './state/app.state';
 import { ServerEventName } from './difs/server-event-name.enum';
+import { version } from '../../package.json';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ import { ServerEventName } from './difs/server-event-name.enum';
 })
 export class AppComponent implements AfterViewInit {
 
+  appVersion = version;
   $playlist: Observable<SongInfo[]>;
   $currentPlaying: Observable<string>;
   isloading = true;
