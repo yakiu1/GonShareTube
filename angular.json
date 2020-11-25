@@ -20,7 +20,12 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              {
+                "input": "src/theme/_variables.scss"
+              },
+              {
+                "input":"src/styles.scss"
+              }
             ],
             "scripts": [],
             "customWebpackConfig": {

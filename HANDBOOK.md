@@ -25,4 +25,24 @@
 * shared - 共用元件、函式、指令
 * state - store狀態的管理、action、reducers
 
+
+## 建立
+### 建立Page
+* 使用angular CLI 於src/pages底下建立component，不需要建立任何樣式(.css/.sass/.scss)
+* page樣式統一寫在app/theme/page底下
+* 樣式檔案命名 [Page Name].page.scss
+* 需建立自己的路由並import至 appRoutingModule
+
+### 建立Page底下Component
+* 使用angular CLI 於src/pages/[page]/底下建立component，不需要建立任何樣式(.css/.sass/.scss)
+* page樣式統一寫在app/theme/page/component底下
+* 樣式檔案命名 [Page Name].[Componenet Name].component.scss
+
+### 建立Shared Component
+
+* 使用angular CLI 於src/shared底下建立component，不需要建立任何樣式(.css/.sass/.scss)
+* Shared Component樣式統一寫在app/theme/component底下
+* Shared元件命名以 gon 開頭 e.g. `gon-lsit-view`
+* 樣式檔案命名 [Component Name].component.scss
+
 ## Store狀態存取

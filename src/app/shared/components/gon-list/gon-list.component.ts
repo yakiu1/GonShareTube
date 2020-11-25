@@ -1,16 +1,15 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import { GonListData } from "./../../../difs/gon-list-data";
 import { FormControl, Validators } from '@angular/forms';
 @Component({
   selector: "app-gon-list",
   templateUrl: "./gon-list.component.html",
-  styleUrls: ["./gon-list.component.scss"],
 })
 export class GonListComponent {
   constructor() { }
 
-  @Input() listDataType: String;
-  @Input() set listData(value) {
+  @Input() listDataType: string;
+  @Input() set listData(value: GonListData[]) {
     this._listData = value;
   }
   @Input() showAddBtn: boolean;
@@ -18,17 +17,19 @@ export class GonListComponent {
 
   @Output() doClickData = new EventEmitter<{ index: number, data: GonListData }>();
   @Output() doAddData = new EventEmitter<GonListData>();
-  @Output() doDeleteData = new EventEmitter<Number>();
+  @Output() doDeleteData = new EventEmitter<number>();
   @Output() clickData = new EventEmitter<{ index: number, data: GonListData }>();
   @Output() addDataBtn = new EventEmitter<{ index: number, data: GonListData }>();
-  @Output() deleteDataBtn = new EventEmitter<Number>();
+  @Output() deleteDataBtn = new EventEmitter<number>();
 
   _listData: GonListData[] = [];
 
-  currentClickIndex: number = -1;
+  currentClickIndex = -1;
   addBtnClicked = false;
   editBtnClicked = false;
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   value = new FormControl('', Validators.required);
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   name = new FormControl('', Validators.required);
   placeHolder: string[] = [];
   formKeys = ['name', 'value'];
@@ -37,30 +38,30 @@ export class GonListComponent {
   nameInputText = 'Video Name';
   valueInputText = 'Video Url';
 
-  clickListData(index, data: GonListData) {
+  clickListData(index: number, data: GonListData): void {
     this.currentClickIndex = index;
     this.doClickData.emit({ index: index, data: data });
   }
 
-  clickAddBtn() {
+  clickAddBtn(): void {
 
     this.addBtnClicked = true;
   }
 
-  clickCancelBtn() {
+  clickCancelBtn(): void {
     this.setText('', '');
     this.addBtnClicked = false;
   }
 
-  clickEditBtn() {
+  clickEditBtn(): void {
     this.editBtnClicked = !this.editBtnClicked;
   }
 
-  clickDeleteBtn(i) {
+  clickDeleteBtn(i: number): void {
     this.doDeleteData.emit(i)
   }
 
-  clickConfirmBtn(event) {
+  clickConfirmBtn(event: { name: string, value: string }): void {
     const data: GonListData = {
       index: 0,
       name: event.name,
@@ -72,7 +73,7 @@ export class GonListComponent {
     this.addBtnClicked = false;
   }
 
-  setText(name, value) {
+  setText(name: string, value: string): void {
     this.name.setValue(name);
     this.value.setValue(value);
   }
