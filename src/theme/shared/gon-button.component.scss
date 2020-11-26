@@ -1,7 +1,7 @@
-.gon-button {
-  background-color: lighten($color: $patten-one, $amount: 20); /* Green */
+.gon-button-l {
+  background-color: $patten-s; /* Green */
   border: none;
-  color: white;
+  color: black;
   padding: 20px;
   text-align: center;
   text-decoration: none;
@@ -20,7 +20,67 @@
   transition: all 0.5s;
 }
 
-.gon-button:hover {
+.gon-button-l:hover {
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  border-radius: 20%;
+}
+
+.gon-button-m {
+  background-color: $patten-s; /* Green */
+  border: none;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  outline: none;
+  cursor: pointer;
+
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.gon-button-m:hover {
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  border-radius: 20%;
+}
+
+.gon-button-s {
+  background-color: $patten-s; /* Green */
+  border: none;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  outline: none;
+  cursor: pointer;
+
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.gon-button-s:hover {
   -webkit-transition: all 0.5s;
   -moz-transition: all 0.5s;
   -ms-transition: all 0.5s;
