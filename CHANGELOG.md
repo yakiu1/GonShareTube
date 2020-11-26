@@ -1,6 +1,12 @@
+## <small>0.7.2 (2020-11-26)</small>
+
+* fix: 時間點廣播監聽bug修正 ([41ea94a](https://github.com/yakiu1/GonShareTube/commit/41ea94a))
+
+
+
 ## <small>0.7.1 (2020-11-25)</small>
 
-* update packge version ([b7efa66](https://github.com/yakiu1/GonShareTube/commit/b7efa66))
+* Hotfix/專案版號更改 (#30) ([0ddd778](https://github.com/yakiu1/GonShareTube/commit/0ddd778)), closes [#30](https://github.com/yakiu1/GonShareTube/issues/30)
 
 
 

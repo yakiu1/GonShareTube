@@ -153,6 +153,7 @@ export class HomeComponent implements OnInit, AfterContentInit, AfterViewInit, O
   doShareAt(): void {
     const time = this.player.getCurrentTime();
     this.dataSelectorService.getStoreData(AppStateName.currentPlaying)()
+      .pipe(take(1))
       .subscribe(tag => {
         this.tubeConnect.serveConnection.invoke('SendTubeTime', tag, time, this._groupID);
       });
@@ -160,6 +161,7 @@ export class HomeComponent implements OnInit, AfterContentInit, AfterViewInit, O
 
   doStop(): void {
     this.dataSelectorService.getStoreData(AppStateName.currentPlaying)()
+      .pipe(take(1))
       .subscribe(tag => {
         this.tubeConnect.serveConnection.invoke('SendStopTube', tag, this._groupID);
       });
