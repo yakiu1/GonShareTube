@@ -25,6 +25,10 @@
 * shared - 共用元件、函式、指令
 * state - store狀態的管理、action、reducers
 
+## 專案版本控管
+
+* 專案使用 conventional-changelog 產生版本變更檔
+* commit 寫法可以參考 => https://www.conventionalcommits.org/en/v1.0.0/
 
 ## 建立
 ### 建立Page
