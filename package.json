@@ -1,6 +1,6 @@
 {
     "name": "gon-share-tube",
-    "version": "0.7.2",
+    "version": "0.7.1",
     "description": "",
     "homepage": "",
     "author": {
@@ -39,7 +39,7 @@
         "test": "ng test --watch=false",
         "test:watch": "ng test",
         "e2e": "npm run build:prod && cross-env TS_NODE_PROJECT='e2e/tsconfig.e2e.json' mocha --timeout 300000 --require ts-node/register e2e/**/*.e2e.ts",
-        "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
+        "version": "conventional-changelog -p angular -i CHANGELOG.md -s",
         "lint": "ng lint"
     },
     "devDependencies": {
