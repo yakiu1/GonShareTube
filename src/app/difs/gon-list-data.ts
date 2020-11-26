@@ -1,5 +1,5 @@
 export interface GonListData {
-  index: Number;
+  index: number;
   name: string;
   value: string;
   description: string;

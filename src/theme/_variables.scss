@@ -1,22 +1,11 @@
 
-// 主要顏色卡
-$main-color: #1a535c;
-$sub-color: #4ecdc4;
-$main-button-color: lighten($main-color, 10%);
-$sub-button-color: #ffe66d;
-$main-text-color: #f7fff7;
-$darken-main-color: darken($main-color, 10%);
+// 主要配色卡(深色)
+$patten-p: #006064;
+$patten-pl: #428e92;
+$patten-pd:#00363a;
 
-// 配色卡(深色)
-$patten-one: #1a325c;
-$patten-two: #231a5c;
-$patten-three: #441a5c;
-$patten-four: #5c1a53;
-$patten-five: #5c1a32;
+// 次要配色卡(深色)
+$patten-s: #64b5f6;
+$patten-sl: #9be7ff;
+$patten-sd:#2286c3;
 
-// 配色卡(淺色)
-$patten-one-light: lighten(#1a325c, 35%);
-$patten-two-light: lighten(#231a5c, 35%);
-$patten-three-light: lighten(#441a5c, 35%);
-$patten-four-light: lighten(#5c1a53, 35%);
-$patten-five-light: lighten(#5c1a32, 35%);

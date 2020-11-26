@@ -8,18 +8,23 @@
 @import 'theme/shared/gon-button-list.component.scss';
 @import 'theme/shared/gon-list.component.scss';
 
+
+*:focus {
+    outline: none !important;
+}
+
 html,
 body {
   margin: 0;
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
   overflow: hidden;
-  background-color: $main-color;
+  background-color: $patten-p;
 }
 
 #titlebar {
   position: relative;
-  background-color: $darken-main-color;
+  background-color: $patten-pd;
   top: 0px;
   display: block;
   height: 32px;
@@ -39,9 +44,6 @@ body {
   overflow-y: auto;
 }
 
-#titlebar {
-}
-
 #titlebar #drag-region {
   width: 100%;
   height: 100%;
@@ -54,7 +56,7 @@ body {
 }
 
 #window-title {
-  color: $main-text-color;
+  color: #fff;
   grid-column: 1;
   display: flex;
   align-items: center;
@@ -160,8 +162,10 @@ body {
 //
 // 區塊樣式
 .bodyLayout {
-  background-color: $darken-main-color;
+  background-color: $patten-pd;
   height: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
 }
 
 .banner {
@@ -184,7 +188,7 @@ body {
   margin-left: 10px;
   border: 0px;
   border-radius: 5px;
-  background-color: $main-button-color;
+  background-color: $patten-s;
 }
 
 .gbtn-main:hover {
@@ -193,7 +197,7 @@ body {
   -ms-transition: all 0.3s;
   -o-transition: all 0.3s;
   transition: all 0.3s;
-  background-color: lighten($main-button-color, 10%);
+  background-color: $patten-sl;
 }
 
 .gbtn-main:focus {
@@ -202,8 +206,8 @@ body {
 
 .gbtn-sub {
   margin-left: 10px;
-  color: $main-text-color;
-  background-color: darken($sub-button-color,50);
+  color: black;
+  background-color: $patten-s;
 }
 
 .gbtn-sub:hover {
@@ -213,7 +217,7 @@ body {
   -o-transition: all 0.3s;
   transition: all 0.3s;
 
-  background-color: darken($sub-button-color,30);
+  background-color: $patten-sd;
 }
 
 // 字體顏色
@@ -225,7 +229,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: $main-text-color !important;
+  color: #fff !important;
 }
 
 // 組合面板
@@ -236,8 +240,8 @@ h6 {
 
 .dropdown-content {
   position: absolute;
-  background-color: $darken-main-color;
-  color: $main-text-color;
+  background-color: $patten-pd;
+  color: #fff;
   width: 0px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   padding: 12px 0px;

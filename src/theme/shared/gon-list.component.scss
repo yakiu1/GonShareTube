@@ -1,10 +1,5 @@
-* {
-  margin: 0px;
-  padding: 0px;
-  // border:1px red solid;
-}
-
 .list-style {
+  background-color:#424242;
   text-overflow: ellipsis;
   height: 100%;
   width: 100%;
@@ -17,18 +12,15 @@
 }
 
 .row-btn-full {
+  color: white;
   font-size: 1em;
   font-weight: bold;
   border: 0px;
   width: 100%;
-  background-color: $darken-main-color !important;
-  color: $main-text-color !important;
+  background-color: #333333 !important;
   font-size: 1.2em;
 }
 
-.row-btn-full:hover {
-  color: darken($main-text-color, 10);
-}
 
 .row-text {
   display: flex;
@@ -74,7 +66,8 @@
 }
 
 .list-text {
-  color: $main-text-color;
+  padding-left: 5%;
+  color:white;
 }
 
 .list-text:hover {
@@ -84,10 +77,11 @@
   -o-transition: all 0.5s;
   transition: all 0.5s;
 
-  background-color: $patten-one-light;
+  background-color: $patten-pd;
 }
 
 .list-text-text {
+  padding-left: 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

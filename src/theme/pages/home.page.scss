@@ -26,14 +26,19 @@
 
 .left-playlist-area {
   height: 100vh;
-  background-color: lighten($darken-main-color, 5%);
-  color: $main-text-color;
+  background-color: #424242;
+  color:#fff;
   border-radius: 5px;
 }
 
 .left-menu-area {
   height: 100vh;
-  background-color: darken($main-color, 8%);
+  background-color: $patten-pd;
+}
+
+.right-content{
+  border-radius: 5px;
+  background-color:#666666;
 }
 
 .toast-sm {
@@ -53,5 +58,5 @@
   position: absolute;
   opacity: 1;
   top: -3vh;
-  color: $main-text-color;
+  color:#fff;
 }

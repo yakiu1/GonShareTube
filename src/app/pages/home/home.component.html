@@ -4,21 +4,24 @@
 <!-- 多國語系等APP完成一次修改 {{ 'PAGES.HOME.TITLE' | translate }} -->
 
 <div class="row">
-  <div class="col-3 left-playlist-area flex-container">
-    <div class="left-menu-area col-3">
-      <app-gon-button-list [listItem]="gonButtonListDatas" (addEvent)="createPlayList($event)"
-        (doBtnClickEvent)="selectPlaylist($event)">
-      </app-gon-button-list>
-    </div>
-    <div class="right-list-area col-9">
-      <app-gon-list [listDataType]="listDataType" [listData]="gonVideoList$|async" [showEditBtn]="true"
-        [showAddBtn]="true" (doClickData)="clickListData($event)" (doAddData)="doAddVideo($event)"
-        (doDeleteData)="deleteListData($event)">
+  <div class="col-3 left-playlist-area">
+    <div class="row">
+      <div class="left-menu-area col-3">
+        <app-gon-button-list [listItem]="gonButtonListDatas" (addEvent)="createPlayList($event)"
+          (doBtnClickEvent)="selectPlaylist($event)">
+        </app-gon-button-list>
+      </div>
+      <div class="col-9" style="padding:0%">
+        <div style="padding-top: 5px;background-color: #006064;border-radius: 5px 5px 0 0;"></div>
+        <app-gon-list [listDataType]="listDataType" [listData]="gonVideoList$|async" [showEditBtn]="true"
+          [showAddBtn]="true" (doClickData)="clickListData($event)" (doAddData)="doAddVideo($event)"
+          (doDeleteData)="deleteListData($event)">
 
-      </app-gon-list>
+        </app-gon-list>
+      </div>
     </div>
   </div>
-  <div class="col-9">
+  <div class="col-9 right-content">
     <div style="margin: 5px; ">
       <div class="row">
         <button class="col-1 gbtn-sub gbtn-main" type="button" (click)="switchLoop()">
@@ -34,7 +37,7 @@
           </span>
         </button>
 
-        <button class="col-2 gbtn-sub gbtn-main" type="button" (click)="switchReceiveBroadcast()">
+        <button class="col-2 gbtn-sub gbtn-main" (click)="switchReceiveBroadcast()">
           <span *ngIf="isReceiving">
             <span role="status" class="spinner-grow spinner-grow-sm" style="color: gray;" aria-hidden="true"></span>
             接收廣播
@@ -42,9 +45,9 @@
           <span *ngIf="!isReceiving">停止接收廣播</span>
         </button>
 
-        <div class="col-3">
+        <div class="col-4">
           <div #roomToast class="toast-sm">房間已切換</div>
-          <button class="gbtn-main" type="button" disabled>
+          <button class="gbtn-sub gbtn-main" type="button">
             <span>
               Room :
               <input [formControl]="currentGroupFormControl" (keydown.enter)="changeRoom()">
@@ -53,11 +56,12 @@
         </div>
       </div>
 
-      <div style="background-color: #333333;border-radius: 5px;">
-        <div id='player' style="width: 100%;height: 70vh; ">
+      <div class="row" style="background-color: #333333;border-radius: 5px">
+
+        <div id='player' class="col-12" style="height: 70vh; ">
         </div>
 
-        <div #footMenu style="height: 100vh;width: 100%;">
+        <div #footMenu class="col-12" style="height: 100vh;">
           <div class="row justify-content-center foot-menu-area " style="height: 60vh;border-radius: 90% / 30%;">
             <app-gon-button [btnText]='"shared"' [btnIcon]='"shared"' (clickEvent)="shareVideo()"></app-gon-button>
             <app-gon-button [btnText]='"sharedAt"' [btnIcon]='"sharedAt"' (clickEvent)="doShareAt()"></app-gon-button>
