@@ -17,4 +17,5 @@ export class GonButtonComponent implements OnInit {
   doClick(): void {
     this.clickEvent.emit(this.btnText);
   }
+
 }

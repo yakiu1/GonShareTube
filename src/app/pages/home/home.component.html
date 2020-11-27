@@ -3,7 +3,7 @@
 </h1> -->
 <!-- 多國語系等APP完成一次修改 {{ 'PAGES.HOME.TITLE' | translate }} -->
 
-<div class="row">
+<div class="row ">
   <div class="col-3 left-playlist-area">
     <div class="row">
       <div class="left-menu-area col-3">
@@ -12,7 +12,8 @@
         </app-gon-button-list>
       </div>
       <div class="col-9" style="padding:0%">
-        <div style="padding-top: 5px;background-color: #006064;border-radius: 5px 5px 0 0;"></div>
+        <div class="text-center font-weight-bold tab-header"
+          style="padding-top: 0.5em;padding-bottom: 0.5em;border: black;">影片清單</div>
         <app-gon-list [listDataType]="listDataType" [listData]="gonVideoList$|async" [showEditBtn]="true"
           [showAddBtn]="true" (doClickData)="clickListData($event)" (doAddData)="doAddVideo($event)"
           (doDeleteData)="deleteListData($event)">
@@ -22,9 +23,11 @@
     </div>
   </div>
   <div class="col-9 right-content">
+
     <div style="margin: 5px; ">
+      <div style="padding-bottom: 1em;"></div>
       <div class="row">
-        <button class="col-1 gbtn-sub gbtn-main" type="button" (click)="switchLoop()">
+        <button class="col-1 gbtn-sub gbtn-main home-card" type="button" (click)="switchLoop()">
           <span *ngIf="isloop" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
           <span *ngIf="isloop">
             Loop
@@ -37,7 +40,7 @@
           </span>
         </button>
 
-        <button class="col-2 gbtn-sub gbtn-main" (click)="switchReceiveBroadcast()">
+        <button class="col-2 gbtn-sub gbtn-main home-card" (click)="switchReceiveBroadcast()">
           <span *ngIf="isReceiving">
             <span role="status" class="spinner-grow spinner-grow-sm" style="color: gray;" aria-hidden="true"></span>
             接收廣播
@@ -47,7 +50,7 @@
 
         <div class="col-4">
           <div #roomToast class="toast-sm">房間已切換</div>
-          <button class="gbtn-sub gbtn-main" type="button">
+          <button class="gbtn-sub gbtn-main home-card" type="button">
             <span>
               Room :
               <input [formControl]="currentGroupFormControl" (keydown.enter)="changeRoom()">
@@ -55,10 +58,10 @@
           </button>
         </div>
       </div>
-
+      <div style="padding-bottom: 1em;"></div>
       <div class="row" style="background-color: #333333;border-radius: 5px">
 
-        <div id='player' class="col-12" style="height: 70vh; ">
+        <div id='player' class="col-12 home-card" style="height: 70vh;">
         </div>
 
         <div #footMenu class="col-12" style="height: 100vh;">
