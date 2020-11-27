@@ -1,14 +1,38 @@
 <div class="list-style">
   <ul>
     <li *ngIf="showEditBtn">
-      <button class="row-btn-full" (click)="clickEditBtn()" [disabled]="addBtnClicked"
-        [ngClass]="{anime:!addBtnClicked}">
-        <span *ngIf="editBtnClicked">取消</span>
-        編輯
-      </button>
+      <div class="row" style="padding-bottom: 0.3em;">
+        <div class="col-6" style="padding-right: 0% !important;">
+          <button class="row-btn-full" (click)="clickEditBtn()" [disabled]="addBtnClicked">
+            <span *ngIf="editBtnClicked">取消</span>
+            編輯
+          </button>
+        </div>
+
+        <div class="col-6" style="padding-left: 0% !important;">
+          <button class="row-btn-full" (click)="clickAddBtn()" [disabled]="addBtnClicked ||editBtnClicked">＋</button>
+        </div>
+      </div>
     </li>
-    <li *ngFor="let item of _listData; let i = index" class="list-text"
-      [ngClass]="{ liClick: i===currentClickIndex }" (click)="clickListData(i,item)">
+    <li *ngIf="showAddBtn" [hidden]="!addBtnClicked">
+      <div class="row">
+        <div class="col-12" style="padding-left: 15px;padding-right: 15px;">
+          <input type="text" class="row-text form-control" [formControl]="name" placeholder="{{nameInputText}}">
+        </div>
+        <div class="col-12" style="padding-left: 15px;padding-right: 15px;">
+          <input type="text" class="row-text form-control" [formControl]="value" placeholder="{{valueInputText}}">
+        </div>
+      </div>
+    </li>
+    <li *ngIf="showAddBtn" [hidden]="!addBtnClicked">
+      <div class="row-div">
+        <button class="col-6 btn-confirm" (click)="clickConfirmBtn({name:name.value,value:value.value})"> 確認
+        </button>
+        <button class="col-6 btn-cancel" (click)="clickCancelBtn()"> 取消 </button>
+      </div>
+    </li>
+    <li *ngFor="let item of _listData; let i = index" class="list-text" [ngClass]="{ liClick: i===currentClickIndex }"
+      (click)="clickListData(i,item)">
       <div class="row">
         <div class="col-9 list-text-text">{{ item.name }}</div>
         <div class="col-1" style="font-size: 1.2em;" *ngIf="editBtnClicked">
@@ -21,20 +45,9 @@
       </div>
     </li>
 
-    <li *ngIf="showAddBtn" [hidden]="!addBtnClicked">
-      <input type="text" class="row-text" [formControl]="name" placeholder="{{nameInputText}}">
-      <input type="text" class="row-text" [formControl]="value" placeholder="{{valueInputText}}">
-    </li>
-    <li *ngIf="showAddBtn" [hidden]="!addBtnClicked">
-      <div class="row-div">
-        <button class="col-6 btn-confirm" (click)="clickConfirmBtn({name:name.value,value:value.value})"> 確認
-        </button>
-        <button class="col-6 btn-cancel" (click)="clickCancelBtn()"> 取消 </button>
-      </div>
-    </li>
-    <li *ngIf="showAddBtn">
+    <!-- <li *ngIf="showAddBtn">
       <button class="row-btn-full" (click)="clickAddBtn()" [disabled]="addBtnClicked ||editBtnClicked"
         [ngClass]="{anime:!addBtnClicked}"> ＋ </button>
-    </li>
+    </li> -->
   </ul>
 </div>

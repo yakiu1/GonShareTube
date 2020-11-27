@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
+import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { GonListData } from "./../../../difs/gon-list-data";
 import { FormControl, Validators } from '@angular/forms';
 @Component({
@@ -27,6 +27,7 @@ export class GonListComponent {
   currentClickIndex = -1;
   addBtnClicked = false;
   editBtnClicked = false;
+  fadeAddRow = false;
   // eslint-disable-next-line @typescript-eslint/unbound-method
   value = new FormControl('', Validators.required);
   // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -35,8 +36,8 @@ export class GonListComponent {
   formKeys = ['name', 'value'];
 
 
-  nameInputText = 'Video Name';
-  valueInputText = 'Video Url';
+  nameInputText = '影片名稱';
+  valueInputText = '影片網址';
 
   clickListData(index: number, data: GonListData): void {
     this.currentClickIndex = index;
@@ -44,7 +45,6 @@ export class GonListComponent {
   }
 
   clickAddBtn(): void {
-
     this.addBtnClicked = true;
   }
 
@@ -55,6 +55,7 @@ export class GonListComponent {
 
   clickEditBtn(): void {
     this.editBtnClicked = !this.editBtnClicked;
+
   }
 
   clickDeleteBtn(i: number): void {

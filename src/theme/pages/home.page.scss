@@ -24,6 +24,12 @@
   opacity: 0.5;
 }
 
+.tab-header{
+
+  background-color: #333333;
+
+}
+
 .left-playlist-area {
   height: 100vh;
   background-color: #424242;
@@ -33,7 +39,7 @@
 
 .left-menu-area {
   height: 100vh;
-  background-color: $patten-pd;
+  background-color: #3b3b3b;
 }
 
 .right-content{
@@ -59,4 +65,10 @@
   opacity: 1;
   top: -3vh;
   color:#fff;
+}
+
+.home-card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
 }
